@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Water Colour Exhibition</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet"/>
+<title>ก่อนน้ำจะเปลี่ยนสี</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Itim&display=swap" rel="stylesheet"/>
 <style>
 /* ══ VARIABLES ══ */
 :root{
@@ -62,11 +62,11 @@ body::before{
 /* ══ WATERCOLOUR BACKGROUNDS ══ */
 .wc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:opacity .3s}
 .wc-s1{background:
-  radial-gradient(ellipse 68% 52% at 16% 26%,rgba(78,205,196,.42) 0%,transparent 68%),
-  radial-gradient(ellipse 52% 68% at 84% 64%,rgba(78,205,196,.28) 0%,transparent 58%),
-  radial-gradient(ellipse 42% 36% at 50% 85%,rgba(255,225,122,.34) 0%,transparent 50%),
-  radial-gradient(ellipse 58% 32% at 74% 10%,rgba(168,230,163,.24) 0%,transparent 58%),
-  radial-gradient(ellipse 90% 90% at 50% 50%,rgba(78,205,196,.06) 0%,transparent 82%),
+  radial-gradient(ellipse 80% 45% at 50% 8%, rgba(255,225,122,.38) 0%,transparent 65%),
+  radial-gradient(ellipse 60% 50% at 16% 32%,rgba(78,205,196,.36) 0%,transparent 68%),
+  radial-gradient(ellipse 50% 60% at 84% 48%,rgba(168,230,163,.22) 0%,transparent 60%),
+  radial-gradient(ellipse 70% 35% at 50% 100%,rgba(26,107,96,.28) 0%,transparent 55%),
+  radial-gradient(ellipse 90% 90% at 50% 50%,rgba(78,205,196,.05) 0%,transparent 82%),
   var(--paper)}
 .wc-s2{background:
   radial-gradient(ellipse 60% 60% at 26% 52%,rgba(255,179,179,.34) 0%,transparent 70%),
@@ -83,77 +83,168 @@ body::before{
   radial-gradient(ellipse 50% 60% at 16% 64%,rgba(78,205,196,.34) 0%,transparent 70%),
   radial-gradient(ellipse 40% 42% at 60% 84%,rgba(255,179,179,.24) 0%,transparent 52%),
   var(--paper)}
-.wc-s5{background:
-  radial-gradient(ellipse 70% 50% at 26% 36%,rgba(78,205,196,.30) 0%,transparent 70%),
-  radial-gradient(ellipse 50% 60% at 84% 74%,rgba(168,230,163,.24) 0%,transparent 60%),
-  radial-gradient(ellipse 36% 36% at 50% 92%,rgba(255,225,122,.18) 0%,transparent 52%),
-  var(--paper)}
+/* ── Chapter 1: The Morning — bold golden sunrise, light shafts through mangroves ── */
+.wc-s5a{background:
+  radial-gradient(ellipse 80% 65% at 88% 6%,  rgba(255,220,60,.90) 0%,rgba(255,190,40,.50) 35%,transparent 68%),
+  radial-gradient(ellipse 60% 70% at 12% 52%, rgba(78,205,196,.60) 0%,transparent 70%),
+  radial-gradient(ellipse 50% 42% at 58% 26%, rgba(255,170,50,.45) 0%,transparent 55%),
+  radial-gradient(ellipse 70% 48% at 50% 100%,rgba(78,205,196,.50) 0%,transparent 65%),
+  var(--paper);
+  animation:morningGlow 7s ease-in-out infinite}
+@keyframes morningGlow{
+  0%,100%{filter:brightness(1.0) saturate(1.0)}
+  45%    {filter:brightness(1.22) saturate(1.35)}
+  75%    {filter:brightness(0.93) saturate(0.85)}}
+.wc-s5a::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(142deg,rgba(255,220,80,.55) 0%,rgba(255,180,40,.25) 28%,transparent 52%),
+    linear-gradient(152deg,rgba(255,200,60,.32) 6%,transparent 38%);
+  animation:morningShaft 5.5s ease-in-out infinite}
+@keyframes morningShaft{
+  0%,100%{opacity:.35;transform:translateX(0)   scaleX(1)}
+  50%    {opacity:1.0; transform:translateX(24px) scaleX(1.06)}}
+
+/* ── Chapter 2: The Rumour — uneasy shift warm↔cool, surface disturbed ── */
+.wc-s5b{background:
+  radial-gradient(ellipse 62% 58% at 74% 22%, rgba(78,205,196,.62) 0%,transparent 65%),
+  radial-gradient(ellipse 58% 68% at 18% 62%, rgba(255,225,122,.55) 0%,transparent 65%),
+  radial-gradient(ellipse 46% 36% at 50% 90%, rgba(168,230,163,.40) 0%,transparent 55%),
+  var(--paper);
+  animation:rumourShift 8s ease-in-out infinite}
+@keyframes rumourShift{
+  0%,100%{filter:brightness(1.0) hue-rotate(0deg)   saturate(1.0)}
+  35%    {filter:brightness(0.88) hue-rotate(-28deg)  saturate(0.65)}
+  68%    {filter:brightness(1.12) hue-rotate(18deg)   saturate(1.30)}}
+.wc-s5b::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 75% 65% at 50% 42%,rgba(255,140,140,.42) 0%,transparent 62%);
+  animation:rumourUnsettled 5.5s ease-in-out 0.6s infinite}
+@keyframes rumourUnsettled{
+  0%,100%{opacity:0;  transform:scale(1)}
+  40%,60%{opacity:1;  transform:scale(1.10)}}
+
+/* ── Chapter 3: The Change — murkiness floods in, colour drains away ── */
+.wc-s5c{background:
+  radial-gradient(ellipse 78% 68% at 28% 44%, rgba(78,205,196,.50) 0%,transparent 70%),
+  radial-gradient(ellipse 58% 58% at 80% 74%, rgba(168,230,163,.42) 0%,transparent 62%),
+  radial-gradient(ellipse 90% 44% at 50% 100%,rgba(26,107,96,.48) 0%,transparent 62%),
+  var(--paper);
+  animation:changeCloud 7s ease-in-out infinite}
+@keyframes changeCloud{
+  0%,100%{filter:brightness(1.0) saturate(1.0)}
+  42%    {filter:brightness(0.74) saturate(0.22)}
+  70%    {filter:brightness(0.84) saturate(0.45)}}
+.wc-s5c::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 85% 85% at 50% 50%,rgba(160,175,160,.45) 0%,transparent 68%);
+  animation:changeMurk 7s ease-in-out infinite}
+@keyframes changeMurk{
+  0%,100%{opacity:0}
+  40%,70%{opacity:1}}
+
+/* ── Chapter 4: The Question — two truths split the screen, warm vs cool ── */
+.wc-s5d{background:
+  radial-gradient(ellipse 62% 82% at 4%  50%,rgba(255,220,60,.65) 0%,transparent 65%),
+  radial-gradient(ellipse 62% 82% at 96% 50%,rgba(78,205,196,.65) 0%,transparent 65%),
+  radial-gradient(ellipse 42% 30% at 50% 4%, rgba(255,160,80,.32) 0%,transparent 55%),
+  radial-gradient(ellipse 68% 36% at 50% 100%,rgba(26,107,96,.42) 0%,transparent 62%),
+  var(--paper);
+  animation:questionBreath 9s ease-in-out infinite}
+@keyframes questionBreath{
+  0%,100%{filter:brightness(1.0)}
+  30%    {filter:brightness(0.84)}
+  65%    {filter:brightness(1.14)}}
+.wc-s5d::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(255,210,60,.28) 0%,transparent 42%),
+    linear-gradient(-90deg,rgba(78,205,196,.28) 0%,transparent 42%);
+  animation:questionSides 7s ease-in-out infinite}
+@keyframes questionSides{
+  0%,100%{opacity:0.3;transform:scaleX(1)}
+  50%    {opacity:1.0;transform:scaleX(1.14)}}
+
+/* ── Chapter 5: The Water Remembers — rich teal surges, memory pulses ── */
+.wc-s5e{background:
+  radial-gradient(ellipse 72% 62% at 50% 22%, rgba(78,205,196,.72) 0%,transparent 70%),
+  radial-gradient(ellipse 52% 68% at 10% 72%, rgba(168,230,163,.55) 0%,transparent 62%),
+  radial-gradient(ellipse 44% 44% at 88% 58%, rgba(255,225,100,.40) 0%,transparent 55%),
+  radial-gradient(ellipse 78% 42% at 50% 100%,rgba(26,107,96,.58) 0%,transparent 65%),
+  var(--paper);
+  animation:waterMemory 7s ease-in-out infinite}
+@keyframes waterMemory{
+  0%,100%{filter:brightness(1.0) saturate(1.0)}
+  28%    {filter:brightness(1.18) saturate(1.32)}
+  62%    {filter:brightness(0.88) saturate(0.78)}}
+.wc-s5e::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 88% 72% at 50% 62%,rgba(78,205,196,.38) 0%,transparent 72%);
+  animation:waterPulse 5.5s ease-in-out 0.8s infinite}
+@keyframes waterPulse{
+  0%,100%{opacity:0.15;transform:scale(1)}
+  50%    {opacity:1.0; transform:scale(1.18)}}
+
+/* Ambient floating particles spawned by JS on story screens */
+@keyframes ambientFloat{
+  0%  {opacity:0;transform:translateY(0) translateX(0) rotate(var(--r0,0deg))}
+  12% {opacity:var(--mop,.22)}
+  80% {opacity:var(--mop,.22)}
+  100%{opacity:0;transform:translateY(var(--rise,-70px)) translateX(var(--sway,10px)) rotate(var(--r1,15deg))}
+}
+.ambient-shape{
+  position:absolute;pointer-events:none;z-index:0;
+  animation:ambientFloat var(--dur,9s) ease-in-out forwards}
 .wc-s6{background:
   radial-gradient(ellipse 80% 60% at 50% 26%,rgba(78,205,196,.24) 0%,transparent 70%),
   radial-gradient(ellipse 60% 80% at 26% 74%,rgba(26,107,96,.20) 0%,transparent 60%),
   radial-gradient(ellipse 40% 40% at 82% 58%,rgba(255,225,122,.16) 0%,transparent 50%),
   var(--paper)}
 
-/* ══ FLOATING PAPER CUT-OUTS (decorative) ══ */
+/* ══ FLOATING PAPER CUT-OUTS ══ */
 .cut{position:absolute;pointer-events:none;border-radius:2px}
-/* S1 decorative shapes */
-#s1 .cut-1{width:90px;height:90px;background:rgba(78,205,196,.22);
-  top:8%;right:6%;transform:rotate(14deg);border-radius:50%;
-  box-shadow:3px 3px 0 rgba(0,0,0,.08)}
-#s1 .cut-2{width:60px;height:60px;background:rgba(255,179,179,.30);
-  bottom:12%;left:5%;transform:rotate(-18deg);
-  clip-path:polygon(50% 0%,100% 100%,0% 100%);
-  box-shadow:3px 3px 0 rgba(0,0,0,.08)}
-#s1 .cut-3{width:44px;height:44px;background:rgba(168,230,163,.35);
-  top:22%;left:8%;transform:rotate(7deg);
-  box-shadow:2px 2px 0 rgba(0,0,0,.08)}
-#s1 .cut-4{width:28px;height:28px;background:rgba(255,225,122,.5);
-  top:60%;right:10%;transform:rotate(-12deg);border-radius:50%;
-  box-shadow:2px 2px 0 rgba(0,0,0,.1)}
-#s1 .cut-5{width:70px;height:18px;background:rgba(78,205,196,.20);
-  bottom:24%;right:4%;transform:rotate(22deg);border-radius:4px}
-
+/* S1 */
+#s1 .cut-1{width:90px;height:90px;background:rgba(78,205,196,.22);top:8%;right:6%;transform:rotate(14deg);border-radius:50%;box-shadow:3px 3px 0 rgba(0,0,0,.08)}
+#s1 .cut-2{width:60px;height:60px;background:rgba(255,179,179,.30);bottom:12%;left:5%;transform:rotate(-18deg);clip-path:polygon(50% 0%,100% 100%,0% 100%);box-shadow:3px 3px 0 rgba(0,0,0,.08)}
+#s1 .cut-3{width:44px;height:44px;background:rgba(168,230,163,.35);top:22%;left:8%;transform:rotate(7deg);box-shadow:2px 2px 0 rgba(0,0,0,.08)}
+#s1 .cut-4{width:28px;height:28px;background:rgba(255,225,122,.5);top:60%;right:10%;transform:rotate(-12deg);border-radius:50%;box-shadow:2px 2px 0 rgba(0,0,0,.1)}
+#s1 .cut-5{width:70px;height:18px;background:rgba(78,205,196,.20);bottom:24%;right:4%;transform:rotate(22deg);border-radius:4px}
 /* S2 */
-#s2 .cut-1{width:50px;height:50px;background:rgba(255,225,122,.30);
-  top:10%;left:5%;transform:rotate(-10deg);border-radius:50%}
-#s2 .cut-2{width:36px;height:36px;background:rgba(78,205,196,.25);
-  bottom:15%;right:6%;transform:rotate(20deg)}
-#s2 .cut-3{width:24px;height:60px;background:rgba(255,179,179,.25);
-  top:50%;left:3%;transform:rotate(-5deg);border-radius:2px}
-
+#s2 .cut-1{width:50px;height:50px;background:rgba(255,225,122,.30);top:10%;left:5%;transform:rotate(-10deg);border-radius:50%}
+#s2 .cut-2{width:36px;height:36px;background:rgba(78,205,196,.25);bottom:15%;right:6%;transform:rotate(20deg)}
+#s2 .cut-3{width:24px;height:60px;background:rgba(255,179,179,.25);top:50%;left:3%;transform:rotate(-5deg);border-radius:2px}
 /* S3 */
-#s3 .cut-1{width:55px;height:55px;background:rgba(168,230,163,.28);
-  top:12%;right:7%;transform:rotate(16deg);border-radius:50%}
-#s3 .cut-2{width:38px;height:38px;background:rgba(255,225,122,.35);
-  bottom:18%;left:6%;transform:rotate(-22deg);
-  clip-path:polygon(50% 0%,100% 100%,0% 100%)}
-#s3 .cut-3{width:24px;height:24px;background:rgba(78,205,196,.25);
-  top:45%;left:4%;transform:rotate(8deg);border-radius:50%}
-
+#s3 .cut-1{width:55px;height:55px;background:rgba(168,230,163,.28);top:12%;right:7%;transform:rotate(16deg);border-radius:50%}
+#s3 .cut-2{width:38px;height:38px;background:rgba(255,225,122,.35);bottom:18%;left:6%;transform:rotate(-22deg);clip-path:polygon(50% 0%,100% 100%,0% 100%)}
+#s3 .cut-3{width:24px;height:24px;background:rgba(78,205,196,.25);top:45%;left:4%;transform:rotate(8deg);border-radius:50%}
 /* S4 */
-#s4 .cut-1{width:46px;height:46px;background:rgba(255,179,179,.28);
-  top:8%;left:4%;transform:rotate(-14deg);border-radius:50%}
-#s4 .cut-2{width:34px;height:34px;background:rgba(78,205,196,.22);
-  bottom:10%;right:5%;transform:rotate(18deg)}
-#s4 .cut-3{width:22px;height:55px;background:rgba(255,225,122,.30);
-  top:40%;right:3%;transform:rotate(-8deg);border-radius:3px}
-#s4 .cut-4{width:18px;height:18px;background:rgba(168,230,163,.4);
-  bottom:30%;left:4%;transform:rotate(5deg);border-radius:50%}
-
-/* S5 */
-#s5 .cut-1{width:40px;height:40px;background:rgba(78,205,196,.18);
-  top:8%;right:5%;transform:rotate(20deg);border-radius:50%}
-#s5 .cut-2{width:28px;height:28px;background:rgba(255,225,122,.28);
-  bottom:8%;left:5%;transform:rotate(-15deg)}
-
+#s4 .cut-1{width:46px;height:46px;background:rgba(255,179,179,.28);top:8%;left:4%;transform:rotate(-14deg);border-radius:50%}
+#s4 .cut-2{width:34px;height:34px;background:rgba(78,205,196,.22);bottom:10%;right:5%;transform:rotate(18deg)}
+#s4 .cut-3{width:22px;height:55px;background:rgba(255,225,122,.30);top:40%;right:3%;transform:rotate(-8deg);border-radius:3px}
+#s4 .cut-4{width:18px;height:18px;background:rgba(168,230,163,.4);bottom:30%;left:4%;transform:rotate(5deg);border-radius:50%}
+/* Story screens S5a–S5e — shared decorative pattern */
+@keyframes cutSway{
+  0%,100%{transform:rotate(20deg) translateY(0px)}
+  40%    {transform:rotate(24deg) translateY(-8px)}
+  70%    {transform:rotate(17deg) translateY(3px)}
+}
+@keyframes cutSway2{
+  0%,100%{transform:rotate(-15deg) translateY(0px)}
+  35%    {transform:rotate(-20deg) translateY(-6px)}
+  68%    {transform:rotate(-11deg) translateY(4px)}
+}
+#s5a .cut-1,#s5b .cut-1,#s5c .cut-1,#s5d .cut-1,#s5e .cut-1{
+  width:40px;height:40px;background:rgba(78,205,196,.18);
+  top:8%;right:5%;border-radius:50%;
+  animation:cutSway 7s ease-in-out infinite}
+#s5a .cut-2,#s5b .cut-2,#s5c .cut-2,#s5d .cut-2,#s5e .cut-2{
+  width:28px;height:28px;background:rgba(255,225,122,.28);
+  bottom:8%;left:5%;
+  animation:cutSway2 9s ease-in-out 1.4s infinite}
 /* S6 */
-#s6 .cut-1{width:50px;height:50px;background:rgba(78,205,196,.20);
-  top:10%;right:4%;transform:rotate(12deg);border-radius:50%}
-#s6 .cut-2{width:32px;height:32px;background:rgba(255,225,122,.28);
-  bottom:12%;left:4%;transform:rotate(-18deg);
-  clip-path:polygon(50% 0%,100% 100%,0% 100%)}
-#s6 .cut-3{width:22px;height:56px;background:rgba(255,179,179,.22);
-  top:50%;right:3%;transform:rotate(6deg);border-radius:3px}
+#s6 .cut-1{width:50px;height:50px;background:rgba(78,205,196,.20);top:10%;right:4%;transform:rotate(12deg);border-radius:50%}
+#s6 .cut-2{width:32px;height:32px;background:rgba(255,225,122,.28);bottom:12%;left:4%;transform:rotate(-18deg);clip-path:polygon(50% 0%,100% 100%,0% 100%)}
+#s6 .cut-3{width:22px;height:56px;background:rgba(255,179,179,.22);top:50%;right:3%;transform:rotate(6deg);border-radius:3px}
 
 /* ══ TAGS ══ */
 .paper-tag{
@@ -195,25 +286,272 @@ body::before{
 .crayon-btn.full {width:100%;text-align:left}
 
 /* ══════════ SCREEN 1 — SPLASH ══════════ */
+@keyframes s1FadeInUp{
+  from{opacity:0;transform:translateY(28px)}
+  to  {opacity:1;transform:translateY(0)}
+}
 .main-title{
-  font-size:clamp(2.8rem,8.5vw,6.5rem);font-weight:700;
-  color:var(--ink);text-align:center;line-height:1.05;
-  text-shadow:3px 3px 0 rgba(78,205,196,.5),6px 6px 0 rgba(78,205,196,.15);
-  margin-bottom:.5rem;position:relative;z-index:1;
+  font-family:'Itim',cursive;
+  font-size:clamp(2.6rem,8vw,5.8rem);font-weight:400;
+  color:var(--ink);text-align:center;line-height:1.1;
+  text-shadow:3px 3px 0 rgba(78,205,196,.45),6px 6px 0 rgba(78,205,196,.12);
+  margin-bottom:.5rem;position:relative;z-index:2;
+  animation:s1FadeInUp 1.2s cubic-bezier(.22,1,.36,1) both;
+}
+.s1-invite{
+  font-family:'Itim',cursive;font-size:1.2rem;
+  color:#4a6670;font-style:italic;text-align:center;
+  margin-bottom:1.6rem;position:relative;z-index:2;
+  animation:s1FadeInUp 1.2s cubic-bezier(.22,1,.36,1) .4s both;
 }
 .subtitle{
-  font-size:1.5rem;color:#4a6670;text-align:center;
-  margin-bottom:1.8rem;font-style:italic;position:relative;z-index:1;
+  font-size:1.4rem;color:#4a6670;text-align:center;
+  margin-bottom:1.4rem;font-style:italic;position:relative;z-index:2;
 }
 .tags-row{
-  display:flex;gap:1rem;flex-wrap:wrap;
-  justify-content:center;margin-bottom:2rem;position:relative;z-index:1;
+  display:flex;gap:.8rem;flex-wrap:wrap;
+  justify-content:center;margin-bottom:1.8rem;position:relative;z-index:2;
 }
 .stamp{
-  margin-top:1.5rem;font-size:1rem;color:#999;
+  margin-top:1.2rem;font-size:.95rem;color:#999;
   border:2px dashed #ccc;padding:.3rem .9rem;
   border-radius:4px;transform:rotate(-2.5deg);
-  display:inline-block;opacity:.7;position:relative;z-index:1;
+  display:inline-block;opacity:.7;position:relative;z-index:2;
+}
+/* S1 ocean scene */
+#s1{overflow:hidden}
+.s1-body{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  padding:6vh 1.5rem 3rem;width:100%;
+  min-height:56%;
+}
+.s1-ocean{
+  position:absolute;bottom:0;left:0;right:0;height:44%;
+  background:linear-gradient(
+    to bottom,
+    rgba(78,205,196,.55) 0%,
+    rgba(78,205,196,.72) 25%,
+    rgba(26,107,96,.75) 60%,
+    rgba(20,85,75,.85) 100%
+  );
+  z-index:1;overflow:hidden;
+}
+/* Wave surface ripple */
+.s1-wave{
+  position:absolute;top:-6px;left:0;right:0;height:14px;
+  background:rgba(255,255,255,.22);
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  animation:s1WaveRipple 4.2s ease-in-out infinite;
+}
+.s1-wave-2{
+  position:absolute;top:-3px;left:0;right:0;height:8px;
+  background:rgba(255,255,255,.12);
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  animation:s1WaveRipple 5.8s ease-in-out 1.1s infinite;
+}
+@keyframes s1WaveRipple{
+  0%,100%{transform:scaleX(1) translateY(0)}
+  50%    {transform:scaleX(1.04) translateY(-3px)}
+}
+/* Mangrove roots */
+.s1-roots{
+  position:absolute;bottom:0;left:0;right:0;height:100%;
+  pointer-events:none;
+}
+.s1-root{
+  position:absolute;bottom:0;
+  background:rgba(26,107,96,.65);
+  border-radius:3px 3px 0 0;
+  transform-origin:bottom center;
+  animation:s1RootSway 6s ease-in-out infinite;
+}
+.s1-root:nth-child(1){left:3%;  width:10px;height:72%;animation-delay:0s;   animation-duration:5.6s}
+.s1-root:nth-child(2){left:6%;  width:7px; height:50%;animation-delay:1.2s; animation-duration:7.2s}
+.s1-root:nth-child(3){left:10%; width:12px;height:82%;animation-delay:.5s;  animation-duration:6.4s}
+.s1-root:nth-child(4){left:14%; width:6px; height:38%;animation-delay:2.1s; animation-duration:8s}
+.s1-root:nth-child(5){right:4%; width:10px;height:70%;animation-delay:.8s;  animation-duration:6s}
+.s1-root:nth-child(6){right:8%; width:8px; height:55%;animation-delay:1.6s; animation-duration:7s}
+.s1-root:nth-child(7){right:13%;width:6px; height:40%;animation-delay:3s;   animation-duration:9s}
+.s1-root::before{
+  content:'';position:absolute;
+  top:10%;left:100%;
+  width:140%;height:60%;
+  background:inherit;border-radius:0 3px 3px 0;
+  transform-origin:left top;transform:rotate(22deg);
+}
+.s1-root::after{
+  content:'';position:absolute;
+  top:18%;right:100%;
+  width:110%;height:50%;
+  background:inherit;border-radius:3px 0 0 3px;
+  transform-origin:right top;transform:rotate(-18deg);
+}
+@keyframes s1RootSway{
+  0%,100%{transform:rotate(0deg)}
+  40%    {transform:rotate(2.5deg)}
+  70%    {transform:rotate(-2deg)}
+}
+/* ── Thai Longtail Boat (เรือหางยาว) — CSS-drawn ── */
+.s1-thai-boat{
+  position:absolute;
+  bottom:calc(44% + 2px);
+  left:26%;
+  width:200px;height:58px;
+  z-index:4;
+  transform-origin:50% 100%;
+  animation:thaiBoatFloat 5.6s cubic-bezier(.37,0,.63,1) infinite,
+            thaiBoatDrift 32s ease-in-out infinite;
+  filter:drop-shadow(0 7px 12px rgba(0,0,0,.22));
+}
+
+/* === Hull === */
+.sboat-hull{
+  position:absolute;
+  bottom:8px;left:52px;
+  width:136px;height:28px;
+  background:linear-gradient(175deg,#C8965A 0%,#A07038 45%,#7A4E20 100%);
+  border-radius:4px 5px 14px 14px;
+}
+/* Bow tip — pointed right */
+.sboat-hull::after{
+  content:'';position:absolute;
+  right:-15px;top:5px;
+  border-left:17px solid #905A28;
+  border-top:9px solid transparent;
+  border-bottom:14px solid transparent;
+}
+/* Gunwale highlight */
+.sboat-hull::before{
+  content:'';position:absolute;
+  top:3px;left:6px;right:6px;height:3px;
+  background:rgba(255,255,255,.18);
+  border-radius:2px;
+}
+
+/* === Stern upturn === */
+.sboat-stern{
+  position:absolute;
+  bottom:22px;left:46px;
+  width:26px;height:22px;
+  background:#A07038;
+  border-radius:10px 3px 3px 8px;
+  box-shadow:-2px -2px 0 #7A4E20;
+}
+
+/* === Interior deck strip === */
+.sboat-interior{
+  position:absolute;
+  bottom:35px;left:68px;
+  width:96px;height:7px;
+  background:linear-gradient(to right,#E8C080,#C89050,#A87030);
+  border-radius:2px;
+  opacity:.88;
+}
+
+/* === Engine housing === */
+.sboat-engine{
+  position:absolute;
+  bottom:35px;left:57px;
+  width:20px;height:14px;
+  background:#333;
+  border-radius:2px 2px 0 0;
+  box-shadow:2px 0 0 rgba(0,0,0,.35);
+}
+/* Exhaust pipe nub */
+.sboat-engine::after{
+  content:'';position:absolute;
+  top:-4px;right:3px;
+  width:5px;height:5px;
+  background:#222;
+  border-radius:50% 50% 0 0;
+}
+
+/* === Long tail shaft === */
+.sboat-shaft{
+  position:absolute;
+  bottom:39px;left:8px;
+  width:54px;height:3px;
+  background:#6A3E18;
+  transform:rotate(20deg);
+  transform-origin:right center;
+  border-radius:2px 0 0 2px;
+}
+/* Propeller blades */
+.sboat-shaft::before{
+  content:'';position:absolute;
+  left:-1px;top:-5px;
+  width:3px;height:13px;
+  background:rgba(100,60,20,.72);
+  border-radius:3px;
+}
+.sboat-shaft::after{
+  content:'';position:absolute;
+  left:-4px;top:-1px;
+  width:9px;height:4px;
+  background:rgba(100,60,20,.55);
+  border-radius:50%;
+}
+
+/* === Water reflection under hull === */
+.sboat-reflection{
+  position:absolute;
+  bottom:2px;left:52px;
+  width:136px;height:6px;
+  background:linear-gradient(to bottom,rgba(78,205,196,.28),transparent);
+  border-radius:50%;
+  transform:scaleY(.6);
+}
+
+/* ── Physics animations ── */
+/* Heave + pitch: realistic wave response
+   Pitch leads heave by 90° — bow rises before crest, dips before trough */
+@keyframes thaiBoatFloat{
+  0%   {transform:translateY(0px)  rotate(1.6deg)}   /* rising, bow up */
+  25%  {transform:translateY(-9px) rotate(0deg)}     /* crest, level */
+  50%  {transform:translateY(0px)  rotate(-1.6deg)}  /* descending, bow down */
+  75%  {transform:translateY(6px)  rotate(0deg)}     /* trough, level */
+  100% {transform:translateY(0px)  rotate(1.6deg)}   /* back to rising */
+}
+/* Slow current drift — gentle horizontal wander */
+@keyframes thaiBoatDrift{
+  0%,100%{left:26%}
+  38%    {left:29%}
+  72%    {left:23%}
+}
+/* Fish in the water — parallax depth */
+.s1-fish{
+  position:absolute;
+  animation:s1FishSwim linear infinite;
+}
+.s1-fish:nth-child(1){
+  top:26%;font-size:.95rem;animation-duration:9s;animation-delay:0s;
+  filter:drop-shadow(1px 1px 0 rgba(0,0,0,.08)) brightness(1.0);
+}
+.s1-fish:nth-child(2){
+  top:50%;font-size:1.35rem;animation-duration:15s;animation-delay:-5s;
+  filter:drop-shadow(1px 1px 0 rgba(0,0,0,.12)) brightness(0.80) saturate(.9);
+}
+.s1-fish:nth-child(3){
+  top:72%;font-size:1.65rem;animation-duration:22s;animation-delay:-11s;
+  filter:drop-shadow(1px 1px 0 rgba(0,0,0,.18)) brightness(0.58) saturate(.75);
+}
+@keyframes s1FishSwim{
+  0%  {transform:translateX(-100px) scaleX(-1);opacity:0}
+  5%  {opacity:1}
+  95% {opacity:1}
+  100%{transform:translateX(calc(100vw + 100px)) scaleX(-1);opacity:0}
+}
+/* Ocean shimmer overlay */
+.s1-ocean::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.13) 50%,transparent 100%);
+  background-size:200% 100%;
+  animation:oceanShimmer 5s linear infinite;
+}
+@keyframes oceanShimmer{
+  0%  {background-position:200% 0}
+  100%{background-position:-200% 0}
 }
 
 /* ══════════ SCREEN 2 — LANGUAGE ══════════ */
@@ -296,15 +634,27 @@ body::before{
 .creature-label{font-size:1.28rem;margin-top:.38rem}
 #confirmCreature{display:none;margin-top:1.3rem;position:relative;z-index:1}
 
-/* ══════════ SCREEN 5 — STORY ══════════ */
-#s5{gap:0;padding-top:1.8rem;align-items:center}
+/* ══════════ STORY SCREENS S5a–S5e ══════════ */
+.story-screen{gap:0;padding-top:1.8rem;align-items:center}
 
+/* Chapter progress dots */
+.ch-progress{display:flex;gap:.6rem;justify-content:center;margin-bottom:.6rem;position:relative;z-index:1}
+.ch-dot{width:14px;height:14px;border:2px solid var(--ink);border-radius:2px;background:transparent;transform:rotate(45deg)}
+.ch-dot.done{background:var(--ink)}
+
+@keyframes slideInLeft{
+  from{transform:rotate(-1deg) translateX(-60px);opacity:0}
+  to  {transform:rotate(-1deg) translateX(0);      opacity:1}
+}
+.chapter-strip.strip-enter{
+  animation:slideInLeft .5s cubic-bezier(.22,1,.36,1) both;
+}
 .chapter-strip{
-  background:var(--teal);color:var(--ink);font-weight:700;font-size:1.35rem;
+  background:var(--teal);color:var(--ink);font-weight:700;font-size:1.55rem;
+  letter-spacing:.04em;
   padding:.5rem 2rem 1.5rem;display:inline-block;align-self:flex-start;
   transform:rotate(-1deg);box-shadow:4px 4px 0 rgba(0,0,0,.14);
   position:relative;z-index:2;
-  /* torn bottom edge */
   clip-path:polygon(
     0% 0%,100% 0%,100% 65%,
     98% 100%,95% 68%,92% 100%,89% 70%,86% 100%,83% 68%,80% 100%,
@@ -316,18 +666,18 @@ body::before{
 }
 
 .story-box{
-  background:#fff;border:2.5px solid var(--ink);
+  background:rgba(253,248,238,.96);border:2.5px solid rgba(45,55,72,.45);
   border-radius:4px 4px 0 0;border-bottom:none;
   padding:1.5rem 1.6rem 1.8rem;max-width:660px;width:100%;
   height:clamp(190px,36vh,300px);overflow-y:auto;
-  box-shadow:var(--shadow);font-size:1.3rem;line-height:1.78;color:var(--ink);
+  box-shadow:var(--shadow),inset 0 0 24px rgba(78,205,196,.07);
+  font-size:1.3rem;line-height:1.92;color:var(--ink);
   position:relative;z-index:1;
 }
 
-/* Torn edge strip connecting story-box to choices card */
 .story-torn{
   max-width:660px;width:100%;height:28px;
-  background:#fff;
+  background:rgb(253,248,238);
   clip-path:polygon(
     0% 0%,2% 100%,4% 10%,6% 95%,8% 5%,10% 100%,12% 8%,14% 90%,
     16% 0%,18% 100%,20% 12%,22% 88%,24% 2%,26% 100%,28% 10%,30% 92%,
@@ -342,7 +692,6 @@ body::before{
   box-shadow:4px 0 0 rgba(0,0,0,.04),-4px 0 0 rgba(0,0,0,.04);
 }
 
-/* Word-by-word typewriter with wobble */
 .word-span{
   display:inline;opacity:0;
   animation:wordAppear .22s ease forwards;
@@ -354,7 +703,6 @@ body::before{
   100%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}
 }
 
-/* Choices card — torn top edge */
 .choices-card{
   background:var(--sand);border:2.5px solid var(--ink);border-top:none;
   padding:1.4rem 1.2rem 1.2rem;max-width:660px;width:100%;
@@ -362,6 +710,8 @@ body::before{
   display:flex;flex-direction:column;gap:.9rem;
   position:relative;z-index:1;
 }
+.choice-prompt{font-size:1.3rem;font-weight:600;color:var(--ink)}
+.ch-choice-a,.ch-choice-b{font-weight:700}
 .skip-link{
   font-size:1rem;color:#aaa;text-align:right;cursor:pointer;
   text-decoration:underline dotted;margin-bottom:.2rem;
@@ -383,15 +733,11 @@ body::before{
   margin-bottom:.9rem;position:relative;z-index:1;
 }
 .result-card.splat-in{animation:splat .55s cubic-bezier(.34,1.56,.64,1) forwards}
-
-/* Bowl wrapper */
 .bowl-wrap{position:relative;width:min(400px,90vw);z-index:1}
 .bowl-counter{
   text-align:center;font-size:1.28rem;color:var(--ink);margin-bottom:.4rem;
   letter-spacing:.02em;
 }
-
-/* The bowl itself */
 .bowl{
   width:100%;height:clamp(210px,33vw,280px);
   background:linear-gradient(180deg,#c4eeed 0%,#4ECDC4 30%,#2a9d8f 62%,#1a6b60 100%);
@@ -399,20 +745,17 @@ body::before{
   position:relative;overflow:hidden;
   box-shadow:var(--shadow);filter:url(#crayonBowl);
 }
-/* Glass shine */
 .bowl-shine{
   position:absolute;top:10px;left:12px;width:34%;height:20%;
   background:radial-gradient(ellipse,rgba(255,255,255,.52) 0%,transparent 72%);
   border-radius:50%;pointer-events:none;z-index:10;
 }
-/* Sandy bottom */
 .bowl-sand{
   position:absolute;bottom:0;left:0;right:0;height:22px;
   background:linear-gradient(180deg,#c4a06a 0%,#a07040 100%);
   border-top:2px dotted rgba(180,130,70,.5);
   z-index:7;pointer-events:none;
 }
-/* Subtle wave line */
 .bowl-wave{
   position:absolute;top:18px;left:0;right:0;height:10px;
   background:repeating-linear-gradient(
@@ -423,8 +766,6 @@ body::before{
   animation:waveMove 4s linear infinite;z-index:8;pointer-events:none;
 }
 @keyframes waveMove{from{background-position:0 0}to{background-position:72px 0}}
-
-/* Fish entities */
 .fish-entity{
   position:absolute;display:flex;flex-direction:column;align-items:center;
   transform:translate(-50%,-50%);pointer-events:none;z-index:5;
@@ -437,12 +778,10 @@ body::before{
 }
 .fish-emoji{
   font-size:1.7rem;display:block;line-height:1;
-  transition:transform .28s ease; /* smooth direction flip */
+  transition:transform .28s ease;
 }
 .user-fish .fish-emoji{font-size:2.4rem}
 .user-fish .fish-name{font-weight:700;background:var(--sand);border:1px solid rgba(0,0,0,.1)}
-
-/* Bubbles */
 .bubble{
   position:absolute;border-radius:50%;bottom:22px;
   background:rgba(255,255,255,.3);border:1.5px solid rgba(255,255,255,.65);
@@ -450,13 +789,11 @@ body::before{
   animation:bubUp var(--dur,3s) ease-out forwards;
 }
 @keyframes bubUp{
-  0%  {transform:translateY(0)translateX(0);opacity:.75}
-  35% {transform:translateY(-30%)translateX(4px);opacity:.6}
-  68% {transform:translateY(-68%)translateX(-4px);opacity:.35}
-  100%{transform:translateY(-108%)translateX(2px);opacity:0}
+  0%  {transform:translateY(0px)    translateX(0px); opacity:.75}
+  35% {transform:translateY(-65px)  translateX(5px); opacity:.6}
+  68% {transform:translateY(-145px) translateX(-5px);opacity:.35}
+  100%{transform:translateY(-220px) translateX(3px); opacity:0}
 }
-
-/* Bowl footer */
 .bowl-note{
   font-size:1rem;color:#aaa;font-style:italic;
   text-align:center;margin-top:.5rem;max-width:400px;
@@ -464,6 +801,87 @@ body::before{
 .bowl-actions{
   display:flex;gap:1rem;flex-wrap:wrap;
   justify-content:center;margin-top:.9rem;position:relative;z-index:1;
+}
+
+/* ══ SEA ART — paper-cut ocean decorations on story screens ══ */
+.sea-art{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+
+@keyframes grassSway{
+  0%,100%{transform:rotate(-8deg) scaleY(1)}
+  50%    {transform:rotate(8deg)  scaleY(.97)}
+}
+@keyframes coralBob{
+  0%,100%{transform:scale(1)    rotate(-3deg) translateY(0)}
+  50%    {transform:scale(1.06) rotate( 3deg) translateY(-5px)}
+}
+@keyframes jellySway{
+  0%,100%{transform:translateY(0) rotate(-6deg)}
+  50%    {transform:translateY(-14px) rotate(6deg)}
+}
+@keyframes leafDrift{
+  0%,100%{transform:rotate(-12deg) translateX(0)}
+  50%    {transform:rotate(-4deg) translateX(8px)}
+}
+
+/* Seagrass cluster — left side */
+.sg-wrap{
+  position:absolute;bottom:4%;left:2%;
+  display:flex;align-items:flex-end;gap:5px;
+}
+.sea-grass{border-radius:3px 3px 0 0;transform-origin:bottom center}
+.sg-a{width:11px;height:90px;background:rgba(78,205,196,.72); animation:grassSway 3.6s ease-in-out infinite}
+.sg-b{width:13px;height:116px;background:rgba(168,230,163,.75);animation:grassSway 4.4s ease-in-out .85s infinite}
+.sg-c{width:9px; height:70px;background:rgba(78,205,196,.60); animation:grassSway 3.2s ease-in-out 1.6s infinite}
+.sg-d{width:12px;height:98px;background:rgba(168,230,163,.62);animation:grassSway 5.0s ease-in-out .4s  infinite}
+
+/* Coral blob — right side */
+.sea-coral{
+  position:absolute;bottom:4%;right:2%;
+  width:56px;height:64px;
+  background:rgba(255,179,179,.75);
+  border-radius:48% 52% 44% 56% / 58% 46% 54% 42%;
+  box-shadow:0 0 0 8px rgba(255,179,179,.26),0 0 0 16px rgba(255,179,179,.10);
+  animation:coralBob 4.8s ease-in-out infinite;
+}
+/* Smaller coral ear */
+.sea-coral::after{
+  content:'';position:absolute;
+  top:-20px;right:6px;
+  width:26px;height:34px;
+  background:rgba(255,179,179,.65);
+  border-radius:50% 50% 40% 40%;
+  animation:coralBob 3.9s ease-in-out .6s infinite;
+}
+
+/* Jellyfish — top right margin */
+.sea-jelly{
+  position:absolute;top:12%;right:4%;
+  width:48px;height:34px;
+  background:rgba(78,205,196,.50);
+  border-radius:50% 50% 0 0;
+  animation:jellySway 6s ease-in-out infinite;
+}
+.sea-jelly::after{
+  content:'';position:absolute;
+  top:100%;left:50%;transform:translateX(-50%);
+  width:2px;height:34px;
+  background:linear-gradient(rgba(78,205,196,.6),transparent);
+  box-shadow:-7px 0 0 rgba(78,205,196,.38),7px 0 0 rgba(78,205,196,.38);
+}
+
+/* Mangrove leaf — top left margin */
+.sea-leaf{
+  position:absolute;top:14%;left:3%;
+  width:34px;height:48px;
+  background:rgba(168,230,163,.70);
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform:rotate(-12deg);
+  animation:leafDrift 7s ease-in-out infinite;
+}
+
+@media(max-width:600px){
+  .sg-b{height:84px}.sg-d{display:none}
+  .sea-jelly,.sea-leaf{display:none}
 }
 
 /* ══ MOBILE ══ */
@@ -475,7 +893,7 @@ body::before{
   .screen{padding:1.2rem 1rem 2.5rem}
   .crayon-btn{font-size:1.2rem;padding:.55rem 1.2rem}
   .chapter-strip{font-size:1.1rem;align-self:center}
-  #s5{padding-top:1.2rem}
+  .story-screen{padding-top:1.2rem}
   .bowl-sand{height:16px}
 }
 @media(max-width:380px){
@@ -483,6 +901,31 @@ body::before{
   .creatures-grid{gap:.8rem}
   .creature-card{min-width:105px;padding:1rem 1.1rem}
 }
+
+/* ══ SURFACE OVERLAY — bowl arrival ══ */
+#surfaceOverlay{
+  position:fixed;inset:0;z-index:300;pointer-events:none;
+  background:rgba(78,205,196,.18);opacity:0;
+}
+@keyframes surfaceWash{
+  0%  {opacity:0}
+  38% {opacity:1}
+  100%{opacity:0}
+}
+#surfaceOverlay.surfacing{animation:surfaceWash 1.4s cubic-bezier(.4,0,.2,1) forwards}
+
+/* ══ AUDIO TOGGLE ══ */
+#audioToggle{
+  position:fixed;bottom:1.2rem;right:1.2rem;z-index:999;
+  background:rgba(255,255,255,.72);border:2px solid rgba(45,55,72,.25);
+  border-radius:50%;width:2.6rem;height:2.6rem;
+  font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  transition:background .2s,transform .15s;
+  backdrop-filter:blur(4px);
+}
+#audioToggle:hover{background:rgba(255,255,255,.92);transform:scale(1.1)}
 </style>
 </head>
 <body>
@@ -490,13 +933,11 @@ body::before{
 <!-- ══ SVG Filters ══ -->
 <svg width="0" height="0" style="position:absolute;overflow:hidden">
 <defs>
-  <!-- General crayon / hand-drawn border effect -->
   <filter id="crayon" x="-6%" y="-6%" width="112%" height="112%">
     <feTurbulence type="turbulence" baseFrequency=".058" numOctaves="3" seed="3" result="noise"/>
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6"
       xChannelSelector="R" yChannelSelector="G"/>
   </filter>
-  <!-- Slightly rougher for the bowl outline -->
   <filter id="crayonBowl" x="-3%" y="-3%" width="106%" height="106%">
     <feTurbulence type="turbulence" baseFrequency=".038" numOctaves="3" seed="9" result="noise"/>
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2"
@@ -505,27 +946,53 @@ body::before{
 </defs>
 </svg>
 
+<div id="surfaceOverlay"></div>
+<button id="audioToggle" onclick="toggleAudio()" title="Ocean ambience">🔇</button>
+
 <div id="app">
 
 <!-- ████ S1 — SPLASH ████ -->
-<div class="screen screen-center active" id="s1">
+<div class="screen active" id="s1" style="justify-content:flex-start;padding:0">
   <div class="wc-bg wc-s1"></div>
-  <!-- Floating paper cut-outs -->
   <div class="cut cut-1"></div>
-  <div class="cut cut-2"></div>
   <div class="cut cut-3"></div>
   <div class="cut cut-4"></div>
-  <div class="cut cut-5"></div>
-  <!-- Content -->
-  <h1 class="main-title">Water Colour<br>Exhibition</h1>
-  <p class="subtitle">an interactive story about what we stand to lose</p>
-  <div class="tags-row">
-    <div class="paper-tag" style="--rot:-3deg">🐠 Marine life</div>
-    <div class="paper-tag" style="--rot:5deg;background:var(--coral)">🌿 Mangroves</div>
-    <div class="paper-tag" style="--rot:-2deg;background:var(--green)">🏘️ Communities</div>
+
+  <!-- upper body — title + tags + CTA -->
+  <div class="s1-body">
+    <h1 class="main-title">ก่อนน้ำจะเปลี่ยนสี</h1>
+    <p class="s1-invite">The water is about to change colour.<br>Will you witness it?</p>
+    <button class="crayon-btn" onclick="btnClick(this,'s2')">Begin the story →</button>
+    <div class="stamp">★ prototype for team pitch</div>
   </div>
-  <button class="crayon-btn" onclick="btnClick(this,'s2')">Begin the story →</button>
-  <div class="stamp">★ prototype for team pitch</div>
+
+  <!-- ocean scene anchored to bottom -->
+  <div class="s1-ocean">
+    <div class="s1-wave"></div>
+    <div class="s1-wave-2"></div>
+    <div class="s1-roots">
+      <div class="s1-root"></div>
+      <div class="s1-root"></div>
+      <div class="s1-root"></div>
+      <div class="s1-root"></div>
+      <div class="s1-root"></div>
+      <div class="s1-root"></div>
+      <div class="s1-root"></div>
+    </div>
+    <div class="s1-fish">🐟</div>
+    <div class="s1-fish">🐠</div>
+    <div class="s1-fish">🐡</div>
+  </div>
+  <!-- characters sitting on the waterline -->
+  <!-- CSS-drawn Thai longtail boat (เรือหางยาว) -->
+  <div class="s1-thai-boat" aria-label="เรือหางยาว">
+    <div class="sboat-shaft"></div>
+    <div class="sboat-engine"></div>
+    <div class="sboat-stern"></div>
+    <div class="sboat-hull"></div>
+    <div class="sboat-interior"></div>
+    <div class="sboat-reflection"></div>
+  </div>
 </div>
 
 <!-- ████ S2 — LANGUAGE ████ -->
@@ -554,10 +1021,10 @@ body::before{
   <div class="cut cut-2"></div>
   <div class="cut cut-3"></div>
   <div class="name-card">
-    <p class="name-q">What is your name,<br>ocean wanderer? 🌊</p>
+    <p class="name-q" id="nameQ">What is your name,<br>ocean wanderer? 🌊</p>
     <input class="name-input" id="nameInput" type="text"
       placeholder="your name here…" maxlength="20" autocomplete="off"/>
-    <button class="crayon-btn" onclick="submitName()">Dive in →</button>
+    <button class="crayon-btn" id="nameDiveBtn" onclick="submitName()">Dive in →</button>
   </div>
 </div>
 
@@ -574,54 +1041,194 @@ body::before{
     <div class="p-dot done" title="Story setup"></div>
     <div class="p-dot" id="dot4" title="Creature"></div>
   </div>
-  <p class="screen-heading">Choose your sea creature</p>
+  <p class="screen-heading" id="s4Heading">Choose your sea creature</p>
   <div class="creatures-grid">
-    <div class="creature-card" onclick="pickCreature('🐠','Clownfish',this)">
+    <div class="creature-card" onclick="pickCreature('🐠',this)">
       <div class="creature-ring"></div>
       <span class="creature-emoji">🐠</span>
-      <span class="creature-label">Clownfish</span>
+      <span class="creature-label" data-en="Clownfish" data-th="ปลาการ์ตูน">Clownfish</span>
     </div>
-    <div class="creature-card" onclick="pickCreature('🐢','Sea Turtle',this)">
+    <div class="creature-card" onclick="pickCreature('🐢',this)">
       <div class="creature-ring"></div>
       <span class="creature-emoji">🐢</span>
-      <span class="creature-label">Sea Turtle</span>
+      <span class="creature-label" data-en="Sea Turtle" data-th="เต่าทะเล">Sea Turtle</span>
     </div>
-    <div class="creature-card" onclick="pickCreature('🐬','Dolphin',this)">
+    <div class="creature-card" onclick="pickCreature('🐬',this)">
       <div class="creature-ring"></div>
       <span class="creature-emoji">🐬</span>
-      <span class="creature-label">Dolphin</span>
+      <span class="creature-label" data-en="Dolphin" data-th="โลมา">Dolphin</span>
     </div>
-    <div class="creature-card" onclick="pickCreature('🦀','Crab',this)">
+    <div class="creature-card" onclick="pickCreature('🦀',this)">
       <div class="creature-ring"></div>
       <span class="creature-emoji">🦀</span>
-      <span class="creature-label">Crab</span>
-    </div>
-    <div class="creature-card" onclick="pickCreature('🪸','Coral',this)">
-      <div class="creature-ring"></div>
-      <span class="creature-emoji">🪸</span>
-      <span class="creature-label">Coral</span>
+      <span class="creature-label" data-en="Crab" data-th="ปูทะเล">Crab</span>
     </div>
   </div>
   <button class="crayon-btn teal" id="confirmCreature"
-    onclick="btnClick(this,'s5')">Continue →</button>
+    onclick="btnClick(this,'s5a')">Continue →</button>
 </div>
 
-<!-- ████ S5 — STORY ████ -->
-<div class="screen" id="s5">
-  <div class="wc-bg wc-s5"></div>
+<!-- ████ S5a — CHAPTER 1 (linear) ████ -->
+<div class="screen story-screen" id="s5a">
+  <div class="wc-bg wc-s5a"></div>
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
-  <div class="chapter-strip">CHAPTER 1 — THE WORLD BEFORE</div>
-  <div class="story-box" id="storyBox"></div>
-  <div class="story-torn" id="storyTorn" style="display:none"></div>
-  <div class="choices-card" id="choicesCard" style="display:none">
-    <div class="skip-link" id="skipLink" style="display:none" onclick="skipTyping()">skip ›</div>
-    <button class="crayon-btn full" onclick="pickChoice('A')">
-      🔍 I need to understand what this means…
-    </button>
-    <button class="crayon-btn coral full" onclick="pickChoice('B')">
-      😶 It's far away. It probably won't reach me…
-    </button>
+  <div class="sea-art" aria-hidden="true">
+    <div class="sg-wrap">
+      <div class="sea-grass sg-a"></div>
+      <div class="sea-grass sg-b"></div>
+      <div class="sea-grass sg-c"></div>
+      <div class="sea-grass sg-d"></div>
+    </div>
+    <div class="sea-coral"></div>
+    <div class="sea-jelly"></div>
+    <div class="sea-leaf"></div>
+  </div>
+  <div class="ch-progress">
+    <div class="ch-dot done"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-dot"></div>
+  </div>
+  <div class="chapter-strip"></div>
+  <div class="story-box"></div>
+  <div class="story-torn" style="display:none"></div>
+  <div class="choices-card" style="display:none">
+    <div class="skip-link" onclick="skipTyping()">skip ›</div>
+    <button class="crayon-btn teal full ch-continue"></button>
+  </div>
+</div>
+
+<!-- ████ S5b — CHAPTER 2 (choice A/B) ████ -->
+<div class="screen story-screen" id="s5b">
+  <div class="wc-bg wc-s5b"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="sea-art" aria-hidden="true">
+    <div class="sg-wrap">
+      <div class="sea-grass sg-a"></div>
+      <div class="sea-grass sg-b"></div>
+      <div class="sea-grass sg-c"></div>
+      <div class="sea-grass sg-d"></div>
+    </div>
+    <div class="sea-coral"></div>
+    <div class="sea-jelly"></div>
+    <div class="sea-leaf"></div>
+  </div>
+  <div class="ch-progress">
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-dot"></div>
+  </div>
+  <div class="chapter-strip"></div>
+  <div class="story-box"></div>
+  <div class="story-torn" style="display:none"></div>
+  <div class="choices-card" style="display:none">
+    <div class="skip-link" onclick="skipTyping()">skip ›</div>
+    <p class="choice-prompt"></p>
+    <button class="crayon-btn full ch-choice-a"></button>
+    <button class="crayon-btn coral full ch-choice-b"></button>
+  </div>
+</div>
+
+<!-- ████ S5c — CHAPTER 3 (linear, branched by choice2) ████ -->
+<div class="screen story-screen" id="s5c">
+  <div class="wc-bg wc-s5c"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="sea-art" aria-hidden="true">
+    <div class="sg-wrap">
+      <div class="sea-grass sg-a"></div>
+      <div class="sea-grass sg-b"></div>
+      <div class="sea-grass sg-c"></div>
+      <div class="sea-grass sg-d"></div>
+    </div>
+    <div class="sea-coral"></div>
+    <div class="sea-jelly"></div>
+    <div class="sea-leaf"></div>
+  </div>
+  <div class="ch-progress">
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-dot"></div>
+  </div>
+  <div class="chapter-strip"></div>
+  <div class="story-box"></div>
+  <div class="story-torn" style="display:none"></div>
+  <div class="choices-card" style="display:none">
+    <div class="skip-link" onclick="skipTyping()">skip ›</div>
+    <button class="crayon-btn teal full ch-continue"></button>
+  </div>
+</div>
+
+<!-- ████ S5d — CHAPTER 4 (choice A/B, paths converge) ████ -->
+<div class="screen story-screen" id="s5d">
+  <div class="wc-bg wc-s5d"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="sea-art" aria-hidden="true">
+    <div class="sg-wrap">
+      <div class="sea-grass sg-a"></div>
+      <div class="sea-grass sg-b"></div>
+      <div class="sea-grass sg-c"></div>
+      <div class="sea-grass sg-d"></div>
+    </div>
+    <div class="sea-coral"></div>
+    <div class="sea-jelly"></div>
+    <div class="sea-leaf"></div>
+  </div>
+  <div class="ch-progress">
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot"></div>
+  </div>
+  <div class="chapter-strip"></div>
+  <div class="story-box"></div>
+  <div class="story-torn" style="display:none"></div>
+  <div class="choices-card" style="display:none">
+    <div class="skip-link" onclick="skipTyping()">skip ›</div>
+    <p class="choice-prompt"></p>
+    <button class="crayon-btn full ch-choice-a"></button>
+    <button class="crayon-btn coral full ch-choice-b"></button>
+  </div>
+</div>
+
+<!-- ████ S5e — CHAPTER 5 (linear, branched by choice4) ████ -->
+<div class="screen story-screen" id="s5e">
+  <div class="wc-bg wc-s5e"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="sea-art" aria-hidden="true">
+    <div class="sg-wrap">
+      <div class="sea-grass sg-a"></div>
+      <div class="sea-grass sg-b"></div>
+      <div class="sea-grass sg-c"></div>
+      <div class="sea-grass sg-d"></div>
+    </div>
+    <div class="sea-coral"></div>
+    <div class="sea-jelly"></div>
+    <div class="sea-leaf"></div>
+  </div>
+  <div class="ch-progress">
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+    <div class="ch-dot done"></div>
+  </div>
+  <div class="chapter-strip"></div>
+  <div class="story-box"></div>
+  <div class="story-torn" style="display:none"></div>
+  <div class="choices-card" style="display:none">
+    <div class="skip-link" onclick="skipTyping()">skip ›</div>
+    <button class="crayon-btn teal full ch-continue"></button>
   </div>
 </div>
 
@@ -649,9 +1256,14 @@ body::before{
 
 </div><!-- #app -->
 
+<script src="story-content.js"></script>
 <script>
 /* ══ STATE ══ */
-const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice:''};
+const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null};
+
+/* ══ CHAPTER → SCREEN MAP ══ */
+const CHAPTER_MAP={s5a:'chapter1',s5b:'chapter2',s5c:'chapter3',s5d:'chapter4',s5e:'chapter5'};
+const NEXT_SCREEN={chapter1:'s5b',chapter3:'s5d',chapter5:'s6'};
 
 /* ══ BUTTON SQUISH + NAVIGATE ══ */
 function btnClick(btn,dest){
@@ -661,7 +1273,6 @@ function btnClick(btn,dest){
     if(dest)goTo(dest);
   },{once:true});
 }
-/* Make all crayon-btns squish on click */
 document.addEventListener('click',e=>{
   const b=e.target.closest('.crayon-btn');
   if(!b||b.dataset.noSquish)return;
@@ -680,7 +1291,8 @@ function goTo(id){
     nxt.classList.add('active','dropping');
     nxt.addEventListener('animationend',()=>{
       nxt.classList.remove('dropping');
-      if(id==='s5')startStory();
+      const chKey=CHAPTER_MAP[id];
+      if(chKey)startChapter(chKey);
       if(id==='s6')initBowl();
     },{once:true});
   },{once:true});
@@ -689,6 +1301,16 @@ function goTo(id){
 /* ══ LANGUAGE ══ */
 function pickLang(lang,el){
   state.lang=lang;
+  const th=lang==='th';
+  document.getElementById('nameQ').innerHTML=th
+    ?'คุณชื่ออะไร นักท่องทะเล? 🌊'
+    :'What is your name,<br>ocean wanderer? 🌊';
+  document.getElementById('nameDiveBtn').textContent=th?'ดำดิ่ง →':'Dive in →';
+  document.getElementById('nameInput').placeholder=th?'ชื่อของคุณ...':'your name here…';
+  document.getElementById('s4Heading').textContent=th?'เลือกสัตว์ทะเลของคุณ':'Choose your sea creature';
+  document.querySelectorAll('.creature-label').forEach(lbl=>{
+    lbl.textContent=th?lbl.dataset.th:lbl.dataset.en;
+  });
   el.classList.add('flipping');
   el.addEventListener('animationend',()=>goTo('s3'),{once:true});
 }
@@ -706,28 +1328,63 @@ document.getElementById('nameInput').addEventListener('keydown',e=>{
 
 /* ══ CREATURE SELECTION ══ */
 let _selectedCard=null;
-function pickCreature(emoji,name,card){
+function pickCreature(emoji,card){
   if(_selectedCard)_selectedCard.classList.remove('selected');
   card.classList.add('selected');
   _selectedCard=card;
-  state.creature=emoji;state.creatureName=name;
-  const btn=document.getElementById('confirmCreature');
-  btn.style.display='inline-block';
+  state.creature=emoji;
+  const lbl=card.querySelector('.creature-label');
+  state.creatureName=lbl.dataset.en;
+  document.getElementById('confirmCreature').style.display='inline-block';
   document.getElementById('dot4').classList.add('done');
 }
 
-/* ══ STORY TYPEWRITER ══ */
-const STORY=`The waters between the Andaman Sea and the Gulf of Thailand have been alive for thousands of years. Mangrove forests stretch along the coastline — nurseries for hundreds of species of fish, crabs, and birds. Coral reefs shimmer beneath the surface in colours so vivid they look painted by hand.
+/* ══ CHOICES ══ */
+function pickChoice2(ch){state.choice2=ch;goTo('s5c');}
+function pickChoice4(ch){state.choice4=ch;goTo('s5e');}
 
-Fishing families in Ranong and Chumphon have lived here for generations. Their boats go out at dawn and return at dusk, heavy with fish. Their children know the names of every creature in the water. This coast is their home. This ocean is their livelihood.
+/* ══ TYPEWRITER ENGINE ══ */
+let _curParts=[],_curBox=null,_curChoices=null,_curTorn=null,_curSkip=null;
+let _typingTimer=null,_typingIdx=0,_typingActive=false;
+let _ambientInt=null;
 
-Then came the announcement. The Southern Landbridge — 90km of highways, railways, and deep-sea ports cutting across the peninsula. The government called it progress worth 1 trillion baht.
+function startAmbience(screen){
+  clearInterval(_ambientInt);
+  screen.querySelectorAll('.ambient-shape').forEach(e=>e.remove());
+  const COLORS=[
+    ()=>`rgba(78,205,196,${(.06+Math.random()*.12).toFixed(2)})`,
+    ()=>`rgba(255,225,122,${(.08+Math.random()*.14).toFixed(2)})`,
+    ()=>`rgba(168,230,163,${(.07+Math.random()*.12).toFixed(2)})`,
+    ()=>`rgba(255,179,179,${(.06+Math.random()*.10).toFixed(2)})`,
+  ];
+  function spawn(){
+    if(!screen.isConnected){clearInterval(_ambientInt);return;}
+    const el=document.createElement('div');
+    el.className='ambient-shape';
+    const isBubble=Math.random()>.35;
+    const sz=isBubble?4+Math.random()*8:3+Math.random()*6;
+    const dur=7+Math.random()*8;
+    el.style.cssText=`
+      left:${8+Math.random()*84}%;
+      bottom:${8+Math.random()*52}%;
+      width:${sz}px;height:${isBubble?sz:sz*.55}px;
+      border-radius:${isBubble?'50%':'2px'};
+      background:${COLORS[Math.floor(Math.random()*COLORS.length)]()};
+      --dur:${dur}s;
+      --rise:-${55+Math.random()*85}px;
+      --sway:${((Math.random()-.5)*44).toFixed(1)}px;
+      --r0:${(Math.random()*18).toFixed(1)}deg;
+      --r1:${((Math.random()-.5)*38).toFixed(1)}deg;
+      --mop:${(.28+Math.random()*.20).toFixed(2)};
+    `;
+    screen.appendChild(el);
+    setTimeout(()=>el.isConnected&&el.remove(),(dur+1)*1000);
+  }
+  spawn();spawn();
+  for(let i=0;i<3;i++)setTimeout(spawn,(i+1)*700);
+  _ambientInt=setInterval(spawn,1900);
+}
 
-But nobody asked the mangroves. Nobody asked the fish. Nobody asked the 8,000 families who had fished these waters for 300 years.
-
-You are floating just below the surface. The water is changing. Something is coming.`;
-
-/* Build parts array from story text */
 function buildParts(text){
   const parts=[];
   text.trim().split('\n\n').forEach((para,pi)=>{
@@ -736,145 +1393,172 @@ function buildParts(text){
   });
   return parts;
 }
-const PARTS=buildParts(STORY);
 
-let _typingTimer=null;
-let _typingIdx=0;
-let _typingActive=false;
+function setupChoicesCard(screen,chKey){
+  const lang=state.lang;
+  const chData=STORY[lang][chKey];
+  const continueBtn=screen.querySelector('.ch-continue');
+  if(continueBtn){
+    continueBtn.textContent=chData.buttonText||(lang==='th'?'อ่านต่อ →':'Continue →');
+    const dest=NEXT_SCREEN[chKey];
+    continueBtn.onclick=function(){btnClick(this,dest);};
+  }
+  const prompt=screen.querySelector('.choice-prompt');
+  const btnA=screen.querySelector('.ch-choice-a');
+  const btnB=screen.querySelector('.ch-choice-b');
+  if(prompt&&btnA&&btnB){
+    prompt.textContent=chData.choicePrompt;
+    btnA.textContent=chData.choiceA;
+    btnB.textContent=chData.choiceB;
+    if(chKey==='chapter2'){
+      btnA.onclick=function(){pickChoice2('a');};
+      btnB.onclick=function(){pickChoice2('b');};
+    }else{
+      btnA.onclick=function(){pickChoice4('a');};
+      btnB.onclick=function(){pickChoice4('b');};
+    }
+  }
+}
 
-function startStory(){
+function startChapter(chKey){
   clearTimeout(_typingTimer);
+  _typingActive=false;
+
+  const lang=state.lang;
+  const screen=document.querySelector('.screen.active');
+  startAmbience(screen);
+  _curBox=screen.querySelector('.story-box');
+  _curChoices=screen.querySelector('.choices-card');
+  _curTorn=screen.querySelector('.story-torn');
+  _curSkip=screen.querySelector('.skip-link');
+  const strip=screen.querySelector('.chapter-strip');
+
+  const chData=STORY[lang][chKey];
+  strip.textContent=chData.title;
+  strip.classList.remove('strip-enter');
+  void strip.offsetWidth;
+  strip.classList.add('strip-enter');
+  strip.addEventListener('animationend',()=>strip.classList.remove('strip-enter'),{once:true});
+
+  let text;
+  if(chKey==='chapter3'){
+    const b=STORY[lang].chapter3[state.choice2];
+    text=b.intro+'\n\n'+b.text;
+  }else if(chKey==='chapter5'){
+    text=STORY[lang].chapter5[state.choice4].text;
+  }else{
+    text=chData.text;
+  }
+
+  setupChoicesCard(screen,chKey);
+
+  _curParts=buildParts(text);
   _typingIdx=0;
   _typingActive=true;
-  const box=document.getElementById('storyBox');
-  const choices=document.getElementById('choicesCard');
-  const torn=document.getElementById('storyTorn');
-  const skip=document.getElementById('skipLink');
-  box.innerHTML='';
-  choices.style.display='none';
-  torn.style.display='none';
-  skip.style.display='block';
+  _curBox.innerHTML='';
+  _curChoices.style.display='none';
+  _curTorn.style.display='none';
+  _curSkip.style.display='block';
 
   function next(){
     if(!_typingActive)return;
-    if(_typingIdx>=PARTS.length){
+    if(_typingIdx>=_curParts.length){
       _typingActive=false;
-      torn.style.display='block';
-      choices.style.display='flex';
-      skip.style.display='none';
+      _curTorn.style.display='block';
+      _curChoices.style.display='flex';
+      _curSkip.style.display='none';
       return;
     }
-    const p=PARTS[_typingIdx++];
+    const p=_curParts[_typingIdx++];
+    const fast=state.lang==='en';
     if(p.t==='br'){
-      box.appendChild(document.createElement('br'));
-      box.appendChild(document.createElement('br'));
-      _typingTimer=setTimeout(next,260);
-    } else {
+      _curBox.appendChild(document.createElement('br'));
+      _curBox.appendChild(document.createElement('br'));
+      _typingTimer=setTimeout(next,fast?337:675);
+    }else{
       const s=document.createElement('span');
       s.className='word-span';
       s.textContent=p.v+' ';
-      /* random wobble per word: -2.5° to +2.5° */
       s.style.setProperty('--r',(Math.random()*5-2.5).toFixed(1)+'deg');
-      box.appendChild(s);
-      box.scrollTop=box.scrollHeight;
-      _typingTimer=setTimeout(next,72+Math.random()*62);
+      _curBox.appendChild(s);
+      _typingTimer=setTimeout(next,fast?112+Math.random()*75:225+Math.random()*150);
     }
   }
-  _typingTimer=setTimeout(next,320);
+  _typingTimer=setTimeout(next,state.lang==='en'?315:630);
 }
 
 function skipTyping(){
   _typingActive=false;
   clearTimeout(_typingTimer);
-  /* Render all remaining words instantly */
-  const box=document.getElementById('storyBox');
-  const torn=document.getElementById('storyTorn');
-  const choices=document.getElementById('choicesCard');
-  const skip=document.getElementById('skipLink');
-  /* Clear and redraw full story without animation */
-  box.innerHTML='';
-  PARTS.forEach(p=>{
+  _curBox.innerHTML='';
+  _curParts.forEach(p=>{
     if(p.t==='br'){
-      box.appendChild(document.createElement('br'));
-      box.appendChild(document.createElement('br'));
-    } else {
+      _curBox.appendChild(document.createElement('br'));
+      _curBox.appendChild(document.createElement('br'));
+    }else{
       const s=document.createElement('span');
       s.textContent=p.v+' ';
       s.style.opacity='1';
-      box.appendChild(s);
+      _curBox.appendChild(s);
     }
   });
-  box.scrollTop=box.scrollHeight;
-  torn.style.display='block';
-  choices.style.display='flex';
-  skip.style.display='none';
-}
-
-/* ══ CHOICE ══ */
-function pickChoice(ch){
-  state.choice=ch;
-  goTo('s6');
+  _curBox.scrollTop=_curBox.scrollHeight;
+  _curTorn.style.display='block';
+  _curChoices.style.display='flex';
+  _curSkip.style.display='none';
 }
 
 /* ══ FISH BOWL ══ */
 const DEMO_FISH=[
   {emoji:'🐢',name:'Nong_Fah'},
   {emoji:'🐬',name:'TurboKrub'},
-  {emoji:'🪸',name:'PlaKhao99'},
+  {emoji:'🦀',name:'PlaKhao99'},
   {emoji:'🐠',name:'AomSea'},
 ];
-let _fishData=[];
-let _rafId=null;
-let _bubbleInt=null;
+let _fishData=[],_rafId=null,_bubbleInt=null;
 
 function initBowl(){
-  /* Result message with splat animation */
-  const rc=document.getElementById('resultCard');
-  const A=`<strong>${state.username}</strong>, you chose to look deeper. Not everyone does. Most scroll past. But you stopped.
-<br><br>What you found: <strong>8,000+ hectares</strong> of mangrove at risk. <strong>300-year-old</strong> fishing communities with no voice in a decision worth 1 trillion baht. The data was always there. It needed someone willing to see it.`;
-  const B=`You swam away. The machines kept coming anyway. The water grew murky. The mangroves fell silent. The nets came up empty.
-<br><br>Ignoring something does not make it stop. But you are here now, reading this. <strong>That is what matters.</strong>`;
-  rc.innerHTML=state.choice==='B'?B:A;
-  rc.classList.remove('splat-in');
-  void rc.offsetWidth; /* force reflow to restart animation */
-  rc.classList.add('splat-in');
+  const ov=document.getElementById('surfaceOverlay');
+  ov.classList.remove('surfacing');
+  void ov.offsetWidth;
+  ov.classList.add('surfacing');
 
-  /* Counter */
+  const lang=state.lang;
+  const rc=document.getElementById('resultCard');
+  const bowlMsg=STORY[lang].chapter5.bowlText[state.choice4]
+    .replace('{name}',state.username);
+  rc.innerHTML=bowlMsg;
+  rc.classList.remove('splat-in');
+  void rc.offsetWidth;
+  setTimeout(()=>rc.classList.add('splat-in'),800);
+
   document.getElementById('bowlCounter').textContent=
     `${5+Math.floor(Math.random()*5)} creatures have heard this story`;
 
-  /* Clear previous fish + intervals */
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
   const bowl=document.getElementById('bowl');
   bowl.querySelectorAll('.fish-entity,.bubble').forEach(e=>e.remove());
   _fishData=[];
 
-  /* Build fish list: demo fish + user */
-  const allFish=[
-    ...DEMO_FISH,
-    {emoji:state.creature,name:state.username,isUser:true},
-  ];
-
+  const allFish=[...DEMO_FISH,{emoji:state.creature,name:state.username,isUser:true}];
   allFish.forEach((f,i)=>{
     const el=document.createElement('div');
     el.className='fish-entity'+(f.isUser?' user-fish':'');
     el.innerHTML=`<span class="fish-name">${f.name}</span><span class="fish-emoji">${f.emoji}</span>`;
     bowl.appendChild(el);
-    /* Unique figure-8 Lissajous path per fish */
     _fishData.push({
       el,
-      t:(i/allFish.length)*Math.PI*2,       /* stagger start angle */
+      t:(i/allFish.length)*Math.PI*2,
       speed:.0068+i*.0012+Math.random()*.004,
-      cx:50, cy:48,
-      rx:28+(i%3)*5,                         /* vary orbit width */
-      ry:15+(i%2)*8,                         /* vary orbit height */
-      phase:Math.random()*Math.PI,           /* y-phase offset */
+      cx:50,cy:48,
+      rx:28+(i%3)*5,
+      ry:15+(i%2)*8,
+      phase:Math.random()*Math.PI,
       prevX:50,
     });
   });
 
-  /* Animation loop */
   function tick(){
     if(!bowl.isConnected)return;
     _fishData.forEach(f=>{
@@ -885,15 +1569,13 @@ function initBowl(){
       f.prevX=x;
       f.el.style.left=Math.min(Math.max(x,8),92)+'%';
       f.el.style.top =Math.min(Math.max(y,10),82)+'%';
-      /* CSS transition on .fish-emoji handles the smooth flip */
       const em=f.el.querySelector('.fish-emoji');
-      if(em)em.style.transform=goRight?'':'scaleX(-1)';
+      if(em)em.style.transform=goRight?'scaleX(-1)':'';
     });
     _rafId=requestAnimationFrame(tick);
   }
   tick();
 
-  /* Bubble spawner */
   _bubbleInt=setInterval(()=>{
     if(!bowl.isConnected){clearInterval(_bubbleInt);return;}
     const b=document.createElement('div');
@@ -902,7 +1584,6 @@ function initBowl(){
     b.className='bubble';
     b.style.cssText=`left:${14+Math.random()*72}%;width:${sz}px;height:${sz}px;--dur:${dur}`;
     bowl.appendChild(b);
-    /* Remove after animation */
     setTimeout(()=>b.isConnected&&b.remove(),5000);
   },950);
 }
@@ -911,24 +1592,93 @@ function initBowl(){
 function restartAll(){
   _typingActive=false;
   clearTimeout(_typingTimer);
+  clearInterval(_ambientInt);
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
-  Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice:''});
+  Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null});
   if(_selectedCard){_selectedCard.classList.remove('selected');_selectedCard=null;}
   document.getElementById('confirmCreature').style.display='none';
   document.getElementById('dot4').classList.remove('done');
   document.getElementById('nameInput').value='';
+  document.getElementById('nameQ').innerHTML='What is your name,<br>ocean wanderer? 🌊';
+  document.getElementById('nameDiveBtn').textContent='Dive in →';
+  document.getElementById('nameInput').placeholder='your name here…';
+  document.getElementById('s4Heading').textContent='Choose your sea creature';
+  document.querySelectorAll('.creature-label').forEach(lbl=>{lbl.textContent=lbl.dataset.en;});
   goTo('s1');
 }
 
 /* ══ SHARE ══ */
 function shareStory(){
-  const txt='I just experienced "Water Colour Exhibition" — an interactive story about Thailand\'s Southern Landbridge and what we stand to lose. 🌊 #WaterColourExhibition';
-  if(navigator.share){navigator.share({title:'Water Colour Exhibition',text:txt});}
+  const url=window.location.href;
+  if(navigator.share){navigator.share({url});}
   else if(navigator.clipboard){
-    navigator.clipboard.writeText(txt).then(()=>alert('Copied to clipboard! 🐠'));
-  } else {
-    window.prompt('Copy this link:',txt);
+    navigator.clipboard.writeText(url).then(()=>alert('Link copied!'));
+  }else{
+    window.prompt('Copy this link:',url);
+  }
+}
+
+/* ══ OCEAN AUDIO ══ */
+let _audioCtx=null,_audioMuted=true,_masterGain=null;
+
+function _buildOcean(){
+  if(_audioCtx)return;
+  _audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+
+  _masterGain=_audioCtx.createGain();
+  _masterGain.gain.value=0.055;
+  _masterGain.connect(_audioCtx.destination);
+
+  // Filtered white noise — ocean body
+  const rate=_audioCtx.sampleRate;
+  const buf=_audioCtx.createBuffer(1,rate*4,rate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+  const noise=_audioCtx.createBufferSource();
+  noise.buffer=buf;noise.loop=true;
+
+  const lpf=_audioCtx.createBiquadFilter();
+  lpf.type='lowpass';lpf.frequency.value=480;lpf.Q.value=0.8;
+
+  // Slow wave LFO modulating filter frequency
+  const lfo=_audioCtx.createOscillator();
+  lfo.frequency.value=0.10;
+  const lfoGain=_audioCtx.createGain();
+  lfoGain.gain.value=180;
+  lfo.connect(lfoGain);
+  lfoGain.connect(lpf.frequency);
+
+  // Very low rumble — depth
+  const rumble=_audioCtx.createOscillator();
+  rumble.type='sine';rumble.frequency.value=42;
+  const rumbleGain=_audioCtx.createGain();
+  rumbleGain.gain.value=0.012;
+  rumble.connect(rumbleGain);
+  rumbleGain.connect(_masterGain);
+
+  // Slow amplitude swell — wave crests
+  const swell=_audioCtx.createOscillator();
+  swell.frequency.value=0.07;
+  const swellGain=_audioCtx.createGain();
+  swellGain.gain.value=0.028;
+  swell.connect(swellGain);
+  swellGain.connect(_masterGain);
+
+  noise.connect(lpf);
+  lpf.connect(_masterGain);
+  noise.start();lfo.start();rumble.start();swell.start();
+}
+
+function toggleAudio(){
+  const btn=document.getElementById('audioToggle');
+  if(_audioMuted){
+    _buildOcean();
+    if(_audioCtx.state==='suspended')_audioCtx.resume();
+    _audioMuted=false;btn.textContent='🔊';
+  }else{
+    if(_audioCtx)_audioCtx.suspend();
+    _audioMuted=true;btn.textContent='🔇';
   }
 }
 </script>

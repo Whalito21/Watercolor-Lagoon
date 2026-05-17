@@ -1,0 +1,10 @@
+{
+  "name": "watercolour-exhibition",
+  "private": true,
+  "scripts": {
+    "dev": "live-server --open=index.html"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
