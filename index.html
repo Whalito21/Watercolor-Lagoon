@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Water Colour Exhibition</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ══ VARIABLES ══ */
+:root{
+  --teal:#4ECDC4;--sand:#FFE17A;--coral:#FFB3B3;
+  --green:#A8E6A3;--ink:#2D3748;--paper:#F5F0E8;
+  --deep:#1a6b60;
+  --shadow:4px 4px 0px rgba(0,0,0,.16),8px 8px 0px rgba(0,0,0,.09);
+  --shadow-lift:6px 6px 0px rgba(0,0,0,.2),14px 14px 0px rgba(0,0,0,.1);
+  --font:'Caveat',cursive;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;font-family:var(--font);overflow:hidden;background:var(--paper)}
+
+/* ── Paper grain overlay ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ══ APP / SCREENS ══ */
+#app{position:relative;width:100%;height:100%;overflow:hidden}
+.screen{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  align-items:center;justify-content:flex-start;
+  overflow-y:auto;overflow-x:hidden;
+  padding:2.2rem 1.5rem 3rem;z-index:1;
+}
+.screen.active{display:flex;z-index:2}
+.screen-center{justify-content:center}
+
+/* ══ SCREEN TRANSITIONS ══ */
+@keyframes crumple{
+  0%  {transform:rotate(0)scale(1)translate(0,0);opacity:1}
+  30% {transform:rotate(8deg)scale(.82)translate(4vw,-2vh);opacity:.8}
+  65% {transform:rotate(20deg)scale(.45)translate(60vw,-8vh);opacity:.4}
+  100%{transform:rotate(32deg)scale(.1)translate(140vw,-20vh);opacity:0}
+}
+@keyframes paperDrop{
+  0%  {transform:rotate(-8deg)translateY(-115vh)scale(.88);opacity:0}
+  58% {transform:rotate(2.5deg)translateY(22px)scale(1.02);opacity:1}
+  76% {transform:rotate(-1.5deg)translateY(-8px)scale(.99)}
+  90% {transform:rotate(.5deg)translateY(3px)}
+  100%{transform:rotate(0)translateY(0)scale(1);opacity:1}
+}
+.crumpling{
+  display:flex!important;z-index:10!important;
+  animation:crumple .6s cubic-bezier(.55,.06,.68,.19) forwards;
+  pointer-events:none;
+}
+.dropping{
+  display:flex!important;z-index:5!important;
+  animation:paperDrop .75s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+/* ══ WATERCOLOUR BACKGROUNDS ══ */
+.wc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:opacity .3s}
+.wc-s1{background:
+  radial-gradient(ellipse 68% 52% at 16% 26%,rgba(78,205,196,.42) 0%,transparent 68%),
+  radial-gradient(ellipse 52% 68% at 84% 64%,rgba(78,205,196,.28) 0%,transparent 58%),
+  radial-gradient(ellipse 42% 36% at 50% 85%,rgba(255,225,122,.34) 0%,transparent 50%),
+  radial-gradient(ellipse 58% 32% at 74% 10%,rgba(168,230,163,.24) 0%,transparent 58%),
+  radial-gradient(ellipse 90% 90% at 50% 50%,rgba(78,205,196,.06) 0%,transparent 82%),
+  var(--paper)}
+.wc-s2{background:
+  radial-gradient(ellipse 60% 60% at 26% 52%,rgba(255,179,179,.34) 0%,transparent 70%),
+  radial-gradient(ellipse 50% 40% at 78% 30%,rgba(255,225,122,.40) 0%,transparent 60%),
+  radial-gradient(ellipse 40% 58% at 60% 82%,rgba(78,205,196,.24) 0%,transparent 60%),
+  var(--paper)}
+.wc-s3{background:
+  radial-gradient(ellipse 70% 50% at 50% 26%,rgba(168,230,163,.34) 0%,transparent 70%),
+  radial-gradient(ellipse 40% 60% at 16% 74%,rgba(78,205,196,.30) 0%,transparent 62%),
+  radial-gradient(ellipse 30% 30% at 85% 80%,rgba(255,225,122,.20) 0%,transparent 50%),
+  var(--paper)}
+.wc-s4{background:
+  radial-gradient(ellipse 60% 40% at 74% 16%,rgba(255,225,122,.40) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 60% at 16% 64%,rgba(78,205,196,.34) 0%,transparent 70%),
+  radial-gradient(ellipse 40% 42% at 60% 84%,rgba(255,179,179,.24) 0%,transparent 52%),
+  var(--paper)}
+.wc-s5{background:
+  radial-gradient(ellipse 70% 50% at 26% 36%,rgba(78,205,196,.30) 0%,transparent 70%),
+  radial-gradient(ellipse 50% 60% at 84% 74%,rgba(168,230,163,.24) 0%,transparent 60%),
+  radial-gradient(ellipse 36% 36% at 50% 92%,rgba(255,225,122,.18) 0%,transparent 52%),
+  var(--paper)}
+.wc-s6{background:
+  radial-gradient(ellipse 80% 60% at 50% 26%,rgba(78,205,196,.24) 0%,transparent 70%),
+  radial-gradient(ellipse 60% 80% at 26% 74%,rgba(26,107,96,.20) 0%,transparent 60%),
+  radial-gradient(ellipse 40% 40% at 82% 58%,rgba(255,225,122,.16) 0%,transparent 50%),
+  var(--paper)}
+
+/* ══ FLOATING PAPER CUT-OUTS (decorative) ══ */
+.cut{position:absolute;pointer-events:none;border-radius:2px}
+/* S1 decorative shapes */
+#s1 .cut-1{width:90px;height:90px;background:rgba(78,205,196,.22);
+  top:8%;right:6%;transform:rotate(14deg);border-radius:50%;
+  box-shadow:3px 3px 0 rgba(0,0,0,.08)}
+#s1 .cut-2{width:60px;height:60px;background:rgba(255,179,179,.30);
+  bottom:12%;left:5%;transform:rotate(-18deg);
+  clip-path:polygon(50% 0%,100% 100%,0% 100%);
+  box-shadow:3px 3px 0 rgba(0,0,0,.08)}
+#s1 .cut-3{width:44px;height:44px;background:rgba(168,230,163,.35);
+  top:22%;left:8%;transform:rotate(7deg);
+  box-shadow:2px 2px 0 rgba(0,0,0,.08)}
+#s1 .cut-4{width:28px;height:28px;background:rgba(255,225,122,.5);
+  top:60%;right:10%;transform:rotate(-12deg);border-radius:50%;
+  box-shadow:2px 2px 0 rgba(0,0,0,.1)}
+#s1 .cut-5{width:70px;height:18px;background:rgba(78,205,196,.20);
+  bottom:24%;right:4%;transform:rotate(22deg);border-radius:4px}
+
+/* S2 */
+#s2 .cut-1{width:50px;height:50px;background:rgba(255,225,122,.30);
+  top:10%;left:5%;transform:rotate(-10deg);border-radius:50%}
+#s2 .cut-2{width:36px;height:36px;background:rgba(78,205,196,.25);
+  bottom:15%;right:6%;transform:rotate(20deg)}
+#s2 .cut-3{width:24px;height:60px;background:rgba(255,179,179,.25);
+  top:50%;left:3%;transform:rotate(-5deg);border-radius:2px}
+
+/* S3 */
+#s3 .cut-1{width:55px;height:55px;background:rgba(168,230,163,.28);
+  top:12%;right:7%;transform:rotate(16deg);border-radius:50%}
+#s3 .cut-2{width:38px;height:38px;background:rgba(255,225,122,.35);
+  bottom:18%;left:6%;transform:rotate(-22deg);
+  clip-path:polygon(50% 0%,100% 100%,0% 100%)}
+#s3 .cut-3{width:24px;height:24px;background:rgba(78,205,196,.25);
+  top:45%;left:4%;transform:rotate(8deg);border-radius:50%}
+
+/* S4 */
+#s4 .cut-1{width:46px;height:46px;background:rgba(255,179,179,.28);
+  top:8%;left:4%;transform:rotate(-14deg);border-radius:50%}
+#s4 .cut-2{width:34px;height:34px;background:rgba(78,205,196,.22);
+  bottom:10%;right:5%;transform:rotate(18deg)}
+#s4 .cut-3{width:22px;height:55px;background:rgba(255,225,122,.30);
+  top:40%;right:3%;transform:rotate(-8deg);border-radius:3px}
+#s4 .cut-4{width:18px;height:18px;background:rgba(168,230,163,.4);
+  bottom:30%;left:4%;transform:rotate(5deg);border-radius:50%}
+
+/* S5 */
+#s5 .cut-1{width:40px;height:40px;background:rgba(78,205,196,.18);
+  top:8%;right:5%;transform:rotate(20deg);border-radius:50%}
+#s5 .cut-2{width:28px;height:28px;background:rgba(255,225,122,.28);
+  bottom:8%;left:5%;transform:rotate(-15deg)}
+
+/* S6 */
+#s6 .cut-1{width:50px;height:50px;background:rgba(78,205,196,.20);
+  top:10%;right:4%;transform:rotate(12deg);border-radius:50%}
+#s6 .cut-2{width:32px;height:32px;background:rgba(255,225,122,.28);
+  bottom:12%;left:4%;transform:rotate(-18deg);
+  clip-path:polygon(50% 0%,100% 100%,0% 100%)}
+#s6 .cut-3{width:22px;height:56px;background:rgba(255,179,179,.22);
+  top:50%;right:3%;transform:rotate(6deg);border-radius:3px}
+
+/* ══ TAGS ══ */
+.paper-tag{
+  display:inline-block;background:var(--sand);
+  padding:.45rem 1.05rem;border-radius:3px;font-size:1.28rem;
+  box-shadow:var(--shadow);
+  transform:rotate(var(--rot,0deg));
+  border:2.5px solid var(--ink);filter:url(#crayon);
+}
+
+/* ══ BUTTONS ══ */
+@keyframes btnWobble{
+  0%,100%{transform:rotate(-1.5deg) scale(1)}
+  50%    {transform:rotate(1.5deg)  scale(1)}
+}
+@keyframes btnSquish{
+  0%  {transform:scale(1)}
+  35% {transform:scale(.87,1.12)}
+  65% {transform:scale(1.06,.94)}
+  100%{transform:scale(1)}
+}
+.crayon-btn{
+  font-family:var(--font);font-size:1.4rem;
+  padding:.62rem 1.7rem;background:var(--sand);
+  border:3px solid var(--ink);border-radius:6px;cursor:pointer;
+  box-shadow:var(--shadow);filter:url(#crayon);
+  animation:btnWobble 3.2s ease-in-out infinite;
+  display:inline-block;position:relative;
+  transition:box-shadow .15s;
+}
+.crayon-btn:hover{
+  box-shadow:var(--shadow-lift);
+  animation-play-state:paused;
+}
+.crayon-btn.squishing{animation:btnSquish .38s ease forwards!important}
+.crayon-btn.teal {background:var(--teal)}
+.crayon-btn.coral{background:var(--coral)}
+.crayon-btn.green{background:var(--green)}
+.crayon-btn.full {width:100%;text-align:left}
+
+/* ══════════ SCREEN 1 — SPLASH ══════════ */
+.main-title{
+  font-size:clamp(2.8rem,8.5vw,6.5rem);font-weight:700;
+  color:var(--ink);text-align:center;line-height:1.05;
+  text-shadow:3px 3px 0 rgba(78,205,196,.5),6px 6px 0 rgba(78,205,196,.15);
+  margin-bottom:.5rem;position:relative;z-index:1;
+}
+.subtitle{
+  font-size:1.5rem;color:#4a6670;text-align:center;
+  margin-bottom:1.8rem;font-style:italic;position:relative;z-index:1;
+}
+.tags-row{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  justify-content:center;margin-bottom:2rem;position:relative;z-index:1;
+}
+.stamp{
+  margin-top:1.5rem;font-size:1rem;color:#999;
+  border:2px dashed #ccc;padding:.3rem .9rem;
+  border-radius:4px;transform:rotate(-2.5deg);
+  display:inline-block;opacity:.7;position:relative;z-index:1;
+}
+
+/* ══════════ SCREEN 2 — LANGUAGE ══════════ */
+.screen-heading{font-size:2.1rem;color:var(--ink);text-align:center;margin-bottom:1.8rem;position:relative;z-index:1}
+.fish-cards-row{display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.fish-card{
+  background:#fff;border:3px solid var(--ink);border-radius:8px;
+  padding:2.2rem 2.8rem;cursor:pointer;text-align:center;
+  box-shadow:var(--shadow);filter:url(#crayon);
+  transition:box-shadow .2s;min-width:160px;
+}
+.fish-card.left {transform:rotate(-3deg)}
+.fish-card.right{transform:rotate(3deg)}
+.fish-card:hover{
+  box-shadow:var(--shadow-lift);
+  transform:translateY(-8px) rotate(0deg)!important;
+}
+.fish-card-emoji{font-size:3.4rem;display:block;margin-bottom:.5rem}
+.fish-card-label{font-size:1.8rem;font-weight:600}
+@keyframes cardFlip{
+  0%  {transform:rotateY(0) scale(1)}
+  45% {transform:rotateY(90deg) scale(.82)}
+  100%{transform:rotateY(0) scale(1)}
+}
+.flipping{animation:cardFlip .44s ease!important}
+
+/* ══════════ SCREEN 3 — NAME ══════════ */
+.name-card{
+  background:#fff;border:3px solid var(--ink);border-radius:6px;
+  padding:2.6rem;max-width:480px;width:100%;text-align:center;
+  box-shadow:var(--shadow);filter:url(#crayon);
+  position:relative;z-index:1;
+}
+.name-q{font-size:1.9rem;color:var(--ink);margin-bottom:1.5rem;line-height:1.4}
+.name-input{
+  font-family:var(--font);font-size:1.7rem;width:100%;
+  border:3px solid var(--ink);border-radius:4px;
+  padding:.5rem 1rem;background:var(--paper);color:var(--ink);
+  outline:none;filter:url(#crayon);margin-bottom:1.3rem;
+}
+.name-input::placeholder{color:#bbb}
+.name-input:focus{border-color:var(--teal);background:#fff}
+
+/* ══════════ SCREEN 4 — CREATURE ══════════ */
+.progress-dots{display:flex;gap:.8rem;margin-bottom:1.5rem;justify-content:center;position:relative;z-index:1}
+.p-dot{
+  width:18px;height:18px;border:2.5px solid var(--ink);
+  border-radius:2px;background:transparent;transform:rotate(45deg);
+  transition:background .3s;
+}
+.p-dot.done{background:var(--ink)}
+.creatures-grid{
+  display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;
+  max-width:700px;position:relative;z-index:1;
+}
+.creature-card{
+  background:#fff;border:3px solid var(--ink);border-radius:8px;
+  padding:1.4rem 1.7rem;cursor:pointer;text-align:center;
+  box-shadow:var(--shadow);filter:url(#crayon);
+  transition:transform .28s,box-shadow .28s,background .2s,border-color .2s;
+  min-width:125px;position:relative;
+}
+.creature-card:nth-child(1){transform:rotate(-4deg)}
+.creature-card:nth-child(2){transform:rotate(2deg)}
+.creature-card:nth-child(3){transform:rotate(-1deg)}
+.creature-card:nth-child(4){transform:rotate(3deg)}
+.creature-card:nth-child(5){transform:rotate(-2deg)}
+.creature-card.selected{
+  transform:rotate(0deg) translateY(-14px)!important;
+  border-color:var(--teal);background:rgba(78,205,196,.1);
+  box-shadow:0 14px 0 rgba(78,205,196,.25),var(--shadow);
+}
+.creature-ring{
+  display:none;position:absolute;inset:-10px;border-radius:13px;
+  border:4px solid var(--teal);filter:url(#crayon);
+}
+.creature-card.selected .creature-ring{display:block;animation:ringIn .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes ringIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.creature-emoji{font-size:2.7rem;display:block}
+.creature-label{font-size:1.28rem;margin-top:.38rem}
+#confirmCreature{display:none;margin-top:1.3rem;position:relative;z-index:1}
+
+/* ══════════ SCREEN 5 — STORY ══════════ */
+#s5{gap:0;padding-top:1.8rem;align-items:center}
+
+.chapter-strip{
+  background:var(--teal);color:var(--ink);font-weight:700;font-size:1.35rem;
+  padding:.5rem 2rem 1.5rem;display:inline-block;align-self:flex-start;
+  transform:rotate(-1deg);box-shadow:4px 4px 0 rgba(0,0,0,.14);
+  position:relative;z-index:2;
+  /* torn bottom edge */
+  clip-path:polygon(
+    0% 0%,100% 0%,100% 65%,
+    98% 100%,95% 68%,92% 100%,89% 70%,86% 100%,83% 68%,80% 100%,
+    77% 70%,74% 100%,71% 68%,68% 100%,65% 72%,62% 100%,59% 68%,
+    56% 100%,53% 70%,50% 100%,47% 68%,44% 100%,41% 70%,38% 100%,
+    35% 68%,32% 100%,29% 70%,26% 100%,23% 68%,20% 100%,17% 70%,
+    14% 100%,11% 68%,8% 100%,5% 70%,2% 100%,0% 68%
+  );
+}
+
+.story-box{
+  background:#fff;border:2.5px solid var(--ink);
+  border-radius:4px 4px 0 0;border-bottom:none;
+  padding:1.5rem 1.6rem 1.8rem;max-width:660px;width:100%;
+  height:clamp(190px,36vh,300px);overflow-y:auto;
+  box-shadow:var(--shadow);font-size:1.3rem;line-height:1.78;color:var(--ink);
+  position:relative;z-index:1;
+}
+
+/* Torn edge strip connecting story-box to choices card */
+.story-torn{
+  max-width:660px;width:100%;height:28px;
+  background:#fff;
+  clip-path:polygon(
+    0% 0%,2% 100%,4% 10%,6% 95%,8% 5%,10% 100%,12% 8%,14% 90%,
+    16% 0%,18% 100%,20% 12%,22% 88%,24% 2%,26% 100%,28% 10%,30% 92%,
+    32% 0%,34% 100%,36% 8%,38% 95%,40% 0%,42% 100%,44% 12%,46% 88%,
+    48% 0%,50% 100%,52% 8%,54% 92%,56% 2%,58% 100%,60% 10%,62% 90%,
+    64% 0%,66% 100%,68% 12%,70% 88%,72% 0%,74% 100%,76% 8%,78% 95%,
+    80% 0%,82% 100%,84% 10%,86% 90%,88% 2%,90% 100%,92% 8%,94% 92%,
+    96% 0%,98% 100%,100% 10%,100% 0%
+  );
+  border-left:2.5px solid var(--ink);border-right:2.5px solid var(--ink);
+  position:relative;z-index:1;margin-top:-1px;
+  box-shadow:4px 0 0 rgba(0,0,0,.04),-4px 0 0 rgba(0,0,0,.04);
+}
+
+/* Word-by-word typewriter with wobble */
+.word-span{
+  display:inline;opacity:0;
+  animation:wordAppear .22s ease forwards;
+  transform-origin:center bottom;
+}
+@keyframes wordAppear{
+  0%  {opacity:0;transform:translateY(6px) rotate(var(--r,0deg)) scale(.9)}
+  60% {opacity:1;transform:translateY(-2px) rotate(calc(var(--r,0deg)*-.2)) scale(1.03)}
+  100%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}
+}
+
+/* Choices card — torn top edge */
+.choices-card{
+  background:var(--sand);border:2.5px solid var(--ink);border-top:none;
+  padding:1.4rem 1.2rem 1.2rem;max-width:660px;width:100%;
+  box-shadow:4px 6px 0 rgba(0,0,0,.14);transform:rotate(-.4deg);
+  display:flex;flex-direction:column;gap:.9rem;
+  position:relative;z-index:1;
+}
+.skip-link{
+  font-size:1rem;color:#aaa;text-align:right;cursor:pointer;
+  text-decoration:underline dotted;margin-bottom:.2rem;
+}
+.skip-link:hover{color:var(--ink)}
+
+/* ══════════ SCREEN 6 — FISH BOWL ══════════ */
+@keyframes splat{
+  0%  {transform:scale(0)rotate(-16deg);opacity:0}
+  58% {transform:scale(1.08)rotate(1.5deg);opacity:1}
+  78% {transform:scale(.97)rotate(-.5deg)}
+  100%{transform:scale(1)rotate(-1deg);opacity:1}
+}
+.result-card{
+  background:var(--sand);border:3px solid var(--ink);border-radius:6px;
+  padding:1.2rem 1.5rem;max-width:580px;width:100%;
+  font-size:1.22rem;line-height:1.68;color:var(--ink);
+  box-shadow:var(--shadow);transform:rotate(-1deg);filter:url(#crayon);
+  margin-bottom:.9rem;position:relative;z-index:1;
+}
+.result-card.splat-in{animation:splat .55s cubic-bezier(.34,1.56,.64,1) forwards}
+
+/* Bowl wrapper */
+.bowl-wrap{position:relative;width:min(400px,90vw);z-index:1}
+.bowl-counter{
+  text-align:center;font-size:1.28rem;color:var(--ink);margin-bottom:.4rem;
+  letter-spacing:.02em;
+}
+
+/* The bowl itself */
+.bowl{
+  width:100%;height:clamp(210px,33vw,280px);
+  background:linear-gradient(180deg,#c4eeed 0%,#4ECDC4 30%,#2a9d8f 62%,#1a6b60 100%);
+  border-radius:12px 12px 88px 88px;border:3px solid var(--ink);
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow);filter:url(#crayonBowl);
+}
+/* Glass shine */
+.bowl-shine{
+  position:absolute;top:10px;left:12px;width:34%;height:20%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.52) 0%,transparent 72%);
+  border-radius:50%;pointer-events:none;z-index:10;
+}
+/* Sandy bottom */
+.bowl-sand{
+  position:absolute;bottom:0;left:0;right:0;height:22px;
+  background:linear-gradient(180deg,#c4a06a 0%,#a07040 100%);
+  border-top:2px dotted rgba(180,130,70,.5);
+  z-index:7;pointer-events:none;
+}
+/* Subtle wave line */
+.bowl-wave{
+  position:absolute;top:18px;left:0;right:0;height:10px;
+  background:repeating-linear-gradient(
+    90deg,
+    transparent 0px,transparent 18px,
+    rgba(255,255,255,.12) 18px,rgba(255,255,255,.12) 36px
+  );
+  animation:waveMove 4s linear infinite;z-index:8;pointer-events:none;
+}
+@keyframes waveMove{from{background-position:0 0}to{background-position:72px 0}}
+
+/* Fish entities */
+.fish-entity{
+  position:absolute;display:flex;flex-direction:column;align-items:center;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:5;
+}
+.fish-name{
+  font-family:var(--font);font-size:.9rem;
+  background:rgba(255,255,255,.84);padding:1px 6px;
+  border-radius:3px;white-space:nowrap;margin-bottom:1px;color:var(--ink);
+  line-height:1.3;
+}
+.fish-emoji{
+  font-size:1.7rem;display:block;line-height:1;
+  transition:transform .28s ease; /* smooth direction flip */
+}
+.user-fish .fish-emoji{font-size:2.4rem}
+.user-fish .fish-name{font-weight:700;background:var(--sand);border:1px solid rgba(0,0,0,.1)}
+
+/* Bubbles */
+.bubble{
+  position:absolute;border-radius:50%;bottom:22px;
+  background:rgba(255,255,255,.3);border:1.5px solid rgba(255,255,255,.65);
+  pointer-events:none;z-index:6;
+  animation:bubUp var(--dur,3s) ease-out forwards;
+}
+@keyframes bubUp{
+  0%  {transform:translateY(0)translateX(0);opacity:.75}
+  35% {transform:translateY(-30%)translateX(4px);opacity:.6}
+  68% {transform:translateY(-68%)translateX(-4px);opacity:.35}
+  100%{transform:translateY(-108%)translateX(2px);opacity:0}
+}
+
+/* Bowl footer */
+.bowl-note{
+  font-size:1rem;color:#aaa;font-style:italic;
+  text-align:center;margin-top:.5rem;max-width:400px;
+}
+.bowl-actions{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  justify-content:center;margin-top:.9rem;position:relative;z-index:1;
+}
+
+/* ══ MOBILE ══ */
+@media(max-width:600px){
+  .main-title{font-size:2.6rem}
+  .fish-cards-row{gap:1rem}
+  .fish-card{min-width:130px;padding:1.5rem 1.2rem}
+  .story-box{height:clamp(150px,30vh,220px)}
+  .screen{padding:1.2rem 1rem 2.5rem}
+  .crayon-btn{font-size:1.2rem;padding:.55rem 1.2rem}
+  .chapter-strip{font-size:1.1rem;align-self:center}
+  #s5{padding-top:1.2rem}
+  .bowl-sand{height:16px}
+}
+@media(max-width:380px){
+  .fish-card{min-width:110px;padding:1.2rem .9rem}
+  .creatures-grid{gap:.8rem}
+  .creature-card{min-width:105px;padding:1rem 1.1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SVG Filters ══ -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden">
+<defs>
+  <!-- General crayon / hand-drawn border effect -->
+  <filter id="crayon" x="-6%" y="-6%" width="112%" height="112%">
+    <feTurbulence type="turbulence" baseFrequency=".058" numOctaves="3" seed="3" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6"
+      xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <!-- Slightly rougher for the bowl outline -->
+  <filter id="crayonBowl" x="-3%" y="-3%" width="106%" height="106%">
+    <feTurbulence type="turbulence" baseFrequency=".038" numOctaves="3" seed="9" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2"
+      xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</defs>
+</svg>
+
+<div id="app">
+
+<!-- ████ S1 — SPLASH ████ -->
+<div class="screen screen-center active" id="s1">
+  <div class="wc-bg wc-s1"></div>
+  <!-- Floating paper cut-outs -->
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="cut cut-3"></div>
+  <div class="cut cut-4"></div>
+  <div class="cut cut-5"></div>
+  <!-- Content -->
+  <h1 class="main-title">Water Colour<br>Exhibition</h1>
+  <p class="subtitle">an interactive story about what we stand to lose</p>
+  <div class="tags-row">
+    <div class="paper-tag" style="--rot:-3deg">🐠 Marine life</div>
+    <div class="paper-tag" style="--rot:5deg;background:var(--coral)">🌿 Mangroves</div>
+    <div class="paper-tag" style="--rot:-2deg;background:var(--green)">🏘️ Communities</div>
+  </div>
+  <button class="crayon-btn" onclick="btnClick(this,'s2')">Begin the story →</button>
+  <div class="stamp">★ prototype for team pitch</div>
+</div>
+
+<!-- ████ S2 — LANGUAGE ████ -->
+<div class="screen screen-center" id="s2">
+  <div class="wc-bg wc-s2"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="cut cut-3"></div>
+  <p class="screen-heading">Choose your language 🌊</p>
+  <div class="fish-cards-row">
+    <div class="fish-card left" onclick="pickLang('th',this)">
+      <span class="fish-card-emoji">🐠</span>
+      <span class="fish-card-label">ภาษาไทย</span>
+    </div>
+    <div class="fish-card right" onclick="pickLang('en',this)">
+      <span class="fish-card-emoji">🐡</span>
+      <span class="fish-card-label">English</span>
+    </div>
+  </div>
+</div>
+
+<!-- ████ S3 — NAME ████ -->
+<div class="screen screen-center" id="s3">
+  <div class="wc-bg wc-s3"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="cut cut-3"></div>
+  <div class="name-card">
+    <p class="name-q">What is your name,<br>ocean wanderer? 🌊</p>
+    <input class="name-input" id="nameInput" type="text"
+      placeholder="your name here…" maxlength="20" autocomplete="off"/>
+    <button class="crayon-btn" onclick="submitName()">Dive in →</button>
+  </div>
+</div>
+
+<!-- ████ S4 — CREATURE ████ -->
+<div class="screen screen-center" id="s4">
+  <div class="wc-bg wc-s4"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="cut cut-3"></div>
+  <div class="cut cut-4"></div>
+  <div class="progress-dots">
+    <div class="p-dot done" title="Language"></div>
+    <div class="p-dot done" title="Name"></div>
+    <div class="p-dot done" title="Story setup"></div>
+    <div class="p-dot" id="dot4" title="Creature"></div>
+  </div>
+  <p class="screen-heading">Choose your sea creature</p>
+  <div class="creatures-grid">
+    <div class="creature-card" onclick="pickCreature('🐠','Clownfish',this)">
+      <div class="creature-ring"></div>
+      <span class="creature-emoji">🐠</span>
+      <span class="creature-label">Clownfish</span>
+    </div>
+    <div class="creature-card" onclick="pickCreature('🐢','Sea Turtle',this)">
+      <div class="creature-ring"></div>
+      <span class="creature-emoji">🐢</span>
+      <span class="creature-label">Sea Turtle</span>
+    </div>
+    <div class="creature-card" onclick="pickCreature('🐬','Dolphin',this)">
+      <div class="creature-ring"></div>
+      <span class="creature-emoji">🐬</span>
+      <span class="creature-label">Dolphin</span>
+    </div>
+    <div class="creature-card" onclick="pickCreature('🦀','Crab',this)">
+      <div class="creature-ring"></div>
+      <span class="creature-emoji">🦀</span>
+      <span class="creature-label">Crab</span>
+    </div>
+    <div class="creature-card" onclick="pickCreature('🪸','Coral',this)">
+      <div class="creature-ring"></div>
+      <span class="creature-emoji">🪸</span>
+      <span class="creature-label">Coral</span>
+    </div>
+  </div>
+  <button class="crayon-btn teal" id="confirmCreature"
+    onclick="btnClick(this,'s5')">Continue →</button>
+</div>
+
+<!-- ████ S5 — STORY ████ -->
+<div class="screen" id="s5">
+  <div class="wc-bg wc-s5"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="chapter-strip">CHAPTER 1 — THE WORLD BEFORE</div>
+  <div class="story-box" id="storyBox"></div>
+  <div class="story-torn" id="storyTorn" style="display:none"></div>
+  <div class="choices-card" id="choicesCard" style="display:none">
+    <div class="skip-link" id="skipLink" style="display:none" onclick="skipTyping()">skip ›</div>
+    <button class="crayon-btn full" onclick="pickChoice('A')">
+      🔍 I need to understand what this means…
+    </button>
+    <button class="crayon-btn coral full" onclick="pickChoice('B')">
+      😶 It's far away. It probably won't reach me…
+    </button>
+  </div>
+</div>
+
+<!-- ████ S6 — FISH BOWL ████ -->
+<div class="screen screen-center" id="s6">
+  <div class="wc-bg wc-s6"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="cut cut-3"></div>
+  <div class="result-card" id="resultCard"></div>
+  <div class="bowl-wrap">
+    <div class="bowl-counter" id="bowlCounter">5 creatures have heard this story</div>
+    <div class="bowl" id="bowl">
+      <div class="bowl-shine"></div>
+      <div class="bowl-wave"></div>
+      <div class="bowl-sand"></div>
+    </div>
+    <p class="bowl-note">in the real version: fish bowl fills with real participants in real time</p>
+  </div>
+  <div class="bowl-actions">
+    <button class="crayon-btn" onclick="restartAll()">↩ Start again</button>
+    <button class="crayon-btn teal" onclick="shareStory()">Share this story 🐠</button>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+/* ══ STATE ══ */
+const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice:''};
+
+/* ══ BUTTON SQUISH + NAVIGATE ══ */
+function btnClick(btn,dest){
+  btn.classList.add('squishing');
+  btn.addEventListener('animationend',()=>{
+    btn.classList.remove('squishing');
+    if(dest)goTo(dest);
+  },{once:true});
+}
+/* Make all crayon-btns squish on click */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.crayon-btn');
+  if(!b||b.dataset.noSquish)return;
+  b.classList.add('squishing');
+  b.addEventListener('animationend',()=>b.classList.remove('squishing'),{once:true});
+});
+
+/* ══ NAVIGATION ══ */
+function goTo(id){
+  const cur=document.querySelector('.screen.active');
+  const nxt=document.getElementById(id);
+  if(!nxt||cur===nxt)return;
+  cur.classList.add('crumpling');
+  cur.addEventListener('animationend',()=>{
+    cur.classList.remove('active','crumpling');
+    nxt.classList.add('active','dropping');
+    nxt.addEventListener('animationend',()=>{
+      nxt.classList.remove('dropping');
+      if(id==='s5')startStory();
+      if(id==='s6')initBowl();
+    },{once:true});
+  },{once:true});
+}
+
+/* ══ LANGUAGE ══ */
+function pickLang(lang,el){
+  state.lang=lang;
+  el.classList.add('flipping');
+  el.addEventListener('animationend',()=>goTo('s3'),{once:true});
+}
+
+/* ══ USERNAME ══ */
+function submitName(){
+  const v=document.getElementById('nameInput').value.trim();
+  if(!v){document.getElementById('nameInput').focus();return;}
+  state.username=v;
+  goTo('s4');
+}
+document.getElementById('nameInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')submitName();
+});
+
+/* ══ CREATURE SELECTION ══ */
+let _selectedCard=null;
+function pickCreature(emoji,name,card){
+  if(_selectedCard)_selectedCard.classList.remove('selected');
+  card.classList.add('selected');
+  _selectedCard=card;
+  state.creature=emoji;state.creatureName=name;
+  const btn=document.getElementById('confirmCreature');
+  btn.style.display='inline-block';
+  document.getElementById('dot4').classList.add('done');
+}
+
+/* ══ STORY TYPEWRITER ══ */
+const STORY=`The waters between the Andaman Sea and the Gulf of Thailand have been alive for thousands of years. Mangrove forests stretch along the coastline — nurseries for hundreds of species of fish, crabs, and birds. Coral reefs shimmer beneath the surface in colours so vivid they look painted by hand.
+
+Fishing families in Ranong and Chumphon have lived here for generations. Their boats go out at dawn and return at dusk, heavy with fish. Their children know the names of every creature in the water. This coast is their home. This ocean is their livelihood.
+
+Then came the announcement. The Southern Landbridge — 90km of highways, railways, and deep-sea ports cutting across the peninsula. The government called it progress worth 1 trillion baht.
+
+But nobody asked the mangroves. Nobody asked the fish. Nobody asked the 8,000 families who had fished these waters for 300 years.
+
+You are floating just below the surface. The water is changing. Something is coming.`;
+
+/* Build parts array from story text */
+function buildParts(text){
+  const parts=[];
+  text.trim().split('\n\n').forEach((para,pi)=>{
+    if(pi>0)parts.push({t:'br'});
+    para.split(' ').forEach(w=>{if(w)parts.push({t:'w',v:w})});
+  });
+  return parts;
+}
+const PARTS=buildParts(STORY);
+
+let _typingTimer=null;
+let _typingIdx=0;
+let _typingActive=false;
+
+function startStory(){
+  clearTimeout(_typingTimer);
+  _typingIdx=0;
+  _typingActive=true;
+  const box=document.getElementById('storyBox');
+  const choices=document.getElementById('choicesCard');
+  const torn=document.getElementById('storyTorn');
+  const skip=document.getElementById('skipLink');
+  box.innerHTML='';
+  choices.style.display='none';
+  torn.style.display='none';
+  skip.style.display='block';
+
+  function next(){
+    if(!_typingActive)return;
+    if(_typingIdx>=PARTS.length){
+      _typingActive=false;
+      torn.style.display='block';
+      choices.style.display='flex';
+      skip.style.display='none';
+      return;
+    }
+    const p=PARTS[_typingIdx++];
+    if(p.t==='br'){
+      box.appendChild(document.createElement('br'));
+      box.appendChild(document.createElement('br'));
+      _typingTimer=setTimeout(next,260);
+    } else {
+      const s=document.createElement('span');
+      s.className='word-span';
+      s.textContent=p.v+' ';
+      /* random wobble per word: -2.5° to +2.5° */
+      s.style.setProperty('--r',(Math.random()*5-2.5).toFixed(1)+'deg');
+      box.appendChild(s);
+      box.scrollTop=box.scrollHeight;
+      _typingTimer=setTimeout(next,72+Math.random()*62);
+    }
+  }
+  _typingTimer=setTimeout(next,320);
+}
+
+function skipTyping(){
+  _typingActive=false;
+  clearTimeout(_typingTimer);
+  /* Render all remaining words instantly */
+  const box=document.getElementById('storyBox');
+  const torn=document.getElementById('storyTorn');
+  const choices=document.getElementById('choicesCard');
+  const skip=document.getElementById('skipLink');
+  /* Clear and redraw full story without animation */
+  box.innerHTML='';
+  PARTS.forEach(p=>{
+    if(p.t==='br'){
+      box.appendChild(document.createElement('br'));
+      box.appendChild(document.createElement('br'));
+    } else {
+      const s=document.createElement('span');
+      s.textContent=p.v+' ';
+      s.style.opacity='1';
+      box.appendChild(s);
+    }
+  });
+  box.scrollTop=box.scrollHeight;
+  torn.style.display='block';
+  choices.style.display='flex';
+  skip.style.display='none';
+}
+
+/* ══ CHOICE ══ */
+function pickChoice(ch){
+  state.choice=ch;
+  goTo('s6');
+}
+
+/* ══ FISH BOWL ══ */
+const DEMO_FISH=[
+  {emoji:'🐢',name:'Nong_Fah'},
+  {emoji:'🐬',name:'TurboKrub'},
+  {emoji:'🪸',name:'PlaKhao99'},
+  {emoji:'🐠',name:'AomSea'},
+];
+let _fishData=[];
+let _rafId=null;
+let _bubbleInt=null;
+
+function initBowl(){
+  /* Result message with splat animation */
+  const rc=document.getElementById('resultCard');
+  const A=`<strong>${state.username}</strong>, you chose to look deeper. Not everyone does. Most scroll past. But you stopped.
+<br><br>What you found: <strong>8,000+ hectares</strong> of mangrove at risk. <strong>300-year-old</strong> fishing communities with no voice in a decision worth 1 trillion baht. The data was always there. It needed someone willing to see it.`;
+  const B=`You swam away. The machines kept coming anyway. The water grew murky. The mangroves fell silent. The nets came up empty.
+<br><br>Ignoring something does not make it stop. But you are here now, reading this. <strong>That is what matters.</strong>`;
+  rc.innerHTML=state.choice==='B'?B:A;
+  rc.classList.remove('splat-in');
+  void rc.offsetWidth; /* force reflow to restart animation */
+  rc.classList.add('splat-in');
+
+  /* Counter */
+  document.getElementById('bowlCounter').textContent=
+    `${5+Math.floor(Math.random()*5)} creatures have heard this story`;
+
+  /* Clear previous fish + intervals */
+  if(_rafId)cancelAnimationFrame(_rafId);
+  if(_bubbleInt)clearInterval(_bubbleInt);
+  const bowl=document.getElementById('bowl');
+  bowl.querySelectorAll('.fish-entity,.bubble').forEach(e=>e.remove());
+  _fishData=[];
+
+  /* Build fish list: demo fish + user */
+  const allFish=[
+    ...DEMO_FISH,
+    {emoji:state.creature,name:state.username,isUser:true},
+  ];
+
+  allFish.forEach((f,i)=>{
+    const el=document.createElement('div');
+    el.className='fish-entity'+(f.isUser?' user-fish':'');
+    el.innerHTML=`<span class="fish-name">${f.name}</span><span class="fish-emoji">${f.emoji}</span>`;
+    bowl.appendChild(el);
+    /* Unique figure-8 Lissajous path per fish */
+    _fishData.push({
+      el,
+      t:(i/allFish.length)*Math.PI*2,       /* stagger start angle */
+      speed:.0068+i*.0012+Math.random()*.004,
+      cx:50, cy:48,
+      rx:28+(i%3)*5,                         /* vary orbit width */
+      ry:15+(i%2)*8,                         /* vary orbit height */
+      phase:Math.random()*Math.PI,           /* y-phase offset */
+      prevX:50,
+    });
+  });
+
+  /* Animation loop */
+  function tick(){
+    if(!bowl.isConnected)return;
+    _fishData.forEach(f=>{
+      f.t+=f.speed;
+      const x=f.cx+f.rx*Math.cos(f.t);
+      const y=f.cy+f.ry*Math.sin(2*f.t+f.phase)*.7;
+      const goRight=x>f.prevX;
+      f.prevX=x;
+      f.el.style.left=Math.min(Math.max(x,8),92)+'%';
+      f.el.style.top =Math.min(Math.max(y,10),82)+'%';
+      /* CSS transition on .fish-emoji handles the smooth flip */
+      const em=f.el.querySelector('.fish-emoji');
+      if(em)em.style.transform=goRight?'':'scaleX(-1)';
+    });
+    _rafId=requestAnimationFrame(tick);
+  }
+  tick();
+
+  /* Bubble spawner */
+  _bubbleInt=setInterval(()=>{
+    if(!bowl.isConnected){clearInterval(_bubbleInt);return;}
+    const b=document.createElement('div');
+    const sz=3+Math.random()*10;
+    const dur=(2+Math.random()*2.5).toFixed(1)+'s';
+    b.className='bubble';
+    b.style.cssText=`left:${14+Math.random()*72}%;width:${sz}px;height:${sz}px;--dur:${dur}`;
+    bowl.appendChild(b);
+    /* Remove after animation */
+    setTimeout(()=>b.isConnected&&b.remove(),5000);
+  },950);
+}
+
+/* ══ RESTART ══ */
+function restartAll(){
+  _typingActive=false;
+  clearTimeout(_typingTimer);
+  if(_rafId)cancelAnimationFrame(_rafId);
+  if(_bubbleInt)clearInterval(_bubbleInt);
+  Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice:''});
+  if(_selectedCard){_selectedCard.classList.remove('selected');_selectedCard=null;}
+  document.getElementById('confirmCreature').style.display='none';
+  document.getElementById('dot4').classList.remove('done');
+  document.getElementById('nameInput').value='';
+  goTo('s1');
+}
+
+/* ══ SHARE ══ */
+function shareStory(){
+  const txt='I just experienced "Water Colour Exhibition" — an interactive story about Thailand\'s Southern Landbridge and what we stand to lose. 🌊 #WaterColourExhibition';
+  if(navigator.share){navigator.share({title:'Water Colour Exhibition',text:txt});}
+  else if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(()=>alert('Copied to clipboard! 🐠'));
+  } else {
+    window.prompt('Copy this link:',txt);
+  }
+}
+</script>
+</body>
+</html>
