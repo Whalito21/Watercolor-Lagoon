@@ -972,9 +972,14 @@ body::before{
   /* Show full result card text */
   .result-card{max-height:none;font-size:1.12rem}
   .bowl{height:clamp(180px,32dvh,240px)}
-  /* Audio button: bigger tap target on mobile */
-  #audioToggle{width:2.75rem;height:2.75rem}
-  /* Hide sound hint on small screens — not enough room */
+  /* Audio button: move to bottom-right so it clears top content */
+  #audioToggle{
+    top:auto;
+    bottom:max(1rem,calc(env(safe-area-inset-bottom)+0.4rem));
+    right:0.9rem;
+    width:2.4rem;height:2.4rem;font-size:1rem;
+  }
+  /* Hide sound hint — not enough room on mobile */
   #soundHint{display:none}
   /* Bowl actions: wrap to stack if needed */
   .bowl-actions{flex-wrap:wrap;justify-content:center}
