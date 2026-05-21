@@ -1356,10 +1356,17 @@ body::before{
 
 </div><!-- #app -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="story-content.js"></script>
 <script>
 /* ══ STATE ══ */
 const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null};
+
+/* ══ SUPABASE ══ */
+const SUPABASE_URL='https://jjozofdvktpkvamoxfbn.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impqb3pvZmR2a3Rwa3ZhbW94ZmJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNjI4NjQsImV4cCI6MjA5NDkzODg2NH0.NnH-F0tszbe1aUlJaf4FFN6-ocm7YLUFKgESSH6-InE';
+const _sb=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY)||null;
+let _sbChannel=null;
 
 /* ══ CHAPTER → SCREEN MAP ══ */
 const CHAPTER_MAP={s5a:'chapter1',s5b:'chapter2',s5c:'chapter3',s5d:'chapter4',s5e:'chapter5'};
@@ -1738,6 +1745,28 @@ const DEMO_FISH=[
 ];
 let _fishData=[],_rafId=null,_bubbleInt=null;
 
+function spawnFish(f,i,total){
+  const bowl=document.getElementById('bowl');
+  const el=document.createElement('div');
+  el.className='fish-entity'+(f.isUser?' user-fish':'');
+  el.innerHTML=`<span class="fish-name">${escapeHtml(f.name)}</span><span class="fish-emoji">${f.emoji}</span>`;
+  bowl.appendChild(el);
+  _fishData.push({
+    el,
+    t:(i/Math.max(total,1))*Math.PI*2,
+    speed:.0068+i*.0012+Math.random()*.004,
+    cx:50,cy:48,
+    rx:28+(i%3)*5,
+    ry:15+(i%2)*8,
+    phase:Math.random()*Math.PI,
+    prevX:50,
+  });
+}
+
+function addFishLive(f){
+  spawnFish(f,_fishData.length,_fishData.length+1);
+}
+
 function initBowl(){
   clearInterval(_ambientInt);
   document.querySelectorAll('.ambient-shape').forEach(e=>e.remove());
@@ -1755,32 +1784,11 @@ function initBowl(){
   void rc.offsetWidth;
   setTimeout(()=>rc.classList.add('splat-in'),800);
 
-  const n=5+Math.floor(Math.random()*5);
-  document.getElementById('bowlCounter').textContent=COUNTER_TEXT[lang](n+DEMO_FISH.length+1);
-
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
   const bowl=document.getElementById('bowl');
   bowl.querySelectorAll('.fish-entity,.bubble').forEach(e=>e.remove());
   _fishData=[];
-
-  const allFish=[...DEMO_FISH,{emoji:state.creature,name:state.username,isUser:true}];
-  allFish.forEach((f,i)=>{
-    const el=document.createElement('div');
-    el.className='fish-entity'+(f.isUser?' user-fish':'');
-    el.innerHTML=`<span class="fish-name">${escapeHtml(f.name)}</span><span class="fish-emoji">${f.emoji}</span>`;
-    bowl.appendChild(el);
-    _fishData.push({
-      el,
-      t:(i/allFish.length)*Math.PI*2,
-      speed:.0068+i*.0012+Math.random()*.004,
-      cx:50,cy:48,
-      rx:28+(i%3)*5,
-      ry:15+(i%2)*8,
-      phase:Math.random()*Math.PI,
-      prevX:50,
-    });
-  });
 
   function tick(){
     if(!bowl.isConnected)return;
@@ -1809,6 +1817,45 @@ function initBowl(){
     bowl.appendChild(b);
     setTimeout(()=>b.isConnected&&b.remove(),5000);
   },950);
+
+  async function loadBowl(){
+    let allFish=[];
+    let totalCount=1;
+    if(_sb){
+      const{data:ins}=await _sb.from('sessions').insert({
+        creature:state.creature,
+        username:state.username||state.creatureName,
+        choice2:state.choice2,
+        choice4:state.choice4,
+        lang:state.lang,
+      }).select('id').single();
+      const insertedId=ins?.id;
+      const{data,count}=await _sb.from('sessions')
+        .select('creature,username',{count:'exact'})
+        .neq('id',insertedId||'00000000-0000-0000-0000-000000000000')
+        .order('created_at',{ascending:false})
+        .limit(19);
+      if(data){
+        allFish=data.map(r=>({emoji:r.creature,name:r.username}));
+        totalCount=(count??data.length)+1;
+      }
+      _sbChannel=_sb.channel('bowl-live')
+        .on('postgres_changes',{event:'INSERT',schema:'public',table:'sessions'},(payload)=>{
+          if(payload.new.id===insertedId)return;
+          addFishLive({emoji:payload.new.creature,name:payload.new.username});
+          totalCount++;
+          document.getElementById('bowlCounter').textContent=COUNTER_TEXT[state.lang](totalCount);
+        })
+        .subscribe();
+    }else{
+      allFish=[...DEMO_FISH];
+      totalCount=5+Math.floor(Math.random()*5)+1;
+    }
+    document.getElementById('bowlCounter').textContent=COUNTER_TEXT[lang](totalCount);
+    const fishToSpawn=[...allFish,{emoji:state.creature,name:state.username||state.creatureName,isUser:true}];
+    fishToSpawn.forEach((f,i)=>spawnFish(f,i,fishToSpawn.length));
+  }
+  loadBowl();
 }
 
 /* ══ RESTART ══ */
@@ -1818,6 +1865,7 @@ function restartAll(){
   clearInterval(_ambientInt);
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
+  if(_sbChannel){_sb.removeChannel(_sbChannel);_sbChannel=null;}
   Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null});
   _allParts=[];_pageBounds=[0];_currentPage=0;_isLastPage=false;_curPageNav=null;
   if(_selectedCard){_selectedCard.classList.remove('selected');_selectedCard=null;}
