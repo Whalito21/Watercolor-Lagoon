@@ -62,11 +62,12 @@ body::before{
 /* ══ WATERCOLOUR BACKGROUNDS ══ */
 .wc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:opacity .3s}
 .wc-s1{background:
-  radial-gradient(ellipse 80% 45% at 50% 8%, rgba(255,225,122,.38) 0%,transparent 65%),
-  radial-gradient(ellipse 60% 50% at 16% 32%,rgba(78,205,196,.36) 0%,transparent 68%),
-  radial-gradient(ellipse 50% 60% at 84% 48%,rgba(168,230,163,.22) 0%,transparent 60%),
-  radial-gradient(ellipse 70% 35% at 50% 100%,rgba(26,107,96,.28) 0%,transparent 55%),
-  radial-gradient(ellipse 90% 90% at 50% 50%,rgba(78,205,196,.05) 0%,transparent 82%),
+  radial-gradient(ellipse 52% 52% at 50% 40%, rgba(255,235,50,.72) 0%, rgba(255,220,80,.38) 40%, transparent 70%),
+  radial-gradient(ellipse 85% 38% at 50% 4%,  rgba(255,210,80,.50) 0%, rgba(255,190,60,.22) 42%, transparent 68%),
+  radial-gradient(ellipse 65% 60% at 14% 30%, rgba(255,200,100,.18) 0%, transparent 65%),
+  radial-gradient(ellipse 55% 58% at 88% 38%, rgba(255,215,120,.16) 0%, transparent 62%),
+  radial-gradient(ellipse 70% 35% at 50% 100%,rgba(26,107,96,.28) 0%, transparent 55%),
+  linear-gradient(180deg, rgba(255,230,160,.15) 0%, rgba(255,245,210,.06) 55%, transparent 100%),
   var(--paper)}
 .wc-s2{background:
   radial-gradient(ellipse 60% 60% at 26% 52%,rgba(255,179,179,.34) 0%,transparent 70%),
@@ -204,11 +205,6 @@ body::before{
 /* ══ FLOATING PAPER CUT-OUTS ══ */
 .cut{position:absolute;pointer-events:none;border-radius:2px}
 /* S1 */
-#s1 .cut-1{width:90px;height:90px;background:rgba(78,205,196,.22);top:8%;right:6%;transform:rotate(14deg);border-radius:50%;box-shadow:3px 3px 0 rgba(0,0,0,.08)}
-#s1 .cut-2{width:60px;height:60px;background:rgba(255,179,179,.30);bottom:12%;left:5%;transform:rotate(-18deg);clip-path:polygon(50% 0%,100% 100%,0% 100%);box-shadow:3px 3px 0 rgba(0,0,0,.08)}
-#s1 .cut-3{width:44px;height:44px;background:rgba(168,230,163,.35);top:22%;left:8%;transform:rotate(7deg);box-shadow:2px 2px 0 rgba(0,0,0,.08)}
-#s1 .cut-4{width:28px;height:28px;background:rgba(255,225,122,.5);top:60%;right:10%;transform:rotate(-12deg);border-radius:50%;box-shadow:2px 2px 0 rgba(0,0,0,.1)}
-#s1 .cut-5{width:70px;height:18px;background:rgba(78,205,196,.20);bottom:24%;right:4%;transform:rotate(22deg);border-radius:4px}
 /* S2 */
 #s2 .cut-1{width:50px;height:50px;background:rgba(255,225,122,.30);top:10%;left:5%;transform:rotate(-10deg);border-radius:50%}
 #s2 .cut-2{width:36px;height:36px;background:rgba(78,205,196,.25);bottom:15%;right:6%;transform:rotate(20deg)}
@@ -290,13 +286,31 @@ body::before{
   from{opacity:0;transform:translateY(28px)}
   to  {opacity:1;transform:translateY(0)}
 }
+.title-alt-wrap{
+  display:grid;
+  margin-bottom:.5rem;z-index:2;
+  animation:s1FadeInUp 1.2s cubic-bezier(.22,1,.36,1) both;
+}
 .main-title{
+  grid-area:1/1;  /* both titles share same grid cell — wrapper auto-sizes */
   font-family:'Itim',cursive;
   font-size:clamp(2.6rem,8vw,5.8rem);font-weight:400;
   color:var(--ink);text-align:center;line-height:1.1;
   text-shadow:3px 3px 0 rgba(78,205,196,.45),6px 6px 0 rgba(78,205,196,.12);
-  margin-bottom:.5rem;position:relative;z-index:2;
-  animation:s1FadeInUp 1.2s cubic-bezier(.22,1,.36,1) both;
+  margin:0;
+}
+.title-th{animation:titleAlt 9s ease-in-out 1.2s infinite;}
+.title-en{
+  font-family:'Caveat',cursive;
+  font-size:clamp(1.9rem,5.5vw,4rem);
+  opacity:0;
+  animation:titleAltEn 9s ease-in-out 1.2s infinite;
+}
+@keyframes titleAlt{
+  0%,38%{opacity:1} 44%,90%{opacity:0} 96%,100%{opacity:1}
+}
+@keyframes titleAltEn{
+  0%,44%{opacity:0} 50%,85%{opacity:1} 91%,100%{opacity:0}
 }
 .s1-invite{
   font-family:'Itim',cursive;font-size:1.2rem;
@@ -392,115 +406,131 @@ body::before{
   40%    {transform:rotate(2.5deg)}
   70%    {transform:rotate(-2deg)}
 }
-/* ── Thai Longtail Boat (เรือหางยาว) — CSS-drawn ── */
+/* ── Thai Longtail Boat (เรือหางยาว) — CSS-drawn, redesigned ── */
 .s1-thai-boat{
   position:absolute;
-  bottom:calc(44% + 2px);
+  bottom:calc(44% - 18px);
   left:26%;
-  width:200px;height:58px;
+  width:280px;height:95px;
   z-index:4;
   transform-origin:50% 100%;
   animation:thaiBoatFloat 5.6s cubic-bezier(.37,0,.63,1) infinite,
             thaiBoatDrift 32s ease-in-out infinite;
-  filter:drop-shadow(0 7px 12px rgba(0,0,0,.22));
+  filter:drop-shadow(0 8px 14px rgba(0,0,0,.24));
 }
 
-/* === Hull === */
+/* === Hull — long, narrow, tapered canoe profile === */
 .sboat-hull{
   position:absolute;
-  bottom:8px;left:52px;
-  width:136px;height:28px;
-  background:linear-gradient(175deg,#C8965A 0%,#A07038 45%,#7A4E20 100%);
-  border-radius:4px 5px 14px 14px;
+  bottom:12px;left:76px;
+  width:185px;height:20px;
+  background:linear-gradient(175deg,#C8965A 0%,#9E6E32 55%,#7A4E1A 100%);
+  /* tapered stern on left, pointed bow on right */
+  border-radius:3px 0 0 4px;
+  clip-path:polygon(0% 100%, 0% 30%, 4% 0%, 96% 0%, 100% 30%, 100% 100%);
 }
-/* Bow tip — pointed right */
+/* Bow — sharper point extending right */
 .sboat-hull::after{
   content:'';position:absolute;
-  right:-15px;top:5px;
-  border-left:17px solid #905A28;
+  right:-26px;top:2px;
+  border-left:28px solid #8A5420;
   border-top:9px solid transparent;
-  border-bottom:14px solid transparent;
+  border-bottom:9px solid transparent;
 }
-/* Gunwale highlight */
+/* Gunwale — thin bright rail along top */
 .sboat-hull::before{
   content:'';position:absolute;
-  top:3px;left:6px;right:6px;height:3px;
-  background:rgba(255,255,255,.18);
+  top:2px;left:6px;right:6px;height:3px;
+  background:linear-gradient(to right,rgba(255,255,255,.28),rgba(255,255,255,.1));
   border-radius:2px;
 }
 
-/* === Stern upturn === */
+/* === Stern piece — where hull meets engine mount === */
 .sboat-stern{
   position:absolute;
-  bottom:22px;left:46px;
-  width:26px;height:22px;
-  background:#A07038;
-  border-radius:10px 3px 3px 8px;
-  box-shadow:-2px -2px 0 #7A4E20;
+  bottom:22px;left:68px;
+  width:20px;height:18px;
+  background:#9A6830;
+  border-radius:6px 2px 2px 8px;
+  box-shadow:-2px -1px 0 #6A4018;
 }
 
-/* === Interior deck strip === */
+/* === Interior deck — narrow strip along hull centre === */
 .sboat-interior{
   position:absolute;
-  bottom:35px;left:68px;
-  width:96px;height:7px;
-  background:linear-gradient(to right,#E8C080,#C89050,#A87030);
+  bottom:31px;left:88px;
+  width:148px;height:5px;
+  background:linear-gradient(to right,#D8A860,#B07840,#906020);
   border-radius:2px;
-  opacity:.88;
+  opacity:.82;
 }
 
-/* === Engine housing === */
+/* === Engine block — sits elevated at stern === */
 .sboat-engine{
   position:absolute;
-  bottom:35px;left:57px;
-  width:20px;height:14px;
-  background:#333;
+  bottom:30px;left:66px;
+  width:22px;height:22px;
+  background:linear-gradient(180deg,#484848 0%,#1E1E1E 100%);
   border-radius:2px 2px 0 0;
-  box-shadow:2px 0 0 rgba(0,0,0,.35);
+  box-shadow:2px 0 4px rgba(0,0,0,.45);
 }
-/* Exhaust pipe nub */
+/* Air-filter / intake dome on top */
+.sboat-engine::before{
+  content:'';position:absolute;
+  top:-6px;left:3px;
+  width:14px;height:7px;
+  background:#303030;
+  border-radius:50% 50% 0 0;
+}
+/* Exhaust stub */
 .sboat-engine::after{
   content:'';position:absolute;
-  top:-4px;right:3px;
-  width:5px;height:5px;
+  top:-11px;left:5px;
+  width:6px;height:6px;
   background:#222;
   border-radius:50% 50% 0 0;
 }
 
-/* === Long tail shaft === */
+/* === Long tail shaft — THE defining feature
+   Pivot at engine stern. Extends far left and DOWN into water.
+   right-edge = engine x = ~88px from container left.
+   rotate(30deg) CW → left tip goes 30° below horizontal toward stern. === */
 .sboat-shaft{
   position:absolute;
-  bottom:39px;left:8px;
-  width:54px;height:3px;
-  background:#6A3E18;
-  transform:rotate(20deg);
+  bottom:40px;
+  left:-24px;          /* right edge lands at 88px (engine) */
+  width:112px;height:3.5px;
+  background:linear-gradient(to left,#7A5020 0%,#3E2008 100%);
+  transform:rotate(30deg);
   transform-origin:right center;
-  border-radius:2px 0 0 2px;
+  border-radius:3px 0 0 3px;
 }
-/* Propeller blades */
+/* Propeller — vertical blade */
 .sboat-shaft::before{
   content:'';position:absolute;
-  left:-1px;top:-5px;
-  width:3px;height:13px;
-  background:rgba(100,60,20,.72);
-  border-radius:3px;
+  left:-2px;top:-9px;
+  width:4px;height:22px;
+  background:rgba(55,30,8,.85);
+  border-radius:2px;
 }
+/* Propeller — horizontal blade */
 .sboat-shaft::after{
   content:'';position:absolute;
-  left:-4px;top:-1px;
-  width:9px;height:4px;
-  background:rgba(100,60,20,.55);
+  left:-7px;top:-2px;
+  width:15px;height:7px;
+  background:rgba(55,30,8,.65);
   border-radius:50%;
+  transform:rotate(15deg);
 }
 
-/* === Water reflection under hull === */
+/* === Garland at bow — traditional jasmine string === */
 .sboat-reflection{
   position:absolute;
-  bottom:2px;left:52px;
-  width:136px;height:6px;
+  bottom:2px;left:76px;
+  width:185px;height:5px;
   background:linear-gradient(to bottom,rgba(78,205,196,.28),transparent);
   border-radius:50%;
-  transform:scaleY(.6);
+  transform:scaleY(.5);
 }
 
 /* ── Physics animations ── */
@@ -562,6 +592,8 @@ body::before{
   padding:2.2rem 2.8rem;cursor:pointer;text-align:center;
   box-shadow:var(--shadow);filter:url(#crayon);
   transition:box-shadow .2s;min-width:160px;
+  font-family:var(--font);color:var(--ink);
+  appearance:none;-webkit-appearance:none;
 }
 .fish-card.left {transform:rotate(-3deg)}
 .fish-card.right{transform:rotate(3deg)}
@@ -570,7 +602,8 @@ body::before{
   transform:translateY(-8px) rotate(0deg)!important;
 }
 .fish-card-emoji{font-size:3.4rem;display:block;margin-bottom:.5rem}
-.fish-card-label{font-size:1.8rem;font-weight:600}
+.fish-card-label{font-size:1.8rem;font-weight:600;display:block}
+.fish-card-sub{display:block;font-size:1rem;color:#4a6670;font-style:italic;margin-top:.3rem}
 @keyframes cardFlip{
   0%  {transform:rotateY(0) scale(1)}
   45% {transform:rotateY(90deg) scale(.82)}
@@ -669,11 +702,16 @@ body::before{
   background:rgba(253,248,238,.96);border:2.5px solid rgba(45,55,72,.45);
   border-radius:4px 4px 0 0;border-bottom:none;
   padding:1.5rem 1.6rem 1.8rem;max-width:660px;width:100%;
-  height:clamp(190px,36vh,300px);overflow-y:auto;
+  height:clamp(200px,40vh,360px);overflow:hidden;
   box-shadow:var(--shadow),inset 0 0 24px rgba(78,205,196,.07);
-  font-size:1.3rem;line-height:1.92;color:var(--ink);
+  font-family:var(--font);font-size:1.3rem;line-height:1.92;color:var(--ink);
   position:relative;z-index:1;
 }
+.story-box.th{font-family:'Itim',cursive;font-size:clamp(18px,2.4vw,27px);line-height:1.72}
+@keyframes pageFlipIn {from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pageFlipBack{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+.story-box.page-flip-in  {animation:pageFlipIn  .26s ease-out both}
+.story-box.page-flip-back{animation:pageFlipBack .26s ease-out both}
 
 .story-torn{
   max-width:660px;width:100%;height:28px;
@@ -713,10 +751,33 @@ body::before{
 .choice-prompt{font-size:1.3rem;font-weight:600;color:var(--ink)}
 .ch-choice-a,.ch-choice-b{font-weight:700}
 .skip-link{
-  font-size:1rem;color:#aaa;text-align:right;cursor:pointer;
-  text-decoration:underline dotted;margin-bottom:.2rem;
+  max-width:660px;width:100%;
+  font-family:var(--font);font-size:1rem;color:#aaa;
+  text-align:right;cursor:pointer;
+  text-decoration:underline dotted;
+  border:none;background:transparent;
+  padding:.15rem 0;position:relative;z-index:2;
 }
 .skip-link:hover{color:var(--ink)}
+.page-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:660px;width:100%;
+  padding:.2rem .4rem;position:relative;z-index:1;
+}
+.page-btn{
+  font-family:var(--font);font-size:1.7rem;font-weight:700;
+  background:rgba(253,248,238,.96);border:2px solid var(--ink);
+  border-radius:4px;width:40px;height:40px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink);transition:background .15s,transform .1s;
+  box-shadow:2px 2px 0 rgba(0,0,0,.12);
+}
+.page-btn:hover:not(:disabled){background:var(--sand);transform:translateY(-2px)}
+.page-btn:disabled{opacity:.25;cursor:default}
+.page-num{
+  font-family:var(--font);font-size:1.05rem;
+  color:var(--ink);opacity:.5;text-align:center;
+}
 
 /* ══════════ SCREEN 6 — FISH BOWL ══════════ */
 @keyframes splat{
@@ -727,13 +788,22 @@ body::before{
 }
 .result-card{
   background:var(--sand);border:3px solid var(--ink);border-radius:6px;
-  padding:1.2rem 1.5rem;max-width:580px;width:100%;
+  padding:1.2rem 1.5rem;width:100%;
   font-size:1.22rem;line-height:1.68;color:var(--ink);
   box-shadow:var(--shadow);transform:rotate(-1deg);filter:url(#crayon);
-  margin-bottom:.9rem;position:relative;z-index:1;
+  position:relative;z-index:1;
 }
 .result-card.splat-in{animation:splat .55s cubic-bezier(.34,1.56,.64,1) forwards}
-.bowl-wrap{position:relative;width:min(400px,90vw);z-index:1}
+.bowl-page{
+  width:min(920px,94vw);
+  display:grid;
+  grid-template-columns:minmax(260px,380px) minmax(280px,1fr);
+  gap:clamp(16px,4vw,36px);
+  align-items:center;
+  position:relative;z-index:2;
+}
+.result-col{display:flex;flex-direction:column;gap:12px}
+.bowl-wrap{position:relative;z-index:1;display:grid;gap:8px;justify-items:center}
 .bowl-counter{
   text-align:center;font-size:1.28rem;color:var(--ink);margin-bottom:.4rem;
   letter-spacing:.02em;
@@ -756,16 +826,7 @@ body::before{
   border-top:2px dotted rgba(180,130,70,.5);
   z-index:7;pointer-events:none;
 }
-.bowl-wave{
-  position:absolute;top:18px;left:0;right:0;height:10px;
-  background:repeating-linear-gradient(
-    90deg,
-    transparent 0px,transparent 18px,
-    rgba(255,255,255,.12) 18px,rgba(255,255,255,.12) 36px
-  );
-  animation:waveMove 4s linear infinite;z-index:8;pointer-events:none;
-}
-@keyframes waveMove{from{background-position:0 0}to{background-position:72px 0}}
+.bowl-wave{display:none}
 .fish-entity{
   position:absolute;display:flex;flex-direction:column;align-items:center;
   transform:translate(-50%,-50%);pointer-events:none;z-index:5;
@@ -784,7 +845,7 @@ body::before{
 .user-fish .fish-name{font-weight:700;background:var(--sand);border:1px solid rgba(0,0,0,.1)}
 .bubble{
   position:absolute;border-radius:50%;bottom:22px;
-  background:rgba(255,255,255,.3);border:1.5px solid rgba(255,255,255,.65);
+  background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.7),rgba(255,255,255,.2));
   pointer-events:none;z-index:6;
   animation:bubUp var(--dur,3s) ease-out forwards;
 }
@@ -895,6 +956,8 @@ body::before{
   .chapter-strip{font-size:1.1rem;align-self:center}
   .story-screen{padding-top:1.2rem}
   .bowl-sand{height:16px}
+  .bowl-page{grid-template-columns:1fr;gap:14px;overflow-y:auto;max-height:calc(100dvh - 40px)}
+  .result-card{max-height:28vh;overflow:auto}
 }
 @media(max-width:380px){
   .fish-card{min-width:110px;padding:1.2rem .9rem}
@@ -916,7 +979,7 @@ body::before{
 
 /* ══ AUDIO TOGGLE ══ */
 #audioToggle{
-  position:fixed;bottom:1.2rem;right:1.2rem;z-index:999;
+  position:fixed;top:1.2rem;right:1.2rem;z-index:999;
   background:rgba(255,255,255,.72);border:2px solid rgba(45,55,72,.25);
   border-radius:50%;width:2.6rem;height:2.6rem;
   font-size:1.1rem;cursor:pointer;
@@ -926,6 +989,13 @@ body::before{
   backdrop-filter:blur(4px);
 }
 #audioToggle:hover{background:rgba(255,255,255,.92);transform:scale(1.1)}
+#soundHint{
+  position:fixed;top:1.35rem;right:3.8rem;z-index:998;
+  font-family:'Caveat',cursive;font-size:1.08rem;
+  color:var(--ink);opacity:.32;
+  pointer-events:none;white-space:nowrap;
+  animation:s1FadeInUp 1.2s cubic-bezier(.22,1,.36,1) .8s both;
+}
 </style>
 </head>
 <body>
@@ -947,6 +1017,7 @@ body::before{
 </svg>
 
 <div id="surfaceOverlay"></div>
+<span id="soundHint">turn on sound →</span>
 <button id="audioToggle" onclick="toggleAudio()" title="Ocean ambience">🔇</button>
 
 <div id="app">
@@ -954,16 +1025,14 @@ body::before{
 <!-- ████ S1 — SPLASH ████ -->
 <div class="screen active" id="s1" style="justify-content:flex-start;padding:0">
   <div class="wc-bg wc-s1"></div>
-  <div class="cut cut-1"></div>
-  <div class="cut cut-3"></div>
-  <div class="cut cut-4"></div>
 
   <!-- upper body — title + tags + CTA -->
   <div class="s1-body">
-    <h1 class="main-title">ก่อนน้ำจะเปลี่ยนสี</h1>
-    <p class="s1-invite">The water is about to change colour.<br>Will you witness it?</p>
-    <button class="crayon-btn" onclick="btnClick(this,'s2')">Begin the story →</button>
-    <div class="stamp">★ prototype for team pitch</div>
+    <div class="title-alt-wrap">
+      <h1 class="main-title title-th">ก่อนน้ำจะเปลี่ยนสี</h1>
+      <h1 class="main-title title-en">Before the Water<br>Changes Colour</h1>
+    </div>
+<button class="crayon-btn" onclick="btnClick(this,'s2')">Begin the story →</button>
   </div>
 
   <!-- ocean scene anchored to bottom -->
@@ -979,9 +1048,6 @@ body::before{
       <div class="s1-root"></div>
       <div class="s1-root"></div>
     </div>
-    <div class="s1-fish">🐟</div>
-    <div class="s1-fish">🐠</div>
-    <div class="s1-fish">🐡</div>
   </div>
   <!-- characters sitting on the waterline -->
   <!-- CSS-drawn Thai longtail boat (เรือหางยาว) -->
@@ -1003,14 +1069,16 @@ body::before{
   <div class="cut cut-3"></div>
   <p class="screen-heading">Choose your language 🌊</p>
   <div class="fish-cards-row">
-    <div class="fish-card left" onclick="pickLang('th',this)">
-      <span class="fish-card-emoji">🐠</span>
+    <button class="fish-card left" type="button" onclick="pickLang('th',this)">
+      <span class="fish-card-emoji">🌊</span>
       <span class="fish-card-label">ภาษาไทย</span>
-    </div>
-    <div class="fish-card right" onclick="pickLang('en',this)">
-      <span class="fish-card-emoji">🐡</span>
+      <span class="fish-card-sub">ดำลงไป</span>
+    </button>
+    <button class="fish-card right" type="button" onclick="pickLang('en',this)">
+      <span class="fish-card-emoji">🐟</span>
       <span class="fish-card-label">English</span>
-    </div>
+      <span class="fish-card-sub">Dive in</span>
+    </button>
   </div>
 </div>
 
@@ -1093,9 +1161,14 @@ body::before{
   </div>
   <div class="chapter-strip"></div>
   <div class="story-box"></div>
+  <button class="skip-link" type="button" onclick="skipTyping()" style="display:none">skip ›</button>
+  <div class="page-nav" style="display:none">
+    <button class="page-btn prev-btn" type="button" onclick="flipPrev()">‹</button>
+    <span class="page-num"></span>
+    <button class="page-btn next-btn" type="button" onclick="flipNext()">›</button>
+  </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <div class="skip-link" onclick="skipTyping()">skip ›</div>
     <button class="crayon-btn teal full ch-continue"></button>
   </div>
 </div>
@@ -1125,9 +1198,14 @@ body::before{
   </div>
   <div class="chapter-strip"></div>
   <div class="story-box"></div>
+  <button class="skip-link" type="button" onclick="skipTyping()" style="display:none">skip ›</button>
+  <div class="page-nav" style="display:none">
+    <button class="page-btn prev-btn" type="button" onclick="flipPrev()">‹</button>
+    <span class="page-num"></span>
+    <button class="page-btn next-btn" type="button" onclick="flipNext()">›</button>
+  </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <div class="skip-link" onclick="skipTyping()">skip ›</div>
     <p class="choice-prompt"></p>
     <button class="crayon-btn full ch-choice-a"></button>
     <button class="crayon-btn coral full ch-choice-b"></button>
@@ -1159,9 +1237,14 @@ body::before{
   </div>
   <div class="chapter-strip"></div>
   <div class="story-box"></div>
+  <button class="skip-link" type="button" onclick="skipTyping()" style="display:none">skip ›</button>
+  <div class="page-nav" style="display:none">
+    <button class="page-btn prev-btn" type="button" onclick="flipPrev()">‹</button>
+    <span class="page-num"></span>
+    <button class="page-btn next-btn" type="button" onclick="flipNext()">›</button>
+  </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <div class="skip-link" onclick="skipTyping()">skip ›</div>
     <button class="crayon-btn teal full ch-continue"></button>
   </div>
 </div>
@@ -1191,9 +1274,14 @@ body::before{
   </div>
   <div class="chapter-strip"></div>
   <div class="story-box"></div>
+  <button class="skip-link" type="button" onclick="skipTyping()" style="display:none">skip ›</button>
+  <div class="page-nav" style="display:none">
+    <button class="page-btn prev-btn" type="button" onclick="flipPrev()">‹</button>
+    <span class="page-num"></span>
+    <button class="page-btn next-btn" type="button" onclick="flipNext()">›</button>
+  </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <div class="skip-link" onclick="skipTyping()">skip ›</div>
     <p class="choice-prompt"></p>
     <button class="crayon-btn full ch-choice-a"></button>
     <button class="crayon-btn coral full ch-choice-b"></button>
@@ -1225,9 +1313,14 @@ body::before{
   </div>
   <div class="chapter-strip"></div>
   <div class="story-box"></div>
+  <button class="skip-link" type="button" onclick="skipTyping()" style="display:none">skip ›</button>
+  <div class="page-nav" style="display:none">
+    <button class="page-btn prev-btn" type="button" onclick="flipPrev()">‹</button>
+    <span class="page-num"></span>
+    <button class="page-btn next-btn" type="button" onclick="flipNext()">›</button>
+  </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <div class="skip-link" onclick="skipTyping()">skip ›</div>
     <button class="crayon-btn teal full ch-continue"></button>
   </div>
 </div>
@@ -1238,19 +1331,21 @@ body::before{
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
   <div class="cut cut-3"></div>
-  <div class="result-card" id="resultCard"></div>
-  <div class="bowl-wrap">
-    <div class="bowl-counter" id="bowlCounter">5 creatures have heard this story</div>
-    <div class="bowl" id="bowl">
-      <div class="bowl-shine"></div>
-      <div class="bowl-wave"></div>
-      <div class="bowl-sand"></div>
+  <div class="bowl-page">
+    <div class="result-col">
+      <div class="result-card" id="resultCard"></div>
+      <div class="bowl-actions">
+        <button class="crayon-btn" id="restartBtn" onclick="restartAll()">↩ Start again</button>
+        <button class="crayon-btn teal" id="shareBtn" onclick="shareStory()">Share this story 🐠</button>
+      </div>
     </div>
-    <p class="bowl-note">in the real version: fish bowl fills with real participants in real time</p>
-  </div>
-  <div class="bowl-actions">
-    <button class="crayon-btn" onclick="restartAll()">↩ Start again</button>
-    <button class="crayon-btn teal" onclick="shareStory()">Share this story 🐠</button>
+    <div class="bowl-wrap">
+      <div class="bowl-counter" id="bowlCounter">5 creatures have heard this story</div>
+      <div class="bowl" id="bowl">
+        <div class="bowl-shine"></div>
+        <div class="bowl-sand"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1264,6 +1359,19 @@ const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choi
 /* ══ CHAPTER → SCREEN MAP ══ */
 const CHAPTER_MAP={s5a:'chapter1',s5b:'chapter2',s5c:'chapter3',s5d:'chapter4',s5e:'chapter5'};
 const NEXT_SCREEN={chapter1:'s5b',chapter3:'s5d',chapter5:'s6'};
+
+/* ══ I18N ══ */
+const COUNTER_TEXT={
+  en:n=>`${n} creatures have heard this story`,
+  th:n=>`มี ${n} ชีวิตได้ฟังเรื่องนี้แล้ว`
+};
+
+/* ══ SECURITY ══ */
+function escapeHtml(v){
+  return String(v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
 
 /* ══ BUTTON SQUISH + NAVIGATE ══ */
 function btnClick(btn,dest){
@@ -1311,6 +1419,8 @@ function pickLang(lang,el){
   document.querySelectorAll('.creature-label').forEach(lbl=>{
     lbl.textContent=th?lbl.dataset.th:lbl.dataset.en;
   });
+  document.getElementById('restartBtn').textContent=th?'↩ เริ่มใหม่':'↩ Start again';
+  document.getElementById('shareBtn').textContent=th?'แชร์เรื่องนี้ 🐠':'Share this story 🐠';
   el.classList.add('flipping');
   el.addEventListener('animationend',()=>goTo('s3'),{once:true});
 }
@@ -1343,8 +1453,9 @@ function pickCreature(emoji,card){
 function pickChoice2(ch){state.choice2=ch;goTo('s5c');}
 function pickChoice4(ch){state.choice4=ch;goTo('s5e');}
 
-/* ══ TYPEWRITER ENGINE ══ */
-let _curParts=[],_curBox=null,_curChoices=null,_curTorn=null,_curSkip=null;
+/* ══ TYPEWRITER + PAGINATION ENGINE ══ */
+let _allParts=[],_pageBounds=[0],_currentPage=0,_isLastPage=false;
+let _curBox=null,_curChoices=null,_curTorn=null,_curSkip=null,_curPageNav=null;
 let _typingTimer=null,_typingIdx=0,_typingActive=false;
 let _ambientInt=null;
 
@@ -1367,8 +1478,8 @@ function startAmbience(screen){
     el.style.cssText=`
       left:${8+Math.random()*84}%;
       bottom:${8+Math.random()*52}%;
-      width:${sz}px;height:${isBubble?sz:sz*.55}px;
-      border-radius:${isBubble?'50%':'2px'};
+      width:${sz}px;height:${sz}px;
+      border-radius:50%;
       background:${COLORS[Math.floor(Math.random()*COLORS.length)]()};
       --dur:${dur}s;
       --rise:-${55+Math.random()*85}px;
@@ -1431,6 +1542,7 @@ function startChapter(chKey){
   _curChoices=screen.querySelector('.choices-card');
   _curTorn=screen.querySelector('.story-torn');
   _curSkip=screen.querySelector('.skip-link');
+  _curPageNav=screen.querySelector('.page-nav');
   const strip=screen.querySelector('.chapter-strip');
 
   const chData=STORY[lang][chKey];
@@ -1452,60 +1564,164 @@ function startChapter(chKey){
 
   setupChoicesCard(screen,chKey);
 
-  _curParts=buildParts(text);
-  _typingIdx=0;
-  _typingActive=true;
+  _allParts=buildParts(text);
+  _currentPage=0;_isLastPage=false;
+
   _curBox.innerHTML='';
+  _curBox.classList.toggle('th', state.lang==='th');
+  _curBox.classList.remove('page-flip-in','page-flip-back');
   _curChoices.style.display='none';
   _curTorn.style.display='none';
   _curSkip.style.display='block';
+  if(_curPageNav)_curPageNav.style.display='none';
 
-  function next(){
-    if(!_typingActive)return;
-    if(_typingIdx>=_curParts.length){
-      _typingActive=false;
-      _curTorn.style.display='block';
-      _curChoices.style.display='flex';
-      _curSkip.style.display='none';
-      return;
-    }
-    const p=_curParts[_typingIdx++];
-    const fast=state.lang==='en';
+  _pageBounds=preCountPages(_allParts); // know total pages before typing
+
+  _typingIdx=0;_typingActive=true;
+  _typingTimer=setTimeout(typeNext,lang==='en'?315:630);
+}
+
+function preCountPages(parts){
+  const box=_curBox;
+  const cs=window.getComputedStyle(box);
+  const lh=parseFloat(cs.lineHeight)||24;
+  // Thai: needs 1 full line-height safety — diacritics + merged-orphan wrap risk
+  const isThai=box.classList.contains('th');
+  const safety=isThai?lh:4;
+  const probe=document.createElement('div');
+  probe.style.cssText=`position:fixed;left:-9999px;top:0;visibility:hidden;
+    width:${box.clientWidth}px;height:${box.clientHeight-safety}px;overflow:hidden;
+    font-family:${cs.fontFamily};font-size:${cs.fontSize};
+    line-height:${cs.lineHeight};padding:${cs.padding};
+    word-break:${cs.wordBreak};overflow-wrap:break-word;box-sizing:border-box`;
+  document.body.appendChild(probe);
+  const bounds=[0];
+  for(let i=0;i<parts.length;i++){
+    const p=parts[i];
+    let nodes;
     if(p.t==='br'){
-      _curBox.appendChild(document.createElement('br'));
-      _curBox.appendChild(document.createElement('br'));
-      _typingTimer=setTimeout(next,fast?337:675);
+      const b1=document.createElement('br'),b2=document.createElement('br');
+      probe.appendChild(b1);probe.appendChild(b2);nodes=[b1,b2];
     }else{
-      const s=document.createElement('span');
-      s.className='word-span';
-      s.textContent=p.v+' ';
-      s.style.setProperty('--r',(Math.random()*5-2.5).toFixed(1)+'deg');
-      _curBox.appendChild(s);
-      _typingTimer=setTimeout(next,fast?112+Math.random()*75:225+Math.random()*150);
+      const s=document.createElement('span');s.textContent=p.v+' ';
+      probe.appendChild(s);nodes=[s];
+    }
+    if(probe.scrollHeight>probe.clientHeight+2){
+      nodes.forEach(n=>probe.removeChild(n));
+      bounds.push(i);probe.innerHTML='';
+      // Re-seed probe with the boundary element so next page's count is accurate
+      if(p.t==='br'){probe.appendChild(document.createElement('br'));probe.appendChild(document.createElement('br'));}
+      else{const s=document.createElement('span');s.textContent=p.v+' ';probe.appendChild(s);}
     }
   }
-  _typingTimer=setTimeout(next,state.lang==='en'?315:630);
+  document.body.removeChild(probe);
+  // Orphan prevention (English only — Thai orphan merge risks overflow from line wrapping)
+  if(!isThai){
+    for(let b=bounds.length-1;b>=1;b--){
+      const start=bounds[b];
+      const end=b+1<bounds.length?bounds[b+1]:parts.length;
+      let words=0;
+      for(let j=start;j<end;j++){if(parts[j].t!=='br')words++;}
+      if(words<=2)bounds.splice(b,1);
+    }
+  }
+  return bounds;
+}
+
+function typeNext(){
+  if(!_typingActive||!_curBox)return;
+  const nextPageStart=_pageBounds[_currentPage+1];
+  if(nextPageStart!==undefined&&_typingIdx>=nextPageStart){_endOfPage();return;}
+  if(_typingIdx>=_allParts.length){_isLastPage=true;_finishLastPage();return;}
+  const p=_allParts[_typingIdx++];
+  const fast=state.lang==='en';
+  if(p.t==='br'){
+    _curBox.appendChild(document.createElement('br'));
+    _curBox.appendChild(document.createElement('br'));
+  }else{
+    const s=document.createElement('span');
+    s.className='word-span';s.textContent=p.v+' ';
+    s.style.setProperty('--r',(Math.random()*5-2.5).toFixed(1)+'deg');
+    _curBox.appendChild(s);
+  }
+  _typingTimer=setTimeout(typeNext,
+    p.t==='br'?(fast?337:675):(fast?112+Math.random()*75:225+Math.random()*150));
+}
+
+function _endOfPage(){
+  _typingActive=false;
+  if(_curSkip)_curSkip.style.display='none';
+  if(_curChoices)_curChoices.style.display='none';
+  if(_curTorn)_curTorn.style.display='none';
+  _updatePageNav();
+  if(_curPageNav)_curPageNav.style.display='flex';
+}
+
+function _finishLastPage(){
+  _typingActive=false;_isLastPage=true;
+  if(_curTorn)_curTorn.style.display='block';
+  if(_curChoices)_curChoices.style.display='flex';
+  if(_curSkip)_curSkip.style.display='none';
+  _updatePageNav();
+  if(_curPageNav)_curPageNav.style.display=_pageBounds.length>1?'flex':'none';
+}
+
+function _updatePageNav(){
+  if(!_curPageNav)return;
+  _curPageNav.querySelector('.page-num').textContent=`${_currentPage+1} / ${_pageBounds.length}`;
+  _curPageNav.querySelector('.prev-btn').disabled=_currentPage<=0;
+  _curPageNav.querySelector('.next-btn').disabled=_currentPage>=_pageBounds.length-1;
+}
+
+function flipNext(){
+  if(_isLastPage&&_currentPage>=_pageBounds.length-1)return;
+  clearTimeout(_typingTimer);
+  _currentPage++;
+  _typingIdx=_pageBounds[_currentPage];
+  _typingActive=true;
+  _curBox.classList.remove('page-flip-in','page-flip-back');
+  void _curBox.offsetWidth;
+  _curBox.classList.add('page-flip-in');
+  _curBox.innerHTML='';
+  if(_curChoices)_curChoices.style.display='none';
+  if(_curTorn)_curTorn.style.display='none';
+  if(_curSkip)_curSkip.style.display='block';
+  _updatePageNav();
+  _typingTimer=setTimeout(typeNext,state.lang==='en'?160:320);
+}
+
+function flipPrev(){
+  if(_currentPage<=0)return;
+  clearTimeout(_typingTimer);_typingActive=false;
+  _currentPage--;
+  const start=_pageBounds[_currentPage];
+  const end=_currentPage+1<_pageBounds.length?_pageBounds[_currentPage+1]:_allParts.length;
+  _curBox.classList.remove('page-flip-in','page-flip-back');
+  void _curBox.offsetWidth;
+  _curBox.classList.add('page-flip-back');
+  _curBox.innerHTML='';
+  _allParts.slice(start,end).forEach(p=>{
+    if(p.t==='br'){_curBox.appendChild(document.createElement('br'));_curBox.appendChild(document.createElement('br'));}
+    else{const s=document.createElement('span');s.textContent=p.v+' ';s.style.opacity='1';_curBox.appendChild(s);}
+  });
+  if(_curChoices)_curChoices.style.display='none';
+  if(_curTorn)_curTorn.style.display='none';
+  if(_curSkip)_curSkip.style.display='none';
+  if(_curPageNav)_curPageNav.style.display='flex';
+  _updatePageNav();
 }
 
 function skipTyping(){
-  _typingActive=false;
-  clearTimeout(_typingTimer);
-  _curBox.innerHTML='';
-  _curParts.forEach(p=>{
-    if(p.t==='br'){
-      _curBox.appendChild(document.createElement('br'));
-      _curBox.appendChild(document.createElement('br'));
-    }else{
-      const s=document.createElement('span');
-      s.textContent=p.v+' ';
-      s.style.opacity='1';
-      _curBox.appendChild(s);
-    }
-  });
-  _curBox.scrollTop=_curBox.scrollHeight;
-  _curTorn.style.display='block';
-  _curChoices.style.display='flex';
-  _curSkip.style.display='none';
+  if(!_curBox)return;
+  _typingActive=false;clearTimeout(_typingTimer);
+  const end=(_pageBounds[_currentPage+1]!==undefined)?_pageBounds[_currentPage+1]:_allParts.length;
+  for(;_typingIdx<end;_typingIdx++){
+    const p=_allParts[_typingIdx];
+    if(p.t==='br'){_curBox.appendChild(document.createElement('br'));_curBox.appendChild(document.createElement('br'));}
+    else{const s=document.createElement('span');s.textContent=p.v+' ';s.style.opacity='1';_curBox.appendChild(s);}
+  }
+  if(_pageBounds[_currentPage+1]!==undefined){_endOfPage();}
+  else{_isLastPage=true;_finishLastPage();}
 }
 
 /* ══ FISH BOWL ══ */
@@ -1518,6 +1734,8 @@ const DEMO_FISH=[
 let _fishData=[],_rafId=null,_bubbleInt=null;
 
 function initBowl(){
+  clearInterval(_ambientInt);
+  document.querySelectorAll('.ambient-shape').forEach(e=>e.remove());
   const ov=document.getElementById('surfaceOverlay');
   ov.classList.remove('surfacing');
   void ov.offsetWidth;
@@ -1526,14 +1744,14 @@ function initBowl(){
   const lang=state.lang;
   const rc=document.getElementById('resultCard');
   const bowlMsg=STORY[lang].chapter5.bowlText[state.choice4]
-    .replace('{name}',state.username);
+    .replace('{name}',escapeHtml(state.username||state.creatureName));
   rc.innerHTML=bowlMsg;
   rc.classList.remove('splat-in');
   void rc.offsetWidth;
   setTimeout(()=>rc.classList.add('splat-in'),800);
 
-  document.getElementById('bowlCounter').textContent=
-    `${5+Math.floor(Math.random()*5)} creatures have heard this story`;
+  const n=5+Math.floor(Math.random()*5);
+  document.getElementById('bowlCounter').textContent=COUNTER_TEXT[lang](n+DEMO_FISH.length+1);
 
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
@@ -1545,7 +1763,7 @@ function initBowl(){
   allFish.forEach((f,i)=>{
     const el=document.createElement('div');
     el.className='fish-entity'+(f.isUser?' user-fish':'');
-    el.innerHTML=`<span class="fish-name">${f.name}</span><span class="fish-emoji">${f.emoji}</span>`;
+    el.innerHTML=`<span class="fish-name">${escapeHtml(f.name)}</span><span class="fish-emoji">${f.emoji}</span>`;
     bowl.appendChild(el);
     _fishData.push({
       el,
@@ -1579,7 +1797,7 @@ function initBowl(){
   _bubbleInt=setInterval(()=>{
     if(!bowl.isConnected){clearInterval(_bubbleInt);return;}
     const b=document.createElement('div');
-    const sz=3+Math.random()*10;
+    const sz=Math.round(6+Math.random()*8);
     const dur=(2+Math.random()*2.5).toFixed(1)+'s';
     b.className='bubble';
     b.style.cssText=`left:${14+Math.random()*72}%;width:${sz}px;height:${sz}px;--dur:${dur}`;
@@ -1596,6 +1814,7 @@ function restartAll(){
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
   Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null});
+  _allParts=[];_pageBounds=[0];_currentPage=0;_isLastPage=false;_curPageNav=null;
   if(_selectedCard){_selectedCard.classList.remove('selected');_selectedCard=null;}
   document.getElementById('confirmCreature').style.display='none';
   document.getElementById('dot4').classList.remove('done');
@@ -1605,6 +1824,10 @@ function restartAll(){
   document.getElementById('nameInput').placeholder='your name here…';
   document.getElementById('s4Heading').textContent='Choose your sea creature';
   document.querySelectorAll('.creature-label').forEach(lbl=>{lbl.textContent=lbl.dataset.en;});
+  document.getElementById('restartBtn').textContent='↩ Start again';
+  document.getElementById('shareBtn').textContent='Share this story 🐠';
+  document.getElementById('bowlCounter').textContent=COUNTER_TEXT['en'](5);
+  document.getElementById('resultCard').classList.remove('splat-in');
   goTo('s1');
 }
 
@@ -1672,13 +1895,16 @@ function _buildOcean(){
 
 function toggleAudio(){
   const btn=document.getElementById('audioToggle');
+  const hint=document.getElementById('soundHint');
   if(_audioMuted){
     _buildOcean();
     if(_audioCtx.state==='suspended')_audioCtx.resume();
     _audioMuted=false;btn.textContent='🔊';
+    if(hint)hint.style.opacity='0';
   }else{
     if(_audioCtx)_audioCtx.suspend();
     _audioMuted=true;btn.textContent='🔇';
+    if(hint)hint.style.opacity='.32';
   }
 }
 </script>
