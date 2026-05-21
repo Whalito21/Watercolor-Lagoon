@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no"/>
 <title>ก่อนน้ำจะเปลี่ยนสี</title>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Itim&display=swap" rel="stylesheet"/>
 <style>
@@ -15,7 +15,7 @@
   --shadow-lift:6px 6px 0px rgba(0,0,0,.2),14px 14px 0px rgba(0,0,0,.1);
   --font:'Caveat',cursive;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;font-family:var(--font);overflow:hidden;background:var(--paper)}
 
 /* ── Paper grain overlay ── */
@@ -270,6 +270,7 @@ body::before{
   animation:btnWobble 3.2s ease-in-out infinite;
   display:inline-block;position:relative;
   transition:box-shadow .15s;
+  touch-action:manipulation;
 }
 .crayon-btn:hover{
   box-shadow:var(--shadow-lift);
@@ -771,6 +772,7 @@ body::before{
   display:flex;align-items:center;justify-content:center;
   color:var(--ink);transition:background .15s,transform .1s;
   box-shadow:2px 2px 0 rgba(0,0,0,.12);
+  touch-action:manipulation;
 }
 .page-btn:hover:not(:disabled){background:var(--sand);transform:translateY(-2px)}
 .page-btn:disabled{opacity:.25;cursor:default}
@@ -955,19 +957,42 @@ body::before{
   .main-title{font-size:2.6rem}
   .fish-cards-row{gap:1rem}
   .fish-card{min-width:130px;padding:1.5rem 1.2rem}
-  .story-box{height:clamp(150px,30vh,220px)}
-  .screen{padding:1.2rem 1rem 2.5rem}
-  .crayon-btn{font-size:1.2rem;padding:.55rem 1.2rem}
+  /* Taller story box → fewer page turns */
+  .story-box{height:clamp(200px,42dvh,320px)}
+  /* Safe-area padding for iPhone home bar */
+  .screen{padding:1.2rem 1rem max(2.5rem,env(safe-area-inset-bottom))}
+  .story-screen{padding-top:1rem;padding-bottom:max(1rem,env(safe-area-inset-bottom))}
+  /* Touch targets: minimum 44px hit area */
+  .crayon-btn{font-size:1.2rem;padding:.55rem 1.2rem;min-height:44px}
+  .page-btn{min-height:44px;min-width:44px;font-size:1.9rem;padding:.3rem .6rem}
   .chapter-strip{font-size:1.1rem;align-self:center}
-  .story-screen{padding-top:1.2rem}
   .bowl-sand{height:16px}
-  .bowl-page{grid-template-columns:1fr;gap:14px;overflow-y:auto;max-height:calc(100dvh - 40px)}
-  .result-card{max-height:28vh;overflow:auto}
+  /* Bowl page: single column, scrollable */
+  .bowl-page{grid-template-columns:1fr;gap:14px;overflow-y:auto;max-height:calc(100dvh - 40px);overscroll-behavior:contain}
+  /* Show full result card text */
+  .result-card{max-height:none;font-size:1.12rem}
+  .bowl{height:clamp(180px,32dvh,240px)}
+  /* Audio button: bigger tap target on mobile */
+  #audioToggle{width:2.75rem;height:2.75rem}
+  /* Hide sound hint on small screens — not enough room */
+  #soundHint{display:none}
+  /* Bowl actions: wrap to stack if needed */
+  .bowl-actions{flex-wrap:wrap;justify-content:center}
+}
+@media(max-width:430px){
+  .screen-heading{font-size:1.8rem}
+  .name-q{font-size:1.65rem}
+  .name-input{font-size:1.5rem}
+  .story-box{font-size:1.2rem}
+  .story-box.th{font-size:clamp(17px,4.2vw,24px)}
 }
 @media(max-width:380px){
   .fish-card{min-width:110px;padding:1.2rem .9rem}
   .creatures-grid{gap:.8rem}
   .creature-card{min-width:105px;padding:1rem 1.1rem}
+  .screen-heading{font-size:1.6rem}
+  .name-q{font-size:1.45rem}
+  .name-input{font-size:1.3rem}
 }
 
 /* ══ SURFACE OVERLAY — bowl arrival ══ */
@@ -1763,8 +1788,17 @@ function spawnFish(f,i,total){
   });
 }
 
+const BOWL_MAX=25;
+
+function removeOldestFish(){
+  if(!_fishData.length)return;
+  const oldest=_fishData.shift();
+  oldest.el.remove();
+}
+
 function addFishLive(f){
-  spawnFish(f,_fishData.length,_fishData.length+1);
+  if(_fishData.length>=BOWL_MAX)removeOldestFish();
+  spawnFish(f,_fishData.length,BOWL_MAX);
 }
 
 function initBowl(){
@@ -1834,7 +1868,7 @@ function initBowl(){
         .select('creature,username',{count:'exact'})
         .neq('id',insertedId||'00000000-0000-0000-0000-000000000000')
         .order('created_at',{ascending:false})
-        .limit(19);
+        .limit(BOWL_MAX-1);
       if(data){
         allFish=data.map(r=>({emoji:r.creature,name:r.username}));
         totalCount=(count??data.length)+1;
