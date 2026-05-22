@@ -74,6 +74,11 @@ body::before{
   radial-gradient(ellipse 50% 40% at 78% 30%,rgba(255,225,122,.40) 0%,transparent 60%),
   radial-gradient(ellipse 40% 58% at 60% 82%,rgba(78,205,196,.24) 0%,transparent 60%),
   var(--paper)}
+.wc-s2b{background:
+  radial-gradient(ellipse 55% 55% at 28% 38%,rgba(78,205,196,.32) 0%,transparent 70%),
+  radial-gradient(ellipse 48% 42% at 72% 22%,rgba(168,230,163,.28) 0%,transparent 62%),
+  radial-gradient(ellipse 36% 46% at 62% 80%,rgba(255,225,122,.22) 0%,transparent 56%),
+  var(--paper)}
 .wc-s3{background:
   radial-gradient(ellipse 70% 50% at 50% 26%,rgba(168,230,163,.34) 0%,transparent 70%),
   radial-gradient(ellipse 40% 60% at 16% 74%,rgba(78,205,196,.30) 0%,transparent 62%),
@@ -214,6 +219,10 @@ body::before{
 #s3 .cut-1{width:55px;height:55px;background:rgba(168,230,163,.28);top:12%;right:7%;transform:rotate(16deg);border-radius:50%}
 #s3 .cut-2{width:38px;height:38px;background:rgba(255,225,122,.35);bottom:18%;left:6%;transform:rotate(-22deg);clip-path:polygon(50% 0%,100% 100%,0% 100%)}
 #s3 .cut-3{width:24px;height:24px;background:rgba(78,205,196,.25);top:45%;left:4%;transform:rotate(8deg);border-radius:50%}
+/* S2b — Sound prompt */
+#s2b .cut-1{width:46px;height:46px;background:rgba(78,205,196,.26);top:9%;right:7%;transform:rotate(12deg);border-radius:50%}
+#s2b .cut-2{width:34px;height:34px;background:rgba(255,225,122,.32);bottom:14%;left:5%;transform:rotate(-20deg)}
+#s2b .cut-3{width:22px;height:52px;background:rgba(255,179,179,.24);top:46%;left:3%;transform:rotate(-6deg);border-radius:2px}
 /* S4 */
 #s4 .cut-1{width:46px;height:46px;background:rgba(255,179,179,.28);top:8%;left:4%;transform:rotate(-14deg);border-radius:50%}
 #s4 .cut-2{width:34px;height:34px;background:rgba(78,205,196,.22);bottom:10%;right:5%;transform:rotate(18deg)}
@@ -238,6 +247,12 @@ body::before{
   width:28px;height:28px;background:rgba(255,225,122,.28);
   bottom:8%;left:5%;
   animation:cutSway2 9s ease-in-out 1.4s infinite}
+.music-credit{
+  position:absolute;bottom:1.4rem;right:1.8rem;
+  font-family:'Caveat',cursive;font-size:.88rem;
+  color:var(--ink);opacity:.30;
+  text-align:right;pointer-events:none;white-space:nowrap;line-height:1.6;
+}
 /* S6 */
 #s6 .cut-1{width:50px;height:50px;background:rgba(78,205,196,.20);top:10%;right:4%;transform:rotate(12deg);border-radius:50%}
 #s6 .cut-2{width:32px;height:32px;background:rgba(255,225,122,.28);bottom:12%;left:4%;transform:rotate(-18deg);clip-path:polygon(50% 0%,100% 100%,0% 100%)}
@@ -1005,6 +1020,35 @@ body::before{
 }
 #surfaceOverlay.surfacing{animation:surfaceWash 1.4s cubic-bezier(.4,0,.2,1) forwards}
 
+/* ══ SOUND PROMPT SCREEN ══ */
+.sound-prompt-card{
+  background:rgba(253,248,238,.96);
+  border:2px solid rgba(45,55,72,.14);
+  border-radius:2px;
+  padding:2.4rem 3rem;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1.6rem;
+  box-shadow:4px 4px 0px rgba(0,0,0,.16),8px 8px 0px rgba(0,0,0,.09);
+  filter:url(#crayon);
+  max-width:340px;width:88%;
+}
+.sound-prompt-text{
+  font-family:'Itim','Caveat',cursive;
+  font-size:1.55rem;font-weight:400;
+  color:var(--ink);line-height:1.5;margin:0;
+}
+.sound-big-btn{
+  width:4.4rem;height:4.4rem;
+  background:rgba(78,205,196,.16);
+  border:2px solid rgba(45,55,72,.22);
+  border-radius:50%;font-size:2rem;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:3px 3px 0px rgba(0,0,0,.12);
+  transition:background .2s,transform .15s;
+}
+.sound-big-btn:hover{background:rgba(78,205,196,.30);transform:scale(1.08)}
+
 /* ══ AUDIO TOGGLE ══ */
 #audioToggle{
   position:fixed;top:1.2rem;right:1.2rem;z-index:999;
@@ -1116,6 +1160,19 @@ body::before{
       <span class="fish-card-label">English</span>
       <span class="fish-card-sub">Dive in</span>
     </button>
+  </div>
+</div>
+
+<!-- ████ S2b — SOUND PROMPT ████ -->
+<div class="screen screen-center" id="s2b">
+  <div class="wc-bg wc-s2b"></div>
+  <div class="cut cut-1"></div>
+  <div class="cut cut-2"></div>
+  <div class="cut cut-3"></div>
+  <div class="sound-prompt-card">
+    <p class="sound-prompt-text" id="soundPromptText">Turn on sound<br>for a better experience 🎵</p>
+    <button class="sound-big-btn" id="soundBigBtn" onclick="toggleAudio()" title="Toggle sound">🔇</button>
+    <button class="crayon-btn" id="soundContinueBtn" onclick="goTo('s3')">Continue →</button>
   </div>
 </div>
 
@@ -1383,6 +1440,7 @@ body::before{
         <div class="bowl-sand"></div>
       </div>
     </div>
+  <p class="music-credit">Music composed by Chanon Boonsak<br>Now playing: Erik Satie — Gymnopédie No.1</p>
   </div>
 </div>
 
@@ -1465,8 +1523,12 @@ function pickLang(lang,el){
   });
   document.getElementById('restartBtn').textContent=th?'↩ เริ่มใหม่':'↩ Start again';
   document.getElementById('shareBtn').textContent=th?'แชร์เรื่องนี้ 🐠':'Share this story 🐠';
+  document.getElementById('soundPromptText').innerHTML=th
+    ?'เปิดเสียง<br>เพื่อประสบการณ์ที่ดียิ่งขึ้น 🎵'
+    :'Turn on sound<br>for a better experience 🎵';
+  document.getElementById('soundContinueBtn').textContent=th?'ต่อไป →':'Continue →';
   el.classList.add('flipping');
-  el.addEventListener('animationend',()=>goTo('s3'),{once:true});
+  el.addEventListener('animationend',()=>goTo('s2b'),{once:true});
 }
 
 /* ══ USERNAME ══ */
@@ -1610,6 +1672,8 @@ function startChapter(chKey){
 
   _allParts=buildParts(text);
   _currentPage=0;_isLastPage=false;
+  _storyChapter=parseInt(chKey.replace('chapter',''));
+  playStoryAudio(1,_storyChapter);
 
   _curBox.innerHTML='';
   _curBox.classList.toggle('th', state.lang==='th');
@@ -1721,6 +1785,7 @@ function flipNext(){
   if(_isLastPage&&_currentPage>=_pageBounds.length-1)return;
   clearTimeout(_typingTimer);
   _currentPage++;
+  playStoryAudio(_currentPage+1,_storyChapter);
   _typingIdx=_pageBounds[_currentPage];
   _typingActive=true;
   _curBox.classList.remove('page-flip-in','page-flip-back');
@@ -1738,6 +1803,7 @@ function flipPrev(){
   if(_currentPage<=0)return;
   clearTimeout(_typingTimer);_typingActive=false;
   _currentPage--;
+  playStoryAudio(_currentPage+1,_storyChapter);
   const start=_pageBounds[_currentPage];
   const end=_currentPage+1<_pageBounds.length?_pageBounds[_currentPage+1]:_allParts.length;
   _curBox.classList.remove('page-flip-in','page-flip-back');
@@ -1786,7 +1852,7 @@ function spawnFish(f,i,total){
   _fishData.push({
     el,
     t:(i/Math.max(total,1))*Math.PI*2,
-    speed:.0068+i*.0012+Math.random()*.004,
+    speed:.0032+i*.0006+Math.random()*.002,
     cx:50,cy:48,
     rx:28+(i%3)*5,
     ry:15+(i%2)*8,
@@ -1901,6 +1967,8 @@ function initBowl(){
 
 /* ══ RESTART ══ */
 function restartAll(){
+  if(_storyAudio){_storyAudio.pause();_storyAudio=null;}
+  _satieActive=false;_storyChapter=0;
   _typingActive=false;
   clearTimeout(_typingTimer);
   clearInterval(_ambientInt);
@@ -1934,6 +2002,21 @@ function shareStory(){
   }else{
     window.prompt('Copy this link:',url);
   }
+}
+
+/* ══ STORY AUDIO ══ */
+let _storyAudio=null,_satieActive=false,_storyChapter=0;
+
+function playStoryAudio(page,chapter){
+  if(_satieActive)return;
+  if(_storyAudio){_storyAudio.pause();_storyAudio=null;}
+  let src,loop=false;
+  if(chapter===4&&page===1){src='Audio/Erik Satie.m4a';loop=true;_satieActive=true;}
+  else{src=`Audio/${page}:${chapter}.m4a`;}
+  const a=new Audio(src);
+  a.loop=loop;
+  a.play().catch(()=>{});
+  _storyAudio=a;
 }
 
 /* ══ OCEAN AUDIO ══ */
@@ -1989,15 +2072,16 @@ function _buildOcean(){
 
 function toggleAudio(){
   const btn=document.getElementById('audioToggle');
+  const big=document.getElementById('soundBigBtn');
   const hint=document.getElementById('soundHint');
   if(_audioMuted){
     _buildOcean();
     if(_audioCtx.state==='suspended')_audioCtx.resume();
-    _audioMuted=false;btn.textContent='🔊';
+    _audioMuted=false;btn.textContent='🔊';if(big)big.textContent='🔊';
     if(hint)hint.style.opacity='0';
   }else{
     if(_audioCtx)_audioCtx.suspend();
-    _audioMuted=true;btn.textContent='🔇';
+    _audioMuted=true;btn.textContent='🔇';if(big)big.textContent='🔇';
     if(hint)hint.style.opacity='.32';
   }
 }
