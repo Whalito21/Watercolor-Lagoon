@@ -719,7 +719,7 @@ body::before{
   background:rgba(253,248,238,.96);border:2.5px solid rgba(45,55,72,.45);
   border-radius:4px 4px 0 0;border-bottom:none;
   padding:1.5rem 1.6rem 1.8rem;max-width:660px;width:100%;
-  height:clamp(200px,40vh,360px);overflow:hidden;
+  min-height:clamp(200px,40vh,360px);max-height:clamp(280px,58vh,480px);overflow-y:auto;
   box-shadow:var(--shadow),inset 0 0 24px rgba(78,205,196,.07);
   font-family:var(--font);font-size:1.3rem;line-height:1.92;color:var(--ink);
   position:relative;z-index:1;
@@ -974,7 +974,7 @@ body::before{
   .fish-cards-row{gap:1rem}
   .fish-card{min-width:130px;padding:1.5rem 1.2rem}
   /* Taller story box → fewer page turns */
-  .story-box{height:clamp(200px,42dvh,320px)}
+  .story-box{min-height:clamp(200px,42dvh,320px);max-height:clamp(260px,58dvh,420px)}
   /* Safe-area padding for iPhone home bar */
   .screen{padding:1.2rem 1rem max(2.5rem,env(safe-area-inset-bottom))}
   .story-screen{padding-top:1rem;padding-bottom:max(1rem,env(safe-area-inset-bottom))}
@@ -1049,6 +1049,25 @@ body::before{
 }
 .sound-big-btn:hover{background:rgba(78,205,196,.30);transform:scale(1.08)}
 
+/* ══ DEV PANEL ══ */
+#devPanel{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  background:rgba(20,20,30,.92);backdrop-filter:blur(6px);
+  padding:.45rem .7rem;display:none;
+  font-family:monospace;font-size:.78rem;color:#aef;
+  gap:.35rem;flex-wrap:wrap;align-items:center;
+}
+#devPanel.open{display:flex;}
+#devPanel button{
+  background:rgba(78,205,196,.22);border:1px solid rgba(78,205,196,.55);
+  color:#cff;border-radius:4px;padding:.18rem .48rem;
+  font-family:monospace;font-size:.75rem;cursor:pointer;white-space:nowrap;
+}
+#devPanel button:hover{background:rgba(78,205,196,.45);}
+#devPanel .dev-sep{color:rgba(255,255,255,.2);padding:0 .15rem;}
+#devPanel .dev-label{color:rgba(255,255,255,.38);font-size:.7rem;}
+#devPanel .dev-close{margin-left:auto;color:rgba(255,255,255,.45);cursor:pointer;padding:.18rem .4rem;}
+
 /* ══ AUDIO TOGGLE ══ */
 #audioToggle{
   position:fixed;top:1.2rem;right:1.2rem;z-index:999;
@@ -1080,6 +1099,27 @@ body::before{
 </style>
 </head>
 <body>
+
+<!-- ══ DEV PANEL ══ -->
+<div id="devPanel">
+  <span class="dev-label">DEV</span>
+  <button onclick="devGoto('s1')">s1 Splash</button>
+  <button onclick="devGoto('s2')">s2 Lang</button>
+  <button onclick="devGoto('s2b')">s2b Sound</button>
+  <button onclick="devGoto('s3')">s3 Name</button>
+  <button onclick="devGoto('s4')">s4 Creature</button>
+  <span class="dev-sep">|</span>
+  <button onclick="devGoto('s5a')">s5a Ch1</button>
+  <button onclick="devGoto('s5b')">s5b Ch2</button>
+  <button onclick="devGoto('s5c')">s5c Ch3</button>
+  <button onclick="devGoto('s5d')">s5d Ch4</button>
+  <button onclick="devGoto('s5e')">s5e Ch5</button>
+  <span class="dev-sep">|</span>
+  <button onclick="devGoto('s6')">s6 Bowl</button>
+  <span class="dev-sep">|</span>
+  <button onclick="devToggleLang()" id="devLangBtn">EN→TH</button>
+  <span class="dev-close" onclick="toggleDev()" title="Ctrl+D">✕</span>
+</div>
 
 <!-- ══ SVG Filters ══ -->
 <svg width="0" height="0" style="position:absolute;overflow:hidden">
@@ -1263,7 +1303,10 @@ body::before{
   </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <button class="crayon-btn teal full ch-continue"></button>
+    <p class="choice-prompt"></p>
+    <button class="crayon-btn full ch-choice-a"></button>
+    <button class="crayon-btn coral full ch-choice-b"></button>
+    <button class="crayon-btn teal full ch-choice-c"></button>
   </div>
 </div>
 
@@ -1339,7 +1382,10 @@ body::before{
   </div>
   <div class="story-torn" style="display:none"></div>
   <div class="choices-card" style="display:none">
-    <button class="crayon-btn teal full ch-continue"></button>
+    <button class="crayon-btn full ch-choice-a"></button>
+    <button class="crayon-btn coral full ch-choice-b"></button>
+    <button class="crayon-btn teal full ch-choice-c"></button>
+    <button class="crayon-btn teal full ch-continue" style="display:none"></button>
   </div>
 </div>
 
@@ -1447,10 +1493,465 @@ body::before{
 </div><!-- #app -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="story-content.js"></script>
 <script>
+/* ══ STORY CONTENT ══ */
+const STORY = {
+
+  // ─────────────────────────────────────────────
+  // ENGLISH
+  // ─────────────────────────────────────────────
+  en: {
+
+    chapter1: {
+      title: "CHAPTER 1 — THE MORNING",
+      branch: "main",
+      text: `You've lived here your whole life. You know which currents run warm in the afternoon. You know which roots shelter the smallest fish. You know the sound of Lung Prasert's boat — that particular knock of the engine — before it even rounds the headland.
+
+---
+
+This morning is the same as every morning. The tide pulls back. The mudflats breathe. Somewhere above the water, a heron waits.
+
+Nothing has happened yet. Everything is still whole.`,
+      choicePrompt: "What stirs inside you?",
+      choiceA: "🌊 Curiosity — I want to understand",
+      choiceB: "🌿 Grief — I already feel the loss",
+      choiceC: "🔥 Anger — someone should answer for this",
+      scenes: {
+        a: {
+          text: `You follow the knock of Lung Prasert's engine around the headland — and find him talking to his son in a low, worried voice. Something is troubling him. You can't make out the words, but the weight in his voice is unmistakable.`,
+          miniChoice: "You lean in to listen"
+        },
+        b: {
+          text: `You slip under the roots — and find the old seahorse who used to drift beside you before the tide came in, spinning stories until you slept. He draws close now, eyes wide and unblinking. "Have you heard the news, child? Something big is coming…"`,
+          miniChoice: "What is it, uncle?"
+        },
+        c: {
+          text: `You drift into open water — and a passing boat clips you hard, sending you spinning far into the mudflats. Head still ringing, you land near a cluster of mudskippers chattering at full volume.`,
+          miniChoice: "What are you lot on about?"
+        }
+      }
+    },
+
+    chapter2: {
+      title: "CHAPTER 2 — THE RUMOUR",
+      branch: "main",
+      text: `It starts as a sound more than a word.
+
+The older ones gather near the surface more than usual. The fishermen's voices carry differently — lower, slower. A phrase keeps appearing in their conversations, rising and sinking like something caught in a current.
+
+---
+
+Land bridge.
+
+A corridor, they say. Ninety kilometres of road and rail, slicing across the peninsula from the Andaman to the Gulf. Two new deep-sea ports. Millions of containers. Thousands of jobs.
+
+---
+
+Someone says: *think of what it will bring.*
+Someone else says nothing. Just looks at the water.`,
+      choicePrompt: "What do you do?",
+      choiceA: "🔍 I swim closer. I need to understand.",
+      choiceB: "🌊 I dive deeper. I don't want to know yet."
+    },
+
+    chapter3: {
+      title: "CHAPTER 3 — THE CHANGE",
+
+      a: {
+        intro: `You listen. You learn.
+
+The maps show a line — clean, confident, red on white. It cuts through 8,000 hectares of mangrove. Not around. Through.
+
+---
+
+The reports use words like *unavoidable impact* and *acceptable loss*. They talk about compensation for fishing communities. Resettlement. New livelihoods.
+
+What they don't say: the mangroves took three hundred years to become what they are. They are not just trees. They are nursery, shelter, filter, memory. Every creature you have ever known was born somewhere inside their roots.`,
+        text: `---
+
+Months pass. The water changes before anything else does.
+
+Silt clouds the shallows. The light that used to filter green-gold through the roots now struggles to reach the bottom. You notice the small fish moving — not playfully, but urgently, searching for something that used to be there.
+
+---
+
+Lung Prasert's boat comes home earlier than it used to. And with less.
+
+He sits at the bow for a long time after he ties up. He doesn't say anything. His grandson sits next to him, learning to read the water the way Lung Prasert learned from his father.
+
+The boy doesn't know yet that what he's learning may not apply to the sea he inherits.`
+      },
+
+      b: {
+        intro: `You go deep. You feel it before you understand it.
+
+The water changes slowly at first — the way a room changes when someone you love has left it. Nothing you can point to. Just a quality of the light. A gap in the sound.
+
+Then faster.
+
+---`,
+        text: `The current shifts. The mangrove roots that used to hold the sediment steady start to release it. The water that was clear in the afternoon turns murky by midday.
+
+You find yourself swimming in circles, searching for something you can't name.
+
+---
+
+It's the smell. The water used to smell like earth and salt and something alive. Now it just smells like water.
+
+Lung Prasert's grandson asks his grandfather why the fish are smaller than in the photographs on the wall. Lung Prasert doesn't answer right away.
+
+*The sea is tired*, he finally says. *Same as me.*`
+      },
+
+      buttonText: "Continue →"
+    },
+
+    chapter4: {
+      title: "CHAPTER 4 — THE QUESTION",
+      branch: "main",
+      text: `Here is the thing no one wants to say out loud:
+
+There are families in the Northeast who are hungry now. Families whose children leave for Bangkok at seventeen and don't come back. Families for whom the land bridge means a road to something other than this.
+
+---
+
+And there are three hundred families along this coast whose grandparents are buried in view of the water. Whose knowledge of the tides is so deep it lives in their bodies. Who have no Plan B because the sea was never supposed to need one.
+
+---
+
+The bridge will feed some people and displace others.
+The question is not whether this is true.
+The question is what we do with that truth.`,
+      choicePrompt: "What do you believe?",
+      choiceA: "⚖️ Progress has to cost something. That's always been true.",
+      choiceB: "🌿 Some costs can't be repaid. Some things shouldn't be lost."
+    },
+
+    chapter5: {
+      title: "CHAPTER 5 — THE WATER REMEMBERS",
+
+      a: {
+        text: `Maybe you're right.
+
+Every road was once a forest. Every city was once a field. The world has always moved forward by leaving something behind. Maybe this is just the next chapter in a story that has always been written this way.
+
+---
+
+But you stay in the water a little longer than you need to.
+
+You watch Lung Prasert's grandson trace his hand through the current, the way the old man taught him. The boy doesn't know why he does it. It's just something his grandfather showed him. A way of reading the water that has no name.
+
+---
+
+You wonder if he'll teach it to his own children.
+
+You wonder if there will still be water worth reading.`
+      },
+
+      b: {
+        text: `Maybe you're right.
+
+There are things that, once broken, do not reassemble. The mangroves that took three centuries to grow. The knowledge that lives only in the hands of people who learned it from people who are now old. The particular colour of this water at this hour.
+
+---
+
+You don't know what comes next. Neither does the sea.
+
+But you are still here. And the water still moves the way it always has — in and out, in and out — like something breathing. Like something that hasn't given up yet.
+
+---
+
+Lung Prasert's grandson is still learning to read the tide.
+
+Maybe that's enough to hold onto.`
+      },
+
+      bowlText: {
+        a: `<strong>{name}</strong>, you chose to keep moving forward.\n\nSo did everyone else in this bowl. But you all got here differently — and maybe that's the point.`,
+        b: `<strong>{name}</strong>, you chose to hold on to what matters.\n\nEvery creature in this bowl heard the same story. Some chose like you. Some didn't. The water holds all of you the same.`
+      }
+    }
+  },
+
+  // ─────────────────────────────────────────────
+  // ภาษาไทย
+  // ─────────────────────────────────────────────
+  th: {
+
+    chapter1: {
+      title: "บทที่ 1 — เช้าวันนั้น",
+      branch: "main",
+      text: `คุณอยู่ที่นี่มาทั้งชีวิต รู้ว่าช่วงบ่ายกระแสน้ำตรงไหนอุ่น รู้ว่ารากไหนเป็นที่หลบของปลาตัวเล็ก รู้แม้กระทั่งเสียงเครื่องเรือของลุงประเสริฐ ก่อนที่เรือจะโผล่พ้นแหลมมาด้วยซ้ำ
+
+---
+
+เสียงเครื่องยนต์ต่ำ ๆ สะท้อนผ่านรากโกงกาง
+ก่อนเงาเรือไม้ของลุงประเสิรฐ์จะค่อย ๆ โผล่ออกมาจากโค้งน้ำ
+
+^คุณจะทำอย่างไร?`,
+      choicePrompt: "",
+      choiceA: "ว่ายตามเรือ",
+      choiceB: "ซ่อนใต้รากโกงกาง",
+      choiceC: "ลอยอยู่นิ่งๆ",
+      scenes: {
+        a: {
+          text: `คุณได้ยินลุงประเสริฐคุยกับลูกชายตัวเองด้วยน้ำเสียงเป็นกังวลเกี่ยวกับเรื่องอะไรสักอย่าง`,
+          miniChoice: "คุณเงี่ยหูฟัง",
+          page2: `"แลนด์บริดจ์ มันจะมาถึงแถวนี้แน่ ๆ"
+
+ลุงประเสริฐถอนหายใจ สีหน้าดูเคร่งเครียด`
+        },
+        b: {
+          text: `คุณเจอม้าน้ำเฒ่าที่อาศัยอยู่แถวรากโกงกาง คุณเจอแกตั้งแต่ยังเล็กๆ
+
+"นี่เจ้ารู้ข่าวหรือยัง เรื่องใหญ่เลยหล่ะ…"`,
+          miniChoice: "เรื่องอะไรลุงง",
+          page2: `ม้าน้ำเฒ่าชะโงกเข้ามาใกล้
+
+"แลนด์บริดจ์ เจ้าไม่รู้จักหรอก
+แต่มันกำลังจะทำให้ทุกอย่างเปลี่ยน"`
+        },
+        c: {
+          text: `คุณโดนเรือชนกระเด็นไปไกล มึนหัวสุดๆ แถวหาดโคลนคุณเจอปลาตีนคุยกันเสียงระงม`,
+          miniChoice: "เอ็งคุยไรกันอยู่หน่ะ",
+          page2: `ปลาตีนตัวหนึ่งหยุดคุย แล้วมองมา
+
+"แลนด์บริดจ์
+เอ็งยังไม่รู้เหรอ ข่าวใหญ่สุดในรอบปี"`
+        }
+      }
+    },
+
+    chapter2: {
+      title: "บทที่ 2 — ข่าวลือ",
+      branch: "main",
+      text: `พักหลังมานี้บทสนทนาของชาวประมงดูเปลี่ยไป จากที่ดูมีชีวิตชีวา กลับดูหม่นหมองขึ้นอย่างเห็นได้ชัด คุณว่ายเข้าไปใกล้ขึ้น
+
+---
+
+แลนด์บริดจ์
+
+ทางสัญจร เขาว่ากัน ยาวเก้าสิบกิโล ตัดข้ามคาบสมุทรจากฝั่งอันดามันไปอ่าวไทย มีท่าเรือน้ำลึกสองแห่ง ตู้สินค้าหลายล้านตู้ งานอีกเป็นหมื่นตำแหน่ง
+
+---
+
+ใครบางคนพูดว่า "ลองคิดดูสิว่ามันจะพาอะไรเข้ามา"
+
+อีกคนไม่พูดอะไรเลย แค่มองลงไปในน้ำ`,
+      choicePrompt: "คุณจะทำยังไง?",
+      choiceA: "🔍 ว่ายเข้าไปใกล้ขึ้น อยากรู้ว่ามันคืออะไร",
+      choiceB: "🌊 ดำลึกลงไป ยังไม่อยากรับรู้ตอนนี้",
+      page3: `ถนนและรางรถไฟ ตัดข้ามคาบสมุทร
+จากทะเลอันดามันถึงอ่าวไทย`,
+      page4: `เรือสินค้าจะได้ไม่ต้องอ้อมมาเลเซีย
+ท่าเรือใหม่ งานใหม่ เงินใหม่
+
+แต่มันต้องตัดผ่านแถวนี้แน่นอน`
+    },
+
+    chapter3: {
+      title: "บทที่ 3 — ความเปลี่ยนแปลง",
+      choices: ['😶 รู้สึกเฉย ๆ','😟 เริ่มกังวล','😨 กลัวแล้ว'],
+      page1: `วันหนึ่งน้ำก็ขุ่น
+
+ไม่รู้ว่าเริ่มเมื่อไหร่
+แค่รู้ว่าเมื่อวานยังใส`,
+      page2: `แสงที่เคยลอดรากโกงกางเป็นสีทอง
+ตอนนี้ลงมาไม่ถึงพื้น
+
+ปลาเล็กว่ายหนีไปหาน้ำใสที่อื่น
+ที่ที่คุณไม่รู้จัก`,
+      page3: `รากที่ม้าน้ำเฒ่าเคยเกาะนอนหลับ
+ไม่มีอะไรจับแล้ว
+
+กลิ่นดิน กลิ่นเกลือ
+กลิ่นที่บอกว่ายังมีชีวิตอยู่ตรงนี้
+ค่อย ๆ จางหาย
+
+เหลือแค่กลิ่นน้ำ`,
+      page4: `เรือลุงประเสริฐกลับฝั่งเร็วขึ้น
+ได้ปลาน้อยลง
+
+หลานชายถามว่าทำไม
+
+"ทะเลมันเหนื่อยแล้ว"
+
+เหมือนลุงนั่นแหละ`,
+
+      a: {
+        intro: `คุณฟัง คุณค่อย ๆ เข้าใจ
+
+แผนที่แสดงเส้นตรงสีแดง เส้นที่ดูมั่นใจ หนักแน่น พาดผ่านป่าโกงกาง ไม่ได้อ้อม แต่ตัดผ่านตรง ๆ
+
+---
+
+รายงานใช้คำอย่าง "ผลกระทบที่หลีกเลี่ยงไม่ได้" และ "ความสูญเสียที่ยอมรับได้" พูดถึงเงินชดเชย การย้ายถิ่น อาชีพใหม่สำหรับชุมชนประมง
+
+แต่สิ่งที่ไม่มีอยู่ในรายงาน คือป่าโกงกางพวกนี้ใช้เวลาสามร้อยปีกว่าจะเติบโตมาเป็นแบบทุกวันนี้ มันไม่ใช่แค่ต้นไม้ แต่มันคือที่กำเนิด ที่หลบภัย ตัวกรอง และความทรงจำของทุกชีวิตที่เคยเติบโตในรากเหล่านั้น`,
+
+        text: `---
+
+หลายเดือนผ่านไป สิ่งแรกที่เปลี่ยนคือน้ำ
+
+ตะกอนเริ่มขุ่นอยู่ตามน้ำตื้น แสงที่เคยลอดผ่านรากโกงกางเป็นสีทองอมเขียว ตอนนี้แทบลงไปไม่ถึงพื้น
+
+---
+
+ปลาตัวเล็ก ๆ เริ่มย้ายถิ่น ไม่ได้ว่ายเล่นเหมือนเดิม แต่เหมือนกำลังรีบหาบางอย่างที่เคยอยู่ตรงนั้น
+
+เรือลุงประเสริฐกลับเข้าฝั่งเร็วกว่าเมื่อก่อน และได้ปลาน้อยลงกว่าเดิม
+
+---
+
+หลังผูกเรือเสร็จ แกนั่งเงียบอยู่ตรงหัวเรือนานมาก หลานชายนั่งอยู่ข้าง ๆ กำลังเรียนรู้วิธีอ่านกระแสน้ำ แบบเดียวกับที่ลุงประเสริฐเคยเรียนจากพ่อของตัวเอง
+
+เด็กคนนั้นยังไม่รู้เลยว่าสิ่งที่กำลังเรียน อาจใช้ไม่ได้กับทะเลที่เขาจะเติบโตมาอยู่ด้วย`
+      },
+
+      b: {
+        intro: `คุณดำลึกลงไป รู้สึกถึงบางอย่างก่อนจะเข้าใจมันจริง ๆ
+
+ตอนแรกน้ำเปลี่ยนช้ามาก เหมือนห้องที่เปลี่ยนไปหลังจากใครบางคนที่คุณรักจากไป ไม่มีอะไรชัดเจน แสงบางอย่างที่หายไป หรือเสียงบางอย่างที่เงียบลง
+
+แล้วทุกอย่างก็เริ่มชัดเจน
+
+---`,
+
+        text: `กระแสน้ำเปลี่ยนไป รากโกงกางที่เคยยึดตะกอนไว้เริ่มปล่อยมันออกมา
+
+น้ำที่เคยใสในช่วงบ่าย เริ่มขุ่นตั้งแต่เที่ยงวัน
+
+คุณว่ายวนไปมา เหมือนกำลังหาบางสิ่งที่อธิบายไม่ถูก
+
+---
+
+มันคือกลิ่น
+
+เมื่อก่อนน้ำแถวนี้มีกลิ่นดิน กลิ่นเกลือ แล้วก็กลิ่นบางอย่างที่มีชีวิต
+
+ตอนนี้มันเหลือแค่กลิ่นน้ำ
+
+---
+
+หลานลุงประเสริฐถามว่าทำไมปลาถึงตัวเล็กกว่าที่เห็นในรูปเก่า ๆ บนผนัง
+
+ลุงประเสริฐเงียบไปพักหนึ่ง ก่อนจะตอบเบา ๆ
+
+"ทะเลมันเหนื่อยแล้ว"
+
+"เหมือนลุงนั่นแหละ"`
+      },
+
+      buttonText: "อ่านต่อ →"
+    },
+
+    chapter4: {
+      title: "บทที่ 4 — คำถาม",
+      page1: `คนที่อยากให้มันมา
+กับคนที่กลัวว่ามันจะมา
+
+ต่างก็มีเหตุผล`,
+      page2: `ถนนสายนี้จะสร้างงานเป็นแสนตำแหน่ง
+เงินจะไหลเข้าภาคใต้
+
+เด็กที่ต้องจากบ้านไปหางานในกรุงเทพ
+อาจได้กลับมา`,
+      page3: `แต่ถนนสายนี้ต้องผ่าน
+ป่าโกงกางริมฝั่งระนองและชุมพร
+ที่ชาวบ้านสองจังหวัดออกมาประท้วงปกป้อง
+
+ป่าที่ใช้เวลาสามร้อยปีกว่าจะเป็นแบบนี้
+เมื่อมันหายไป มันไม่กลับมา`,
+      page4: `ไม่มีคำตอบที่ถูกทั้งหมด
+ไม่มีคำตอบที่ไม่เจ็บปวด
+
+คุณจะเลือกอะไร`,
+      choicePrompt: "",
+      choiceA: "⚖️ ความก้าวหน้าต้องแลกกับบางอย่างเสมอ",
+      choiceB: "🌿 บางอย่างแลกไม่ได้ ไม่ว่าจะคุ้มแค่ไหน"
+    },
+
+    chapter5: {
+      title: "บทที่ 5 — น้ำยังจำ",
+
+      a: {
+        text: `คุณเลือกแล้ว
+
+โลกเดินหน้ามาตลอด
+
+ทุกสิ่งที่เกิดขึ้น
+ล้วนแลกมาด้วยบางอย่าง
+
+---
+
+ถนนจะสร้างเสร็จ
+ท่าเรือจะเปิด
+ผู้คนจะกลับบ้าน
+
+ส่วนน้ำ
+ก็ยังอยู่ตรงนี้
+แม้ไม่เหมือนเดิม
+
+---
+
+หลานลุงประเสริฐยังเอามือลากผ่านน้ำ
+เหมือนที่ปู่เคยทำ
+
+โดยไม่ทันรู้ตัว
+
+---
+
+คุณหวังว่า
+วันหนึ่งเขาจะยังอ่านน้ำออก
+
+แม้น้ำจะเปลี่ยนไปแล้ว`
+      },
+
+      b: {
+        text: `คุณเลือกแล้ว
+
+บางอย่างยังรักษาไว้ได้
+ถ้ายังมีคนเห็นความสำคัญของมัน
+
+น้ำยังขึ้นลงเหมือนเดิม
+
+คลื่นเล็ก ๆ ยังซัดเข้ารากไม้
+ลมยังพากลิ่นโคลนผ่านเข้ามา
+
+---
+
+ที่เดิมของม้าน้ำเฒ่า
+ยังไม่ถูกแทนที่
+
+ยังมีเงารากไม้
+ให้มันซ่อนตัว
+
+---
+
+หลานลุงประเสริฐยังนั่งมองน้ำอยู่เงียบ ๆ
+
+เหมือนคนรุ่นก่อนเคยทำ
+
+และน้ำ
+ก็ยังไหลต่อไป`
+      },
+
+      bowlText: {
+        a: `<strong>{name}</strong> เลือกที่จะเดินหน้าต่อ
+
+สัตว์ทุกตัวในอ่างนี้ก็เลือกเหมือนกัน เพียงแต่แต่ละตัวมาถึงตรงนี้ด้วยเส้นทางที่ต่างกัน — และบางที นั่นอาจเป็นสิ่งสำคัญที่สุด`,
+
+        b: `<strong>{name}</strong> เลือกที่จะไม่ลืม
+
+ทุกชีวิตในอ่างนี้ได้ฟังเรื่องเดียวกัน บางตัวเลือกเหมือนคุณ บางตัวไม่ใช่
+
+แต่น้ำก็ยังโอบรับทุกชีวิตไว้เหมือนกัน`
+      }
+    }
+  }
+};
 /* ══ STATE ══ */
-const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null};
+const state={lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice1:null,choice2:null,choice3:null,choice4:null};
 
 /* ══ SUPABASE ══ */
 const SUPABASE_URL='https://jjozofdvktpkvamoxfbn.supabase.co';
@@ -1513,7 +2014,7 @@ function pickLang(lang,el){
   state.lang=lang;
   const th=lang==='th';
   document.getElementById('nameQ').innerHTML=th
-    ?'คุณชื่ออะไร นักท่องทะเล? 🌊'
+    ?'คุณชื่ออะไร? 🌊'
     :'What is your name,<br>ocean wanderer? 🌊';
   document.getElementById('nameDiveBtn').textContent=th?'ดำดิ่ง →':'Dive in →';
   document.getElementById('nameInput').placeholder=th?'ชื่อของคุณ...':'your name here…';
@@ -1556,7 +2057,14 @@ function pickCreature(emoji,card){
 }
 
 /* ══ CHOICES ══ */
+function pickChoice1(ch){state.choice1=ch;goTo('s5b');}
 function pickChoice2(ch){state.choice2=ch;goTo('s5c');}
+function pickChoice3(ch){
+  state.choice3=ch;
+  if(_curChoices)_curChoices.style.display='none';
+  if(_curTorn)_curTorn.style.display='none';
+  flipNext();
+}
 function pickChoice4(ch){state.choice4=ch;goTo('s5e');}
 
 /* ══ TYPEWRITER + PAGINATION ENGINE ══ */
@@ -1604,9 +2112,18 @@ function startAmbience(screen){
 
 function buildParts(text){
   const parts=[];
-  text.trim().split('\n\n').forEach((para,pi)=>{
-    if(pi>0)parts.push({t:'br'});
-    para.split(' ').forEach(w=>{if(w)parts.push({t:'w',v:w})});
+  let firstContent=true;
+  text.trim().split('\n\n').forEach(para=>{
+    const trimmed=para.trim();
+    if(trimmed==='---'){parts.push({t:'page-break'});firstContent=true;return;}
+    if(trimmed.startsWith('^')){parts.push({t:'cline',v:trimmed.slice(1)});firstContent=false;return;}
+    if(!firstContent)parts.push({t:'br'});
+    firstContent=false;
+    const lines=trimmed.split('\n');
+    lines.forEach((line,li)=>{
+      if(li>0)parts.push({t:'lbr'});
+      line.trim().split(' ').forEach(w=>{if(w)parts.push({t:'w',v:w});});
+    });
   });
   return parts;
 }
@@ -1623,13 +2140,40 @@ function setupChoicesCard(screen,chKey){
   const prompt=screen.querySelector('.choice-prompt');
   const btnA=screen.querySelector('.ch-choice-a');
   const btnB=screen.querySelector('.ch-choice-b');
+  const btnC=screen.querySelector('.ch-choice-c');
+  if(chKey==='chapter3'){
+    const choices=(STORY[lang].chapter3.choices)||[];
+    if(btnA){btnA.style.display='';btnA.textContent=choices[0]||'😶';btnA.onclick=function(){pickChoice3('a');};}
+    if(btnB){btnB.style.display='';btnB.textContent=choices[1]||'😟';btnB.onclick=function(){pickChoice3('b');};}
+    if(btnC){btnC.style.display='';btnC.textContent=choices[2]||'😨';btnC.onclick=function(){pickChoice3('c');};}
+    if(continueBtn)continueBtn.style.display='none';
+    return;
+  }
   if(prompt&&btnA&&btnB){
     prompt.textContent=chData.choicePrompt;
     btnA.textContent=chData.choiceA;
     btnB.textContent=chData.choiceB;
-    if(chKey==='chapter2'){
+    if(btnC&&chData.choiceC)btnC.textContent=chData.choiceC;
+    if(chKey==='chapter1'){
+      // Reset visibility in case user restarts after a branch was shown
+      if(prompt)prompt.style.display='';
+      if(btnB)btnB.style.display='';
+      if(btnC)btnC.style.display='';
+      btnA.onclick=function(){pickChoice1('a');};
+      btnB.onclick=function(){pickChoice1('b');};
+      if(btnC)btnC.onclick=function(){pickChoice1('c');};
+    }else if(chKey==='chapter2'){
+      // Mini-choice: one action button per branch scene, no A/B split
+      if(prompt)prompt.style.display='none';
+      if(btnB)btnB.style.display='none';
+      btnA.style.display='';
+      btnA.textContent=lang==='th'?'อ่านต่อ →':'Continue →';
       btnA.onclick=function(){pickChoice2('a');};
-      btnB.onclick=function(){pickChoice2('b');};
+    }else if(chKey==='chapter4'){
+      if(prompt)prompt.style.display='none';
+      if(btnB){btnB.style.display='';btnB.onclick=function(){pickChoice4('b');};}
+      btnA.style.display='';
+      btnA.onclick=function(){pickChoice4('a');};
     }else{
       btnA.onclick=function(){pickChoice4('a');};
       btnB.onclick=function(){pickChoice4('b');};
@@ -1660,10 +2204,28 @@ function startChapter(chKey){
 
   let text;
   if(chKey==='chapter3'){
-    const b=STORY[lang].chapter3[state.choice2];
-    text=b.intro+'\n\n'+b.text;
+    const ch3=STORY[lang].chapter3;
+    const p1=ch3.page1||'';
+    const p2=ch3.page2?'\n\n---\n\n'+ch3.page2:'\n\n---';
+    const p3=ch3.page3?'\n\n---\n\n'+ch3.page3:'\n\n---';
+    const p4=ch3.page4?'\n\n---\n\n'+ch3.page4:'\n\n---';
+    text=p1+p2+p3+p4;
+  }else if(chKey==='chapter4'){
+    const ch4=STORY[lang].chapter4;
+    const p1=ch4.page1||'';
+    const p2=ch4.page2?'\n\n---\n\n'+ch4.page2:'\n\n---';
+    const p3=ch4.page3?'\n\n---\n\n'+ch4.page3:'\n\n---';
+    const p4=ch4.page4?'\n\n---\n\n'+ch4.page4:'\n\n---';
+    text=p1+p2+p3+p4;
   }else if(chKey==='chapter5'){
-    text=STORY[lang].chapter5[state.choice4].text;
+    const branch=STORY[lang].chapter5[state.choice4||'a'];
+    text=branch&&branch.text?branch.text:'\n\n---\n\n---\n\n---';
+  }else if(chKey==='chapter2'){
+    const scene=STORY[lang].chapter1.scenes[state.choice1||'a'];
+    const p2=scene.page2?'\n\n---\n\n'+scene.page2:'';
+    const p3=chData.page3?'\n\n---\n\n'+chData.page3:'\n\n---';
+    const p4=chData.page4?'\n\n---\n\n'+chData.page4:'\n\n---';
+    text=scene.text+p2+p3+p4;
   }else{
     text=chData.text;
   }
@@ -1690,48 +2252,9 @@ function startChapter(chKey){
 }
 
 function preCountPages(parts){
-  const box=_curBox;
-  const cs=window.getComputedStyle(box);
-  const lh=parseFloat(cs.lineHeight)||24;
-  // Thai: needs 1 full line-height safety — diacritics + merged-orphan wrap risk
-  const isThai=box.classList.contains('th');
-  const safety=isThai?lh:4;
-  const probe=document.createElement('div');
-  probe.style.cssText=`position:fixed;left:-9999px;top:0;visibility:hidden;
-    width:${box.clientWidth}px;height:${box.clientHeight-safety}px;overflow:hidden;
-    font-family:${cs.fontFamily};font-size:${cs.fontSize};
-    line-height:${cs.lineHeight};padding:${cs.padding};
-    word-break:${cs.wordBreak};overflow-wrap:break-word;box-sizing:border-box`;
-  document.body.appendChild(probe);
   const bounds=[0];
   for(let i=0;i<parts.length;i++){
-    const p=parts[i];
-    let nodes;
-    if(p.t==='br'){
-      const b1=document.createElement('br'),b2=document.createElement('br');
-      probe.appendChild(b1);probe.appendChild(b2);nodes=[b1,b2];
-    }else{
-      const s=document.createElement('span');s.textContent=p.v+' ';
-      probe.appendChild(s);nodes=[s];
-    }
-    if(probe.scrollHeight>probe.clientHeight+2){
-      nodes.forEach(n=>probe.removeChild(n));
-      bounds.push(i);probe.innerHTML='';
-      // Re-seed probe with the boundary element so next page's count is accurate
-      if(p.t==='br'){probe.appendChild(document.createElement('br'));probe.appendChild(document.createElement('br'));}
-      else{const s=document.createElement('span');s.textContent=p.v+' ';probe.appendChild(s);}
-    }
-  }
-  document.body.removeChild(probe);
-  // Orphan prevention (English only — Thai orphan merge risks overflow from line wrapping)
-  if(!isThai){
-    for(let b=bounds.length-1;b>=1;b--){
-      const start=bounds[b];
-      const end=b+1<bounds.length?bounds[b+1]:parts.length;
-      let words=0;
-      for(let j=start;j<end;j++){if(parts[j].t!=='br')words++;}
-      if(words<=2)bounds.splice(b,1);
-    }
+    if(parts[i].t==='page-break')bounds.push(i);
   }
   return bounds;
 }
@@ -1742,9 +2265,20 @@ function typeNext(){
   if(nextPageStart!==undefined&&_typingIdx>=nextPageStart){_endOfPage();return;}
   if(_typingIdx>=_allParts.length){_isLastPage=true;_finishLastPage();return;}
   const p=_allParts[_typingIdx++];
+  if(p.t==='page-break'){typeNext();return;}
   const fast=state.lang==='en';
+  if(p.t==='cline'){
+    const d=document.createElement('div');
+    d.style.cssText='text-align:center;width:100%;margin-top:1.2em;font-weight:600';
+    d.textContent=p.v;
+    _curBox.appendChild(d);
+    _typingTimer=setTimeout(typeNext,fast?337:675);
+    return;
+  }
   if(p.t==='br'){
     _curBox.appendChild(document.createElement('br'));
+    _curBox.appendChild(document.createElement('br'));
+  }else if(p.t==='lbr'){
     _curBox.appendChild(document.createElement('br'));
   }else{
     const s=document.createElement('span');
@@ -1753,12 +2287,21 @@ function typeNext(){
     _curBox.appendChild(s);
   }
   _typingTimer=setTimeout(typeNext,
-    p.t==='br'?(fast?337:675):(fast?112+Math.random()*75:225+Math.random()*150));
+    p.t==='br'?(fast?337:675):
+    p.t==='lbr'?(fast?150:300):
+    (fast?112+Math.random()*75:225+Math.random()*150));
 }
 
 function _endOfPage(){
   _typingActive=false;
   if(_curSkip)_curSkip.style.display='none';
+  if(_storyChapter===3&&_currentPage===0){
+    _ch3SetChoiceButtons(false);
+    if(_curTorn)_curTorn.style.display='block';
+    if(_curChoices)_curChoices.style.display='flex';
+    if(_curPageNav)_curPageNav.style.display='none';
+    return;
+  }
   if(_curChoices)_curChoices.style.display='none';
   if(_curTorn)_curTorn.style.display='none';
   _updatePageNav();
@@ -1768,10 +2311,24 @@ function _endOfPage(){
 function _finishLastPage(){
   _typingActive=false;_isLastPage=true;
   if(_curTorn)_curTorn.style.display='block';
+  if(_storyChapter===3)_ch3SetChoiceButtons(true);
   if(_curChoices)_curChoices.style.display='flex';
   if(_curSkip)_curSkip.style.display='none';
   _updatePageNav();
   if(_curPageNav)_curPageNav.style.display=_pageBounds.length>1?'flex':'none';
+}
+
+function _ch3SetChoiceButtons(showContinue){
+  const screen=document.querySelector('.screen.active');
+  if(!screen)return;
+  const bA=screen.querySelector('.ch-choice-a');
+  const bB=screen.querySelector('.ch-choice-b');
+  const bC=screen.querySelector('.ch-choice-c');
+  const bCont=screen.querySelector('.ch-continue');
+  if(bA)bA.style.display=showContinue?'none':'';
+  if(bB)bB.style.display=showContinue?'none':'';
+  if(bC)bC.style.display=showContinue?'none':'';
+  if(bCont)bCont.style.display=showContinue?'':'none';
 }
 
 function _updatePageNav(){
@@ -1811,7 +2368,10 @@ function flipPrev(){
   _curBox.classList.add('page-flip-back');
   _curBox.innerHTML='';
   _allParts.slice(start,end).forEach(p=>{
+    if(p.t==='page-break')return;
     if(p.t==='br'){_curBox.appendChild(document.createElement('br'));_curBox.appendChild(document.createElement('br'));}
+    else if(p.t==='lbr'){_curBox.appendChild(document.createElement('br'));}
+    else if(p.t==='cline'){const d=document.createElement('div');d.style.cssText='text-align:center;width:100%;margin-top:1.2em;font-weight:600';d.textContent=p.v;_curBox.appendChild(d);}
     else{const s=document.createElement('span');s.textContent=p.v+' ';s.style.opacity='1';_curBox.appendChild(s);}
   });
   if(_curChoices)_curChoices.style.display='none';
@@ -1828,6 +2388,8 @@ function skipTyping(){
   for(;_typingIdx<end;_typingIdx++){
     const p=_allParts[_typingIdx];
     if(p.t==='br'){_curBox.appendChild(document.createElement('br'));_curBox.appendChild(document.createElement('br'));}
+    else if(p.t==='lbr'){_curBox.appendChild(document.createElement('br'));}
+    else if(p.t==='cline'){const d=document.createElement('div');d.style.cssText='text-align:center;width:100%;margin-top:1.2em;font-weight:600';d.textContent=p.v;_curBox.appendChild(d);}
     else{const s=document.createElement('span');s.textContent=p.v+' ';s.style.opacity='1';_curBox.appendChild(s);}
   }
   if(_pageBounds[_currentPage+1]!==undefined){_endOfPage();}
@@ -1975,7 +2537,7 @@ function restartAll(){
   if(_rafId)cancelAnimationFrame(_rafId);
   if(_bubbleInt)clearInterval(_bubbleInt);
   if(_sbChannel){_sb.removeChannel(_sbChannel);_sbChannel=null;}
-  Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice2:null,choice4:null});
+  Object.assign(state,{lang:'en',username:'',creature:'🐠',creatureName:'Clownfish',choice1:null,choice2:null,choice3:null,choice4:null});
   _allParts=[];_pageBounds=[0];_currentPage=0;_isLastPage=false;_curPageNav=null;
   if(_selectedCard){_selectedCard.classList.remove('selected');_selectedCard=null;}
   document.getElementById('confirmCreature').style.display='none';
@@ -2018,6 +2580,51 @@ function playStoryAudio(page,chapter){
   a.play().catch(()=>{});
   _storyAudio=a;
 }
+
+/* ══ DEV PANEL ══ */
+let _devOpen=false;
+function toggleDev(){
+  _devOpen=!_devOpen;
+  document.getElementById('devPanel').classList.toggle('open',_devOpen);
+}
+function devGoto(id){
+  if(!state.lang)state.lang='en';
+  if(!state.username)state.username='Dev';
+  if(!state.creature)state.creature='🐠';
+  if(!state.creatureName)state.creatureName='Clownfish';
+  if(!state.choice1)state.choice1='a';
+  if(!state.choice2)state.choice2='a';
+  if(!state.choice4)state.choice4='a';
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.style.cssText='';
+    s.classList.remove('active','crumpling','dropping');
+  });
+  const target=document.getElementById(id);
+  if(!target)return;
+  target.classList.add('active');
+  const th=state.lang==='th';
+  if(id==='s3'){
+    document.getElementById('nameQ').innerHTML=th?'คุณชื่ออะไร? 🌊':'What is your name,<br>ocean wanderer? 🌊';
+    const inp=document.getElementById('nameInput');
+    if(inp)inp.value=state.username;
+  }else if(id==='s4'){
+    document.getElementById('s4Heading').textContent=th?'เลือกสัตว์ทะเลของคุณ':'Choose your sea creature';
+    document.querySelectorAll('.creature-label').forEach(lbl=>{lbl.textContent=th?lbl.dataset.th:lbl.dataset.en;});
+  }else if(['s5a','s5b','s5c','s5d','s5e'].includes(id)){
+    const chKey={s5a:'chapter1',s5b:'chapter2',s5c:'chapter3',s5d:'chapter4',s5e:'chapter5'}[id];
+    startChapter(chKey);
+  }else if(id==='s6'){
+    initBowl();
+  }
+}
+function devToggleLang(){
+  state.lang=state.lang==='en'?'th':'en';
+  const btn=document.getElementById('devLangBtn');
+  if(btn)btn.textContent=state.lang==='en'?'EN→TH':'TH→EN';
+}
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey&&e.key==='d'){e.preventDefault();toggleDev();}
+});
 
 /* ══ OCEAN AUDIO ══ */
 let _audioCtx=null,_audioMuted=true,_masterGain=null;
