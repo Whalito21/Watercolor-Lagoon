@@ -1096,6 +1096,12 @@ body::before{
   }
   #soundHint{display:none}
 }
+/* ══ HAND-DRAWN OCEAN ELEMENTS ══ */
+.hdraw{position:absolute;pointer-events:none}
+@keyframes hdSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes hdSwayR{0%,100%{transform:rotate(4deg)}50%{transform:rotate(-5deg)}}
+@keyframes hdBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes hdDrift{0%,100%{transform:translate(0,0) rotate(-4deg)}45%{transform:translate(10px,-14px) rotate(6deg)}75%{transform:translate(-6px,-8px) rotate(-6deg)}}
 </style>
 </head>
 <body>
@@ -1243,7 +1249,7 @@ body::before{
     <div class="p-dot done" title="Story setup"></div>
     <div class="p-dot" id="dot4" title="Creature"></div>
   </div>
-  <p class="screen-heading" id="s4Heading">Choose your sea creature</p>
+  <p class="screen-heading" id="s4Heading">Which sea creature will you become?</p>
   <div class="creatures-grid">
     <div class="creature-card" onclick="pickCreature('🐠',this)">
       <div class="creature-ring"></div>
@@ -1276,15 +1282,16 @@ body::before{
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
   <div class="sea-art" aria-hidden="true">
-    <div class="sg-wrap">
-      <div class="sea-grass sg-a"></div>
-      <div class="sea-grass sg-b"></div>
-      <div class="sea-grass sg-c"></div>
-      <div class="sea-grass sg-d"></div>
-    </div>
-    <div class="sea-coral"></div>
-    <div class="sea-jelly"></div>
-    <div class="sea-leaf"></div>
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2019.png"
+         style="width:16%;top:6%;right:4%;animation:hdBob 6s ease-in-out infinite;opacity:.88">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%202.png"
+         style="width:14%;bottom:-2vw;left:3%;transform-origin:bottom center;animation:hdSway 5s ease-in-out infinite;opacity:.9">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%201.png"
+         style="width:11%;bottom:-1.5vw;left:15%;transform-origin:bottom center;animation:hdSwayR 6.5s ease-in-out infinite;opacity:.85">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%205.png"
+         style="width:16%;bottom:-2vw;right:5%;animation:hdBob 7s ease-in-out infinite 1s;opacity:.88">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2029.png"
+         style="width:9%;bottom:1%;left:48%;opacity:.82">
   </div>
   <div class="ch-progress">
     <div class="ch-dot done"></div>
@@ -1316,15 +1323,14 @@ body::before{
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
   <div class="sea-art" aria-hidden="true">
-    <div class="sg-wrap">
-      <div class="sea-grass sg-a"></div>
-      <div class="sea-grass sg-b"></div>
-      <div class="sea-grass sg-c"></div>
-      <div class="sea-grass sg-d"></div>
-    </div>
-    <div class="sea-coral"></div>
-    <div class="sea-jelly"></div>
-    <div class="sea-leaf"></div>
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2021.png"
+         style="width:13%;top:18%;left:12%;animation:hdDrift 9s ease-in-out infinite;opacity:.78">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%203.png"
+         style="width:14%;bottom:-2vw;left:5%;transform-origin:bottom center;animation:hdSway 4s ease-in-out infinite;opacity:.88">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%208.png"
+         style="width:14%;bottom:-2vw;right:6%;animation:hdBob 6s ease-in-out infinite 0.5s;opacity:.84">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2026.png"
+         style="width:16%;bottom:22%;right:3%;opacity:.86">
   </div>
   <div class="ch-progress">
     <div class="ch-dot done"></div>
@@ -1355,15 +1361,14 @@ body::before{
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
   <div class="sea-art" aria-hidden="true">
-    <div class="sg-wrap">
-      <div class="sea-grass sg-a"></div>
-      <div class="sea-grass sg-b"></div>
-      <div class="sea-grass sg-c"></div>
-      <div class="sea-grass sg-d"></div>
-    </div>
-    <div class="sea-coral"></div>
-    <div class="sea-jelly"></div>
-    <div class="sea-leaf"></div>
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%207.png"
+         style="width:16%;bottom:-2vw;left:4%;animation:hdBob 8s ease-in-out infinite;opacity:.88">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2020.png"
+         style="width:13%;bottom:-2vw;left:20%;transform-origin:bottom center;animation:hdSway 5.5s ease-in-out infinite;opacity:.85">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2016.png"
+         style="width:18%;bottom:0%;left:42%;opacity:.82">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2027.png"
+         style="width:10%;bottom:0%;right:6%;opacity:.80">
   </div>
   <div class="ch-progress">
     <div class="ch-dot done"></div>
@@ -1395,15 +1400,14 @@ body::before{
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
   <div class="sea-art" aria-hidden="true">
-    <div class="sg-wrap">
-      <div class="sea-grass sg-a"></div>
-      <div class="sea-grass sg-b"></div>
-      <div class="sea-grass sg-c"></div>
-      <div class="sea-grass sg-d"></div>
-    </div>
-    <div class="sea-coral"></div>
-    <div class="sea-jelly"></div>
-    <div class="sea-leaf"></div>
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%204.png"
+         style="width:16%;bottom:-2vw;left:3%;animation:hdBob 7s ease-in-out infinite;opacity:.88">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%208.png"
+         style="width:13%;bottom:-1.5vw;left:18%;opacity:.82">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2014.png"
+         style="width:14%;bottom:-2vw;right:16%;animation:hdBob 9s ease-in-out infinite 1s;opacity:.86">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2015.png"
+         style="width:9%;bottom:4%;right:5%;animation:hdDrift 11s ease-in-out infinite 2s;opacity:.80">
   </div>
   <div class="ch-progress">
     <div class="ch-dot done"></div>
@@ -1434,15 +1438,16 @@ body::before{
   <div class="cut cut-1"></div>
   <div class="cut cut-2"></div>
   <div class="sea-art" aria-hidden="true">
-    <div class="sg-wrap">
-      <div class="sea-grass sg-a"></div>
-      <div class="sea-grass sg-b"></div>
-      <div class="sea-grass sg-c"></div>
-      <div class="sea-grass sg-d"></div>
-    </div>
-    <div class="sea-coral"></div>
-    <div class="sea-jelly"></div>
-    <div class="sea-leaf"></div>
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2014.png"
+         style="width:15%;bottom:-2vw;left:3%;animation:hdBob 8s ease-in-out infinite;opacity:.90">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2018.png"
+         style="width:10%;bottom:-1vw;left:17%;animation:hdBob 9.5s ease-in-out infinite 1.5s;opacity:.85">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2010.png"
+         style="width:14%;bottom:-1.5vw;left:40%;opacity:.88">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2013.png"
+         style="width:12%;bottom:1%;right:14%;opacity:.86">
+    <img class="hdraw" src="Hand%20drawn%20element/Artboard%2015.png"
+         style="width:8%;bottom:24%;right:6%;animation:hdDrift 12s ease-in-out infinite 3s;opacity:.76">
   </div>
   <div class="ch-progress">
     <div class="ch-dot done"></div>
@@ -1484,6 +1489,10 @@ body::before{
       <div class="bowl" id="bowl">
         <div class="bowl-shine"></div>
         <div class="bowl-sand"></div>
+        <img class="hdraw" src="Hand%20drawn%20element/Artboard%209.png"
+             style="width:14%;bottom:4px;right:8%;z-index:8;opacity:.78">
+        <img class="hdraw" src="Hand%20drawn%20element/Artboard%2029.png"
+             style="width:11%;bottom:4px;left:5%;z-index:8;opacity:.76">
       </div>
     </div>
   <p class="music-credit">Music composed by Chanon Boonsak<br>Now playing: Erik Satie — Gymnopédie No.1</p>
@@ -1681,7 +1690,7 @@ Maybe that's enough to hold onto.`
     chapter1: {
       title: "บทที่ 1 — เช้าวันนั้น",
       branch: "main",
-      text: `คุณอยู่ที่นี่มาทั้งชีวิต รู้ว่าช่วงบ่ายกระแสน้ำตรงไหนอุ่น รู้ว่ารากไหนเป็นที่หลบของปลาตัวเล็ก รู้แม้กระทั่งเสียงเครื่องเรือของลุงประเสริฐ ก่อนที่เรือจะโผล่พ้นแหลมมาด้วยซ้ำ
+      text: `คุณอยู่ที่นี่มาทั้งชีวิต รู้ว่าช่วงบ่ายกระแสน้ำตรงไหนอุ่น รู้ว่ารากไหนเป็นที่หลบของปลาตัวเล็ก รู้แม้กระทั่งเสียงเครื่องเรือของลุงประเสริฐ ชาวประมงที่ออกเรือทุกเช้ามาตลอดกว่าสี่สิบปี ก่อนที่เรือจะโผล่พ้นแหลมมาด้วยซ้ำ
 
 ---
 
@@ -1695,16 +1704,20 @@ Maybe that's enough to hold onto.`
       choiceC: "ลอยอยู่นิ่งๆ",
       scenes: {
         a: {
-          text: `คุณได้ยินลุงประเสริฐคุยกับลูกชายตัวเองด้วยน้ำเสียงเป็นกังวลเกี่ยวกับเรื่องอะไรสักอย่าง`,
+          text: `คุณได้ยินลุงประเสริฐ ชาวประมงท้องถิ่นที่รู้จักทะเลแห่งนี้ดีกว่าใคร คุยกับลูกชายด้วยน้ำเสียงเป็นกังวลเกี่ยวกับเรื่องอะไรสักอย่าง`,
           miniChoice: "คุณเงี่ยหูฟัง",
-          page2: `"แลนด์บริดจ์ มันจะมาถึงแถวนี้แน่ ๆ"
+          page2: `ลุงประเสริฐถอนหายใจ แล้วพูดเบา ๆ
 
-ลุงประเสริฐถอนหายใจ สีหน้าดูเคร่งเครียด`
+"แลนด์บริดจ์ มันจะมาถึงแถวนี้แน่ ๆ"
+
+สีหน้าดูเคร่งเครียด`
         },
         b: {
           text: `คุณเจอม้าน้ำเฒ่าที่อาศัยอยู่แถวรากโกงกาง คุณเจอแกตั้งแต่ยังเล็กๆ
 
-"นี่เจ้ารู้ข่าวหรือยัง เรื่องใหญ่เลยหล่ะ…"`,
+"นี่เจ้ารู้ข่าวหรือยัง เรื่องใหญ่เลยหล่ะ…"
+
+ม้าน้ำเฒ่าเอี้ยวตัวมาถาม สายตาเป็นกังวล`,
           miniChoice: "เรื่องอะไรลุงง",
           page2: `ม้าน้ำเฒ่าชะโงกเข้ามาใกล้
 
@@ -1712,12 +1725,17 @@ Maybe that's enough to hold onto.`
 แต่มันกำลังจะทำให้ทุกอย่างเปลี่ยน"`
         },
         c: {
-          text: `คุณโดนเรือชนกระเด็นไปไกล มึนหัวสุดๆ แถวหาดโคลนคุณเจอปลาตีนคุยกันเสียงระงม`,
-          miniChoice: "เอ็งคุยไรกันอยู่หน่ะ",
-          page2: `ปลาตีนตัวหนึ่งหยุดคุย แล้วมองมา
+          text: `คุณโดนเรือชนกระเด็นไปไกลจนถึงหาดโคลน
 
-"แลนด์บริดจ์
-เอ็งยังไม่รู้เหรอ ข่าวใหญ่สุดในรอบปี"`
+มึนหัวสุดๆ
+
+คุณได้ยินปลาตีนคุยกันเสียงระงม`,
+          miniChoice: "เอ็งคุยไรกันอยู่หน่ะ",
+          page2: `ปลาตีนตัวหนึ่งเข้ามาถามว่า
+
+"เอ็งมาจากไหนเนี่ย…."
+
+"เอ็งพอรู้ข่าวเรื่อง แลนด์บริดจ์ บ้างมั้ยวะ"`
         }
       }
     },
@@ -1774,9 +1792,13 @@ Maybe that's enough to hold onto.`
 
 หลานชายถามว่าทำไม
 
+ลุงประเสริฐ ชาวประมงที่ออกเรือมาตลอดชีวิต ตอบเบา ๆ
+
 "ทะเลมันเหนื่อยแล้ว"
 
-เหมือนลุงนั่นแหละ`,
+"เหมือนลุงนั่นแหละ"
+
+แกไม่พูดอีก แค่มองออกไปที่ผิวน้ำ นิ่งอยู่นาน`,
 
       a: {
         intro: `คุณฟัง คุณค่อย ๆ เข้าใจ
@@ -1886,7 +1908,10 @@ Maybe that's enough to hold onto.`
 
 ถนนจะสร้างเสร็จ
 ท่าเรือจะเปิด
-ผู้คนจะกลับบ้าน
+ผู้คนจะได้กลับบ้าน
+
+เด็กอย่างน้องแดง
+อาจได้เรียนรู้ทะเลได้ที่บ้านเกิด
 
 ส่วนน้ำ
 ก็ยังอยู่ตรงนี้
@@ -1894,8 +1919,8 @@ Maybe that's enough to hold onto.`
 
 ---
 
-หลานลุงประเสริฐยังเอามือลากผ่านน้ำ
-เหมือนที่ปู่เคยทำ
+น้องแดง หลานลุงประเสริฐ ยังเอามือลากผ่านน้ำ
+เหมือนที่ลุงเคยทำ
 
 โดยไม่ทันรู้ตัว
 
@@ -1928,7 +1953,7 @@ Maybe that's enough to hold onto.`
 
 ---
 
-หลานลุงประเสริฐยังนั่งมองน้ำอยู่เงียบ ๆ
+น้องแดง หลานลุงประเสริฐ ยังนั่งมองน้ำอยู่เงียบ ๆ
 
 เหมือนคนรุ่นก่อนเคยทำ
 
@@ -2018,7 +2043,7 @@ function pickLang(lang,el){
     :'What is your name,<br>ocean wanderer? 🌊';
   document.getElementById('nameDiveBtn').textContent=th?'ดำดิ่ง →':'Dive in →';
   document.getElementById('nameInput').placeholder=th?'ชื่อของคุณ...':'your name here…';
-  document.getElementById('s4Heading').textContent=th?'เลือกสัตว์ทะเลของคุณ':'Choose your sea creature';
+  document.getElementById('s4Heading').textContent=th?'คุณจะสวมบทบาทเป็นสัตว์ทะเลตัวไหน':'Which sea creature will you become?';
   document.querySelectorAll('.creature-label').forEach(lbl=>{
     lbl.textContent=th?lbl.dataset.th:lbl.dataset.en;
   });
@@ -2546,7 +2571,7 @@ function restartAll(){
   document.getElementById('nameQ').innerHTML='What is your name,<br>ocean wanderer? 🌊';
   document.getElementById('nameDiveBtn').textContent='Dive in →';
   document.getElementById('nameInput').placeholder='your name here…';
-  document.getElementById('s4Heading').textContent='Choose your sea creature';
+  document.getElementById('s4Heading').textContent='Which sea creature will you become?';
   document.querySelectorAll('.creature-label').forEach(lbl=>{lbl.textContent=lbl.dataset.en;});
   document.getElementById('restartBtn').textContent='↩ Start again';
   document.getElementById('shareBtn').textContent='Share this story 🐠';
@@ -2608,7 +2633,7 @@ function devGoto(id){
     const inp=document.getElementById('nameInput');
     if(inp)inp.value=state.username;
   }else if(id==='s4'){
-    document.getElementById('s4Heading').textContent=th?'เลือกสัตว์ทะเลของคุณ':'Choose your sea creature';
+    document.getElementById('s4Heading').textContent=th?'คุณจะสวมบทบาทเป็นสัตว์ทะเลตัวไหน':'Which sea creature will you become?';
     document.querySelectorAll('.creature-label').forEach(lbl=>{lbl.textContent=th?lbl.dataset.th:lbl.dataset.en;});
   }else if(['s5a','s5b','s5c','s5d','s5e'].includes(id)){
     const chKey={s5a:'chapter1',s5b:'chapter2',s5c:'chapter3',s5d:'chapter4',s5e:'chapter5'}[id];
